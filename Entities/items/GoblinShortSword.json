@@ -6,13 +6,6 @@
 		"Goblin Two-Handed Butterknife",
 		"Goblin Axe"
 	],
-	"speed": 	 "2",
-	"dexterity": "5",
-	"armor": [
-		"Goblin Hide",
-		"Human Hide",
-		"Shitty Leather Armor"
-	],
 	"modifiers":[
 		"Enraged",
 		"Weakened"

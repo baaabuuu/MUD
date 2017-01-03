@@ -1,22 +1,26 @@
 {
 	"type": "Lesser Goblin Adult",
-	"Challenge":	["1","2"],
+	"challenge":	["1","2"],
 	"weapons": [
 		"Goblin Hammer",
 		"Goblin Two-Handed Butterknife",
-		"Goblin Axe"
+		"Goblin Axe",
+		"Goblin Engineered Rock"
 	],
-	"modifier":[
-		"enraged"
+	"speed": 	 "2",
+	"dexterity": "5",
+	"armor": [
+		"Goblin Hide",
+		"Human Hide",
+		"Shitty Leather Armor"
 	],
-	"gold": 	 [
-		"1",
-		"5"
+	"modifiers":[
+		"Enraged",
+		"Weakened"
 	],
-	"hp": 	     [
-		"6",
-		"12"
-	],
+	"modChance": "20",
+	"gold": 	 ["1","5"],
+	"hp": 	     ["6","12"],
 	"loot":		 [
 	],
 	"dmgBonus":  ["0","4"]
