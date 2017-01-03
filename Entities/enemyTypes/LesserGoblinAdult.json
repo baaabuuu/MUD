@@ -1,0 +1,23 @@
+{
+	"type": "Lesser Goblin Adult",
+	"Challenge":	["1","2"],
+	"weapons": [
+		"Goblin Hammer",
+		"Goblin Two-Handed Butterknife",
+		"Goblin Axe"
+	],
+	"modifier":[
+		"enraged"
+	],
+	"gold": 	 [
+		"1",
+		"5"
+	],
+	"hp": 	     [
+		"6",
+		"12"
+	],
+	"loot":		 [
+	],
+	"dmgBonus":  ["0","4"]
+}
