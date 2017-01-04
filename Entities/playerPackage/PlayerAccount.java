@@ -1,43 +1,25 @@
 package playerPackage;
 
-import java.io.BufferedWriter;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.Writer;
 import java.time.Instant;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
-import items.WeaponList;
-import items.WeaponType;
-import metaData.MetaData;
 
 public class PlayerAccount
 {
-	String 		accountName;
-	String		password;
-	String		email;
-	String		creationDate;
-	String		lastLogin;
+	private String 		accountName;
+	private String		password;
+	private String		email;
+	private String		creationDate;
+	private String		lastLogin;
 	//can you guys say donate for 30 days :D
 	//if -1 then infinite
-	String		level;
-	String		levelDuration;
+	private String		level;
+	private String		levelDuration;
+		
+	private String		gmNotes;
+	private String		banned;
 	
-	String		gmNotes;
-	String		banned;
-	
-	String		playerID;
-	String[]	characterID;
+	private String		playerID;
+	private String[]	characterID;
 	
 	public PlayerAccount(String name, String pass, String email)
 	{
@@ -56,5 +38,54 @@ public class PlayerAccount
 		
 		//needs to get a check on how many playerIDs exist
 		//characterID is used to hold how many characters that player owns.
-	}	
+	}
+
+	public void setID(int val)
+	{
+		this.playerID	=	String.valueOf(val);
+	}
+	
+	public String getID()
+	{
+		return playerID;
+	}
+	
+	public String[] getCharacterIDS()
+	{
+		return characterID;
+	}
+	//get methods for non-encrypted data?
+	public String getName()
+	{
+		return accountName;
+	}
+	public String getEmail()
+	{
+		return email;
+	}
+	public String creationData()
+	{
+		return creationDate;
+	}
+	public String getLastLogin()
+	{
+		return lastLogin;
+	}
+	public String getLevel()
+	{
+		return level;
+	}
+	public String getLevelDuration()
+	{
+		return levelDuration;
+	}
+	public String getGMnotes()
+	{
+		return gmNotes;
+	}
+	public boolean isBanned()
+	{
+		return banned.equals("true");
+	}
+	
 }

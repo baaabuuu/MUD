@@ -76,7 +76,8 @@ public class Accounts {
 		{	
 			if (checkUser(name))
 			{
-				PlayerAccount	newPlayer 	= 	new PlayerAccount(name,pass,email);	
+				PlayerAccount	newPlayer 	= 	new PlayerAccount(name,pass,email);
+				newPlayer.setID(createdAccounts.size());
 				Gson gson = new GsonBuilder().setPrettyPrinting().create();
 				// 1. Java object to JSON, and save into a file
 				
@@ -139,7 +140,7 @@ public class Accounts {
 		name	=	name.toUpperCase();
 		for (int i=0;i<createdAccounts.size();i++)
 		{
-			if (createdAccounts.get(i).accountName.toUpperCase().equals(name))
+			if (createdAccounts.get(i).getName().toUpperCase().equals(name))
 				return false;
 		}
 		return true;
@@ -149,7 +150,7 @@ public class Accounts {
 		email	=	email.toUpperCase();
 		for (int i = 0; i < createdAccounts.size(); i++)
 		{
-			if (createdAccounts.get(i).email.toUpperCase().equals(email))
+			if (createdAccounts.get(i).getEmail().toUpperCase().equals(email))
 				return false;
 		}
 		return true;
