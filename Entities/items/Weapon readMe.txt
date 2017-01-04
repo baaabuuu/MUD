@@ -1,5 +1,5 @@
-This file contains the id for weapons
-0 goblin engineered Rock
-1 goblin Hammer
-2 goblin axe
+This file contains the id for weapons - you can also refer to them using the names
+0 Goblin Engineered Rock
+1 Goblin Hammer
+2 Goblin Axe
 3 Goblin Butter Knife

@@ -12,7 +12,7 @@
 	],
 	"rarity":	 	"1",
 	"level":		"1",
-	"modChance":	"100",
+	"modChance":	"10",
 	"goldCost": 	"25",
 	"accuracyMod":	"-5",
 	"critMod":		"-5",
