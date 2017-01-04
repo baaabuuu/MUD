@@ -4,9 +4,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import com.google.gson.*;
-//used to get the json files from package EnemyTypes
-import enemyTypes.fileClass;
 
+//used to get the json files from package EnemyTypes
 public class WeaponList
 {
 	//this array contains all the creep types.
@@ -26,6 +25,10 @@ public class WeaponList
 	{
 		weaponList = new ArrayList<WeaponType>();
 		createWeapons();
+		for (WeaponType wep: weaponList)
+		{
+			wep.getInfo();
+		}
 	}
 	/**
 	 * Adds the items to our itemList
@@ -36,22 +39,19 @@ public class WeaponList
 	{
 		Gson gson = new GsonBuilder().create();
 		
-		InputStreamReader reader = new InputStreamReader(Item.class.getResourceAsStream("/items/"+filename), "UTF-8");
-		WeaponType weaponType = gson.fromJson(reader, WeaponType.class);
-		
-		//weaponType.getInfo();
-		
-		//appends an ID number to the list, esp useful when using different copies of same
-		//weapon
-		weaponType.setID(weaponList.size());
-		weaponList.add(weaponType);
+		InputStreamReader reader = new InputStreamReader(WeaponList.class.getResourceAsStream("/items/"+filename), "UTF-8");
+		WeaponType[] weaponType = gson.fromJson(reader, WeaponType[].class);
+		for(WeaponType weapon: weaponType)
+		{
+			//appends the ID to the item
+			weapon.setID(weaponList.size());
+			//adds it to the list.
+			weaponList.add(weapon);
+		}
 	}
 	
-	private void createWeapons() throws IOException
+	private static void createWeapons() throws IOException
 	{
-		addNewItem("GoblinEngineeredRock.json");
-		addNewItem("GoblinHammer.json");
-		addNewItem("GoblinAxe.json");
-		addNewItem("GoblinButterKnife.json");
+		addNewItem("weapons.json");
 	}
 }
