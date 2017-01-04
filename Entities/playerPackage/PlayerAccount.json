@@ -1,0 +1,78 @@
+[  
+{  
+	"accountName":"tempAccount",
+	"password":"fuckjegallesammen",
+    "email":"blib@blob.dk",
+    "creationDate":"2017-01-04T15:28:49.216Z",
+    "lastLogin":"2017-01-04T15:28:49.216Z",
+    "level":"0",
+    "levelDuration":"-1",
+    "gmNotes":"",
+    "banned":"false",
+    "characterID":[  
+    	null,
+        null,
+        null,
+        null,
+        null,
+        null
+	]
+},
+{
+  "accountName": "TestAccount",
+  "password": "workingPassword",
+  "email": "Blib@blob.dtu.dk",
+  "creationDate": "2017-01-04T20:01:57.127Z",
+  "lastLogin": "2017-01-04T20:01:57.127Z",
+  "level": "0",
+  "levelDuration": "-1",
+  "gmNotes": "",
+  "banned": "false",
+  "characterID": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ]
+},
+{
+  "accountName": "a",
+  "password": "non",
+  "email": "Balib@blob.dtu.dk",
+  "creationDate": "2017-01-04T20:01:57.194Z",
+  "lastLogin": "2017-01-04T20:01:57.194Z",
+  "level": "0",
+  "levelDuration": "-1",
+  "gmNotes": "",
+  "banned": "false",
+  "characterID": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ]
+},
+{
+  "accountName": "TestAbccount",
+  "password": "workingPassword",
+  "email": "hohn",
+  "creationDate": "2017-01-04T20:01:57.198Z",
+  "lastLogin": "2017-01-04T20:01:57.198Z",
+  "level": "0",
+  "levelDuration": "-1",
+  "gmNotes": "",
+  "banned": "false",
+  "characterID": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ]
+}
+]
