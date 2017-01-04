@@ -1,18 +1,22 @@
-package entities;
+package npc;
+
+import items.Weapon;
 
 public class Creep extends Entity
 {
 	String[] loot;
 	int dmgBonus;
+	Weapon weapon;
 	String[] modifier;
 	
-	public Creep(String name, int hp, String weapon, String[] loot, int dmgBonus,String[] modifier, int level)
+	public Creep(String name, int hp, Weapon weapon, String[] loot, int dmgBonus,String[] modifier, int level)
 	{
-		super(name, hp, weapon,level);
+		super(name, hp,level);
 		//array containing loot
-		this.loot = loot;
-		this.dmgBonus=dmgBonus;
-		this.modifier=modifier;
+		this.loot 		=	loot;
+		this.dmgBonus	=	dmgBonus;
+		this.modifier	=	modifier;
+		this.weapon		=	weapon;
 		applyModifierEffect();
 	}
 	
@@ -38,7 +42,7 @@ public class Creep extends Entity
 
 	public void printInfo()
 	{
-		System.out.println(name+" "+level+" "+ hp+ " " + weapon);
+		System.out.println(name+" "+level+" "+ hp+ " " + weapon.getName());
 		
 	}
 }
