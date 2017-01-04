@@ -2,20 +2,35 @@ package Client;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.*;
 
+import components.DocumentSizeFilter;
 
 public class Cl_Main extends JFrame implements KeyListener{
 	// Declare components for the program's window
 		public JButton btn1;
-		public JLabel lbl1, lbl2, lbl3;
+		public JLabel lbl1, lbl2, lbl3, lblRemaining;
 		public JTextArea txtArea1, txtArea2, txtArea3, txtArea4;
+		private DefaultStyledDocument doc;
+		
 	Cl_Main(){
 		// Set a BorderLayout on the main window
 		getContentPane().setLayout(new BorderLayout());
+		
+		
+		doc = new DefaultStyledDocument();
+        doc.setDocumentFilter(new DocumentSizeFilter(255));
+        doc.addDocumentListener(new DocumentListener(){
+			public void changedUpdate(DocumentEvent e) {updateCount();}
+			public void insertUpdate(DocumentEvent e) {updateCount();}
+			public void removeUpdate(DocumentEvent e) {updateCount();}
+        });
+		
 		
 		txtArea1 = new JTextArea(20,20);
 		txtArea1.setLineWrap(true);
@@ -24,26 +39,38 @@ public class Cl_Main extends JFrame implements KeyListener{
 		JScrollPane scroll = new JScrollPane(txtArea1);
 		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		
-		txtArea2 = new JTextArea(20,20);
+		txtArea2 = new JTextArea(1,1);
 		txtArea2.setLineWrap(true);
-		txtArea2.setEditable(false);
+		txtArea2.setEditable(true);
+		txtArea2.setDocument(doc);
+		
+		lblRemaining = new JLabel();
+		
+		updateCount();
 		
 		JPanel p1 = new JPanel();
         p1.setLayout(new BoxLayout(p1, BoxLayout.PAGE_AXIS));
         
         p1.add(scroll);
-        p1.add(Box.createRigidArea(new Dimension(10, 10)));
+        p1.add(Box.createRigidArea(new Dimension(20, 20)));
         p1.add(txtArea2);
+        p1.add(Box.createRigidArea(new Dimension(20, 20)));
+        p1.add(lblRemaining);
+        p1.add(Box.createRigidArea(new Dimension(20, 20)));
         
-        getContentPane().add(p1, BorderLayout.CENTER);
+        getContentPane().add(p1, BorderLayout.WEST);
 		
 		
 	}
 	
+	public void updateMainWindow(String text){
+		
+	}
 	
-	
-	
-	
+	private void updateCount()
+    {
+		lblRemaining.setText((255 -doc.getLength()) + " characters remaining");
+    }
 	public void keyPressed(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 		
