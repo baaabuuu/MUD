@@ -21,15 +21,37 @@ public class EnemyGeneration {
 		newMob.printInfo();
 	}
 	
+	private static Creep createCreep(int index){
+		//no modifiers in terms of searching
+		//needs search modifiers
+		ArrayList<CreepType> enemies = mobs.getCreepList();
+		CreepType monsterType	= enemies.get(index);
+		
+		//handles the simple stuff
+		//null pointer exception
+		
+		
+		int level = randVal(monsterType.challenge);
+		int hp = randVal(monsterType.hp);
+		int dmgBonus = randVal(monsterType.dmgBonus);
+		
+		String weapon = monsterType.weapons[rand.nextInt(monsterType.weapons.length)];
+
+		String[] modifiers = addModifiers(monsterType,level);
+		String name = addNameMods(monsterType.type,modifiers);
+		
+		//TODO ADD LOOT, LOOT TABLES ARE IMPLEMENTED ALREADY.
+		
+		String[] loot = {null};		
+		return new Creep(name,hp,weapon,loot, dmgBonus, modifiers, level);
+	}
+	
 	private static Creep createCreep(){
 		//no modifiers in terms of searching
-		//if (search.isEmpty())
-		//{
-		//	enemyList = mobs.getCreepList();
-		//}
-		System.out.println("test: "+ EnemyList.creepList.size());
-		int index			= rand.nextInt(EnemyList.creepList.size());
-		CreepType monsterType	= EnemyList.creepList.get(index);
+		//needs search modifiers
+		ArrayList<CreepType> enemies = mobs.getCreepList();
+		int index			= rand.nextInt(enemies.size());
+		CreepType monsterType	= enemies.get(index);
 		
 		//handles the simple stuff
 		//null pointer exception

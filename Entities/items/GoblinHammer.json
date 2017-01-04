@@ -1,0 +1,24 @@
+{
+	"type": 		"Goblin Hammer",
+	"slot": 		"weapon",
+	"weaponClass":	"hammer",
+	"modifiers":[
+					"Fiery",
+					"Chilly",
+					"Accurate",
+					"Stunning",
+					"Unbreakable"
+	],
+	"rarity":	 	"1",
+	"level":		"1",
+	"modChance":	"100",
+	"goldCost": 	"25",
+	"accuracyMod":	"-5",
+	"critMod":		"-5",
+	"unusedStats":	["0"],
+	"damageHigh":	["6","8"],
+	"damageLow":	["4","5"],
+	"durablityMax":	"10",
+	"description": "Somekind of goblinish hammer, it looks like a construction hammer though.",
+	"attackDescription": "whacks"
+}

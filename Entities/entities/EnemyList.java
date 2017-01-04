@@ -38,6 +38,9 @@ public class EnemyList
 		InputStreamReader reader = new InputStreamReader(fileClass.class.getResourceAsStream("/enemyTypes/"+filename), "UTF-8");
 		CreepType enemyType = gson.fromJson(reader, CreepType.class);
 		enemyType.getInfo();
+		//appends an ID number to the list, esp usefull when using different copies of same
+		//mob
+		enemyType.setID(creepList.size());
 		creepList.add(enemyType);
 		System.out.println(creepList.size());
 	}
