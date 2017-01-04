@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Server {
+public class Ser_Main {
 	public static void main(String[] args) throws IOException{
 		//Initialize initial server objects
 		ServerSocket srv = null;
@@ -24,7 +24,7 @@ public class Server {
 				System.out.println("Error accepting from socket");
 				System.exit(0);
 			}
-			Game g = new Game(s, n);
+			//Game g = new Game(s, n);
 			n++;
 		}
 	}
