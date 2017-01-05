@@ -75,29 +75,29 @@ public class WeaponGeneration {
 
 		//weaps is short form of weapons
 		ArrayList<WeaponType> weaps = weapons.getWeaponList();
-		WeaponType weaponType		= weaps.get(index);
+		WeaponType armorType		= weaps.get(index);
 		
-		int level 		= Integer.parseInt(weaponType.level);
-		int durability	= Integer.parseInt(weaponType.durablityMax);
-		int accuracy	= Integer.parseInt(weaponType.accuracyMod);
-		int crit		= Integer.parseInt(weaponType.critMod);
-		int rarity 		= Integer.parseInt(weaponType.rarity);
-		int goldCost	= Integer.parseInt(weaponType.goldCost);
+		int level 		= Integer.parseInt(armorType.level);
+		int durability	= Integer.parseInt(armorType.durablityMax);
+		int accuracy	= Integer.parseInt(armorType.accuracyMod);
+		int crit		= Integer.parseInt(armorType.critMod);
+		int rarity 		= Integer.parseInt(armorType.rarity);
+		int goldCost	= Integer.parseInt(armorType.goldCost);
 		
 		//adds the unused stats to an array
-		int[] stats = new int[weaponType.unusedStats.length];
+		int[] stats = new int[armorType.unusedStats.length];
 		for (int i=0; i<stats.length;i++)
 		{
-			stats[i]=Integer.parseInt(weaponType.unusedStats[i]);
+			stats[i]=Integer.parseInt(armorType.unusedStats[i]);
 		}		
-		int[] damage	= {randVal(weaponType.damageLow),randVal(weaponType.damageHigh)};
+		int[] damage	= {randVal(armorType.damageLow),randVal(armorType.damageHigh)};
 
-		String mod 		= addModifiers(weaponType);
-		String name		= mod + weaponType.type;
-		String slot		= weaponType.slot;
-		String desc		= weaponType.description;
-		String atkdesc	= weaponType.attackDescription;
-		String wepClass	= weaponType.weaponClass;
+		String mod 		= addModifiers(armorType);
+		String name		= mod + armorType.type;
+		String slot		= armorType.slot;
+		String desc		= armorType.description;
+		String atkdesc	= armorType.attackDescription;
+		String wepClass	= armorType.weaponClass;
 		
 		return new Weapon(name, slot, rarity, level, goldCost, desc, mod,accuracy, crit, damage,atkdesc, wepClass, durability,stats);
 	}
@@ -112,28 +112,28 @@ public class WeaponGeneration {
 		//weaps is short form of weapons
 		ArrayList<WeaponType> weaps = weapons.getWeaponList();
 		int index					= rand.nextInt(weaps.size());
-		WeaponType weaponType		= weaps.get(index);
+		WeaponType armorType		= weaps.get(index);
 		
-		int level 		= Integer.parseInt(weaponType.level);
-		int durability	= Integer.parseInt(weaponType.durablityMax);
-		int accuracy	= Integer.parseInt(weaponType.accuracyMod);
-		int crit		= Integer.parseInt(weaponType.critMod);
-		int rarity 		= Integer.parseInt(weaponType.rarity);
-		int goldCost	= Integer.parseInt(weaponType.goldCost);
+		int level 		= Integer.parseInt(armorType.level);
+		int durability	= Integer.parseInt(armorType.durablityMax);
+		int accuracy	= Integer.parseInt(armorType.accuracyMod);
+		int crit		= Integer.parseInt(armorType.critMod);
+		int rarity 		= Integer.parseInt(armorType.rarity);
+		int goldCost	= Integer.parseInt(armorType.goldCost);
 		//adds the unused stats to an array
-		int[] stats = new int[weaponType.unusedStats.length];
+		int[] stats = new int[armorType.unusedStats.length];
 		for (int i=0; i<stats.length;i++)
 		{
-			stats[i]=Integer.parseInt(weaponType.unusedStats[i]);
+			stats[i]=Integer.parseInt(armorType.unusedStats[i]);
 		}	
-		int[] damage	= {randVal(weaponType.damageLow),randVal(weaponType.damageHigh)};
+		int[] damage	= {randVal(armorType.damageLow),randVal(armorType.damageHigh)};
 
-		String mod 		= addModifiers(weaponType);
-		String name		= mod + weaponType.type;
-		String slot		= weaponType.slot;
-		String desc		= weaponType.description;
-		String atkdesc	= weaponType.attackDescription;
-		String wepClass	= weaponType.weaponClass;
+		String mod 		= addModifiers(armorType);
+		String name		= mod + armorType.type;
+		String slot		= armorType.slot;
+		String desc		= armorType.description;
+		String atkdesc	= armorType.attackDescription;
+		String wepClass	= armorType.weaponClass;
 		
 		return new Weapon(name, slot, rarity, level, goldCost, desc, mod,accuracy, crit, damage,atkdesc, wepClass, durability,stats);
 	}
@@ -150,18 +150,18 @@ public class WeaponGeneration {
 	 * @param level, level of monster used to determin how many mods they can get = level/2+1 (note, 0 is considered a 
 	 * @return a string array consisting of modifiers
 	 */
-	public static String addModifiers(WeaponType weaponType)
+	public static String addModifiers(WeaponType armorType)
 	{
-		if (weaponType.modifiers.length>0)
+		if (armorType.modifiers.length>0)
 		{
 			ArrayList<String> modifierList = new ArrayList<String>();
 			
-			for (String mod : weaponType.modifiers)
+			for (String mod : armorType.modifiers)
 			{
 				modifierList.add(mod);
 			}
 			int randNum = rand.nextInt(101);
-			int chance	= Integer.parseInt(weaponType.modChance);
+			int chance	= Integer.parseInt(armorType.modChance);
 			System.out.println("rand Num: " + randNum + " chance: " + chance);
 			if (randNum<=chance)
 			{

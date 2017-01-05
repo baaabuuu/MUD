@@ -1,5 +1,6 @@
 package npc;
 
+import items.Armor;
 import items.Weapon;
 
 public class Creep extends Entity
@@ -7,9 +8,10 @@ public class Creep extends Entity
 	String[] loot;
 	int dmgBonus;
 	Weapon weapon;
+	Armor	chest;
 	String[] modifier;
 	
-	public Creep(String name, int hp, Weapon weapon, String[] loot, int dmgBonus,String[] modifier, int level)
+	public Creep(String name, int hp, Weapon weapon, String[] loot, int dmgBonus,String[] modifier, int level, Armor chest)
 	{
 		super(name, hp,level);
 		//array containing loot
@@ -17,6 +19,7 @@ public class Creep extends Entity
 		this.dmgBonus	=	dmgBonus;
 		this.modifier	=	modifier;
 		this.weapon		=	weapon;
+		this.chest		=	chest;
 		applyModifierEffect();
 	}
 	

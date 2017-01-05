@@ -1,29 +1,26 @@
 package items;
 
-public class WeaponType
+public class ArmorType
 {
 	String 		type;
 	String		slot;
-	String		weaponClass;
+	String		armorClass;
 	String[]	modifiers;
 	String		rarity;
 	String		level;
 	String		modChance;
 	String		goldCost;
-	String 		critMod;
-	String		accuracyMod;
-	String[]	damageHigh;
-	String[]	damageLow;
+	String[]	evasionMod;
+	String[]	reduction;
 	String		description;
-	String		attackDescription;
 	String		durablityMax;
 	String[]	unusedStats;
 	int			id;
 	
-	public WeaponType(){}
+	public ArmorType(){}
 	
 	public void getInfo() {
-		System.out.println("ArmorType: "+ type + " modChance: " + modChance);	
+		System.out.println("ArmorType: "+ type + " Description: " + description);	
 	};
 	
 	public void setID(int val){

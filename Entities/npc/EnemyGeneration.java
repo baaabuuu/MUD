@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import items.Armor;
+import items.ArmorGeneration;
 import items.Weapon;
 import items.WeaponGeneration;
 
@@ -39,7 +41,9 @@ public class EnemyGeneration {
 		int hp = randVal(monsterType.hp);
 		int dmgBonus = randVal(monsterType.dmgBonus);
 		String weapon = monsterType.weapons[rand.nextInt(monsterType.weapons.length)];
+		String armor = monsterType.armor[rand.nextInt(monsterType.weapons.length)];
 		Weapon wep	=	WeaponGeneration.createWeapon(weapon);
+		Armor chest	=	ArmorGeneration.createArmor(armor);
 		
 
 		String[] modifiers = addModifiers(monsterType,level);
@@ -48,7 +52,7 @@ public class EnemyGeneration {
 		//TODO ADD LOOT, LOOT TABLES ARE IMPLEMENTED ALREADY.
 		
 		String[] loot = {null};		
-		return new Creep(name,hp,wep,loot, dmgBonus, modifiers, level);
+		return new Creep(name,hp,wep,loot, dmgBonus, modifiers, level, chest);
 	}
 	
 	private static Creep createCreep() throws IOException{
@@ -66,7 +70,9 @@ public class EnemyGeneration {
 		int hp = randVal(monsterType.hp);
 		int dmgBonus = randVal(monsterType.dmgBonus);
 		String weapon = monsterType.weapons[rand.nextInt(monsterType.weapons.length)];
-		Weapon wep	=	WeaponGeneration.createWeapon(weapon);;
+		String armor = monsterType.armor[rand.nextInt(monsterType.weapons.length)];
+		Weapon wep	=	WeaponGeneration.createWeapon(weapon);
+		Armor chest	=	ArmorGeneration.createArmor(armor);
 
 		String[] modifiers = addModifiers(monsterType,level);
 		String name = addNameMods(monsterType.type,modifiers);
@@ -74,7 +80,7 @@ public class EnemyGeneration {
 		//TODO ADD LOOT, LOOT TABLES ARE IMPLEMENTED ALREADY.
 		
 		String[] loot = {null};		
-		return new Creep(name,hp,wep,loot, dmgBonus, modifiers, level);
+		return new Creep(name,hp,wep,loot, dmgBonus, modifiers, level,chest);
 	}
 	
 

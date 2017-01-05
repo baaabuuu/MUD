@@ -16,7 +16,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.stream.MalformedJsonException;
 
 
-
 public class Accounts {
 	private static ArrayList<PlayerAccount> createdAccounts = new ArrayList<PlayerAccount>();
 	private static ArrayList<PlayerAccount> activeAccounts = new ArrayList<PlayerAccount>();
