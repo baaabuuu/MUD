@@ -1,126 +1,170 @@
 package Client;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.event.*;
+import java.awt.EventQueue;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.*;
+import javax.swing.JTextArea;
+import javax.swing.text.DefaultStyledDocument;
+
+import javax.swing.ScrollPaneConstants;
+import java.awt.Font;
 
 import components.DocumentSizeFilter;
+import java.awt.Label;
 
 public class Cl_Main extends JFrame implements KeyListener{
-	// Declare components for the program's window
-		public JButton btn1;
-		public JLabel lblMainTitle, lblPlayerHealth, lbl3, lblRemainingWords;
-		public JTextArea eventArea, actionArea, chatRecieveArea, chatTypingArea;
-		private DefaultStyledDocument doc;
+
+	private JPanel contentPane;
+	public JButton actionSend, chatSend;
+	public JLabel lblMainTitle, lblPlayerHealth, lblChat, lblTemp1, lblTemp2, lblRemainingWordsChat, lblRemainingWordsAction;
+	public JTextArea eventArea, actionArea, chatRecieveArea, chatTypingArea;
+	private DefaultStyledDocument docAction, docChat;
+	private Label label_1;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Cl_Main frame = new Cl_Main();
+					frame.setVisible(true);
+					frame.setSize(1280,800);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	public Cl_Main() {
 		
-	Cl_Main(){
-		// Set a BorderLayout on the main window
-		getContentPane().setLayout(new BorderLayout());
+		setResizable(false);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 1280, 800);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
 		
-		
-		doc = new DefaultStyledDocument();
-        doc.setDocumentFilter(new DocumentSizeFilter(255));
-        doc.addDocumentListener(new DocumentListener(){
-			public void changedUpdate(DocumentEvent e) {updateCount();}
-			public void insertUpdate(DocumentEvent e) {updateCount();}
-			public void removeUpdate(DocumentEvent e) {updateCount();}
+		docAction = new DefaultStyledDocument();
+		docAction.setDocumentFilter(new DocumentSizeFilter(255));
+		docAction.addDocumentListener(new DocumentListener(){
+			public void changedUpdate(DocumentEvent e) {updateCount(1);}
+			public void insertUpdate(DocumentEvent e) {updateCount(1);}
+			public void removeUpdate(DocumentEvent e) {updateCount(1);}
+        });
+		docChat = new DefaultStyledDocument();
+		docChat.setDocumentFilter(new DocumentSizeFilter(255));
+		docChat.addDocumentListener(new DocumentListener(){
+			public void changedUpdate(DocumentEvent e) {updateCount(2);}
+			public void insertUpdate(DocumentEvent e) {updateCount(2);}
+			public void removeUpdate(DocumentEvent e) {updateCount(2);}
         });
 		
-		
-        eventArea = new JTextArea(20,20);
-        eventArea.setLineWrap(true);
-        eventArea.setEditable(false);
+		eventArea = new JTextArea();
+		eventArea.setToolTipText("Read me!");
+		eventArea.setLineWrap(true);
+		eventArea.setEditable(false);
 		
 		JScrollPane eventAreaScroll = new JScrollPane(eventArea);
+		eventAreaScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		eventAreaScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		eventAreaScroll.setBounds(10, 50, 600, 440);
+		contentPane.add(eventAreaScroll);
 		
-		actionArea = new JTextArea(1,1);
+		actionArea = new JTextArea();
 		actionArea.setLineWrap(true);
-		actionArea.setEditable(true);
-		actionArea.setDocument(doc);
-		
-		lblRemainingWords = new JLabel();
-		
-		updateCount();
-		
-		JPanel p1 = new JPanel();
-		GroupLayout layout = new GroupLayout(p1);
-        p1.setLayout(layout);
-        
-        layout.setAutoCreateGaps(true);
-        layout.setAutoCreateContainerGaps(true);
-        
-        layout.setHorizontalGroup(
-        		   layout.createSequentialGroup()
-        		      .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-        		           .addComponent(lblMainTitle)
-        		           .addComponent(eventAreaScroll)
-        		           .addComponent(actionArea))
-        		      .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-        		           .addComponent(lblPlayerHealth)
-        		           .addComponent(lblPlayerHealth)
-        		           .addComponent(lblRemainingWords))
-        		      .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-           		           .addComponent(chatRecieveArea)
-           		           .addComponent(chatTypingArea))
-        		);
-        		layout.setVerticalGroup(
-        		   layout.createSequentialGroup()
-        		      .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-        		           .addComponent(lblPlayerHealth)
-        		           .addComponent(lblPlayerHealth)
-        		           .addComponent(lblPlayerHealth))
-        		      .addComponent(lblPlayerHealth)
-        		);
-        
-        
-        p1.add(lblPlayerHealth);
-        p1.add(Box.createRigidArea(new Dimension(20, 20)));
-        p1.add(actionArea);
-        p1.add(Box.createRigidArea(new Dimension(20, 20)));
-        p1.add(lblPlayerHealth);
-        p1.add(Box.createRigidArea(new Dimension(20, 20)));
-        
-        getContentPane().add(p1, BorderLayout.WEST);
+		actionArea.setWrapStyleWord(true);
+		actionArea.setToolTipText("Type me!");
+		actionArea.setBounds(10, 500, 500, 75);
+		actionArea.setDocument(docAction);
+		contentPane.add(actionArea);
 		
 		
+		chatRecieveArea = new JTextArea();
+		chatRecieveArea.setToolTipText("Read me!");
+		chatRecieveArea.setLineWrap(true);
+		chatRecieveArea.setEditable(false);
+		
+		JScrollPane chatRecieveAreaScroll = new JScrollPane(chatRecieveArea);
+		chatRecieveAreaScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		chatRecieveAreaScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		chatRecieveAreaScroll.setBounds(800, 51, 465, 440);
+		contentPane.add(chatRecieveAreaScroll);
+		
+		chatTypingArea = new JTextArea();
+		chatTypingArea.setLineWrap(true);
+		chatTypingArea.setToolTipText("Type me!");
+		chatTypingArea.setBounds(800, 500, 365, 75);
+		chatTypingArea.setDocument(docChat);
+		contentPane.add(chatTypingArea);
+		
+		
+		actionSend = new JButton("Send");
+		actionSend.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		actionSend.setBounds(510, 500, 100, 75);
+		contentPane.add(actionSend);
+		
+		chatSend = new JButton("Send");
+		chatSend.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		chatSend.setBounds(1164, 500, 100, 75);
+		contentPane.add(chatSend);
+		
+		lblRemainingWordsAction = new JLabel("Action");
+		lblRemainingWordsAction.setBounds(10, 585, 200, 14);
+		contentPane.add(lblRemainingWordsAction);
+		
+		lblRemainingWordsChat = new JLabel("Chat");
+		lblRemainingWordsChat.setBounds(800, 585, 200, 14);
+		contentPane.add(lblRemainingWordsChat);
+		
+		lblPlayerHealth = new JLabel("lblPlayerHealth");
+		lblPlayerHealth.setBounds(615, 56, 175, 14);
+		contentPane.add(lblPlayerHealth);
+		
+		JLabel lblNewLabel_3 = new JLabel("New label");
+		lblNewLabel_3.setBounds(615, 81, 175, 14);
+		contentPane.add(lblNewLabel_3);
+		
+		Label label = new Label("Game Area");
+		label.setBounds(10, 22, 200, 22);
+		contentPane.add(label);
+		
+		label_1 = new Label("Chat Area");
+		label_1.setBounds(800, 22, 200, 22);
+		contentPane.add(label_1);
+		
+		updateCount(1);
+		updateCount(2);
 	}
-	public void updateMainWindow(String text){
+	private void updateCount(int i) {
+		if(i == 1){
+			lblRemainingWordsAction.setText((255 -docAction.getLength()) + " characters remaining");
+		}else if(i == 2){
+			lblRemainingWordsChat.setText((255 -docChat.getLength()) + " characters remaining");
+		}
 		
-	}
-	private void updateCount()
-    {
-		lblRemainingWords.setText((255 -doc.getLength()) + " characters remaining");
     }
-	public void keyPressed(KeyEvent arg0) {
+	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
-	public void keyReleased(KeyEvent arg0) {
+	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
-	public void keyTyped(KeyEvent arg0) {
+	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
-	public static void main(String[] args) {
-		Cl_Main window = new Cl_Main();
-        
-		window.setTitle("TempName"); // Set title on window
-		window.setSize(640,480);	// Set size
-		window.setResizable(false);    // Allow the window to be resized
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.setVisible(true);      // Make the window visible
-    }
-	
-	
-	
-	
-	
 }
