@@ -20,6 +20,8 @@ import java.awt.Font;
 
 import components.DocumentSizeFilter;
 import java.awt.Label;
+import java.awt.Color;
+import java.awt.Toolkit;
 
 public class Cl_Main extends JFrame implements KeyListener{
 
@@ -47,11 +49,14 @@ public class Cl_Main extends JFrame implements KeyListener{
 		});
 	}
 	public Cl_Main() {
+		setTitle("The Game!");
+		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\Christian\\git\\MUD\\Client\\Client\\IconImage.png"));
 		
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1280, 800);
 		contentPane = new JPanel();
+		contentPane.setBackground(Color.LIGHT_GRAY);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
