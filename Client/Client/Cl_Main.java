@@ -14,8 +14,8 @@ import components.DocumentSizeFilter;
 public class Cl_Main extends JFrame implements KeyListener{
 	// Declare components for the program's window
 		public JButton btn1;
-		public JLabel lbl1, lbl2, lbl3, lblRemaining;
-		public JTextArea txtArea1, txtArea2, txtArea3, txtArea4;
+		public JLabel lblMainTitle, lblPlayerHealth, lbl3, lblRemainingWords;
+		public JTextArea eventArea, actionArea, chatRecieveArea, chatTypingArea;
 		private DefaultStyledDocument doc;
 		
 	Cl_Main(){
@@ -32,44 +32,70 @@ public class Cl_Main extends JFrame implements KeyListener{
         });
 		
 		
-		txtArea1 = new JTextArea(20,20);
-		txtArea1.setLineWrap(true);
-		txtArea1.setEditable(false);
+        eventArea = new JTextArea(20,20);
+        eventArea.setLineWrap(true);
+        eventArea.setEditable(false);
 		
-		JScrollPane scroll = new JScrollPane(txtArea1);
-		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		JScrollPane eventAreaScroll = new JScrollPane(eventArea);
+		eventAreaScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		
-		txtArea2 = new JTextArea(1,1);
-		txtArea2.setLineWrap(true);
-		txtArea2.setEditable(true);
-		txtArea2.setDocument(doc);
+		actionArea = new JTextArea(1,1);
+		actionArea.setLineWrap(true);
+		actionArea.setEditable(true);
+		actionArea.setDocument(doc);
 		
-		lblRemaining = new JLabel();
+		lblRemainingWords = new JLabel();
 		
 		updateCount();
 		
 		JPanel p1 = new JPanel();
-        p1.setLayout(new BoxLayout(p1, BoxLayout.PAGE_AXIS));
+		GroupLayout layout = new GroupLayout(p1);
+        p1.setLayout(layout);
         
-        p1.add(scroll);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
+        
+        layout.setHorizontalGroup(
+        		   layout.createSequentialGroup()
+        		      .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        		           .addComponent(lblMainTitle)
+        		           .addComponent(eventAreaScroll)
+        		           .addComponent(actionArea))
+        		      .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        		           .addComponent(lblPlayerHealth)
+        		           .addComponent(lblPlayerHealth)
+        		           .addComponent(lblRemainingWords))
+        		      .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+           		           .addComponent(chatRecieveArea)
+           		           .addComponent(chatTypingArea))
+        		);
+        		layout.setVerticalGroup(
+        		   layout.createSequentialGroup()
+        		      .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+        		           .addComponent(lblPlayerHealth)
+        		           .addComponent(lblPlayerHealth)
+        		           .addComponent(lblPlayerHealth))
+        		      .addComponent(lblPlayerHealth)
+        		);
+        
+        
+        p1.add(lblPlayerHealth);
         p1.add(Box.createRigidArea(new Dimension(20, 20)));
-        p1.add(txtArea2);
+        p1.add(actionArea);
         p1.add(Box.createRigidArea(new Dimension(20, 20)));
-        p1.add(lblRemaining);
+        p1.add(lblPlayerHealth);
         p1.add(Box.createRigidArea(new Dimension(20, 20)));
         
         getContentPane().add(p1, BorderLayout.WEST);
 		
 		
 	}
-	
 	public void updateMainWindow(String text){
 		
 	}
-	
 	private void updateCount()
     {
-		lblRemaining.setText((255 -doc.getLength()) + " characters remaining");
+		lblRemainingWords.setText((255 -doc.getLength()) + " characters remaining");
     }
 	public void keyPressed(KeyEvent arg0) {
 		// TODO Auto-generated method stub
