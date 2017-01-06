@@ -16,25 +16,40 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.stream.MalformedJsonException;
 
 
-public class Accounts {
-	private static ArrayList<PlayerAccount> createdAccounts = new ArrayList<PlayerAccount>();
-	private static ArrayList<PlayerAccount> activeAccounts = new ArrayList<PlayerAccount>();
+public class CharacterSaveLoad {
+	private static ArrayList<PlayerAccount> createdCharacters = new ArrayList<PlayerAccount>();
+	private static ArrayList<PlayerAccount> activeCharacters = new ArrayList<PlayerAccount>();
 	
 	
-	public Accounts() throws UnsupportedEncodingException{}
+	public CharacterSaveLoad() throws UnsupportedEncodingException{}
 
+	
+	public void saveCharacter(Character character)
+	{
+		CharacterType saveObject = new CharacterType();
+		saveObject.name=character.getName();
+		saveObject.charClass=character.getCharClass();
+		for (int stat: character.getStats)
+		
+		
+		/// THIS VALUE SHOULD CHANGE DEPENDING ON THE PLAYER ACCESSING IT!
+		saveObject.playerID	=	"1";
+		
+	}
+	
+	
 	
 	public static void main(String[] args) throws UnsupportedEncodingException, MalformedJsonException
 	{
 		
 		Gson gson = new GsonBuilder().create();
-		InputStreamReader reader = new InputStreamReader(Accounts.class.getResourceAsStream("/playerPackage/PlayerAccount.json"), "UTF-8");
+		InputStreamReader reader = new InputStreamReader(CharacterSaveLoad.class.getResourceAsStream("/playerPackage/CharacterSaveLoad.json"), "UTF-8");
 		PlayerAccount[] accounts = gson.fromJson(reader, PlayerAccount[].class);
 		
 		for(PlayerAccount account: accounts)
 		{
 			//adds it to the list.
-			createdAccounts.add(account);
+			createdCharacters.add(account);
 		}
 		
 		
@@ -48,14 +63,14 @@ public class Accounts {
 	 * @param acc - a player account
 	 */
 	public void addToActive(PlayerAccount acc){
-		activeAccounts.add(acc);
+		activeCharacters.add(acc);
 	}
 	/**
 	 * removes a player from the active player list
 	 * @param acc - a player account
 	 */
 	public void removeToActive(PlayerAccount acc){
-		activeAccounts.remove(acc);
+		activeCharacters.remove(acc);
 	}
 	
 	/**
@@ -63,7 +78,7 @@ public class Accounts {
 	 * @param acc - a player account
 	 */
 	public static void addToCreated(PlayerAccount acc){
-		createdAccounts.add(acc);
+		createdCharacters.add(acc);
 	}
 
 	/**
@@ -82,7 +97,7 @@ public class Accounts {
 			if (checkUser(name))
 			{
 				PlayerAccount	newPlayer 	= 	new PlayerAccount(name,pass,email);
-				newPlayer.setID(createdAccounts.size());
+				newPlayer.setID(createdCharacters.size());
 				Gson gson = new GsonBuilder().setPrettyPrinting().create();
 				// 1. Java object to JSON, and save into a file
 				
@@ -146,9 +161,9 @@ public class Accounts {
 	private static boolean checkUser(String name) {
 		// TODO Auto-generated method stub
 		name	=	name.toUpperCase();
-		for (int i=0;i<createdAccounts.size();i++)
+		for (int i=0;i<createdCharacters.size();i++)
 		{
-			if (createdAccounts.get(i).getName().toUpperCase().equals(name))
+			if (createdCharacters.get(i).getName().toUpperCase().equals(name))
 				return false;
 		}
 		return true;
@@ -156,9 +171,9 @@ public class Accounts {
 
 	private static boolean checkEmail(String email) {
 		email	=	email.toUpperCase();
-		for (int i = 0; i < createdAccounts.size(); i++)
+		for (int i = 0; i < createdCharacters.size(); i++)
 		{
-			if (createdAccounts.get(i).getEmail().toUpperCase().equals(email))
+			if (createdCharacters.get(i).getEmail().toUpperCase().equals(email))
 				return false;
 		}
 		return true;

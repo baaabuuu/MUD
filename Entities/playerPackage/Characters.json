@@ -1,0 +1,14 @@
+[
+{
+	"name":"testCharacter",
+	"charClass":"Warrior",
+    "playerID":"1",
+    "stats":	["100","100","100","100"],
+	"exp":		"0",
+    "level":	"1",
+    "equipment": [],
+    "inventory": [],
+    "spells": [],
+    "feats": []
+}
+]

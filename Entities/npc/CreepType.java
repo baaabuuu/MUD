@@ -13,7 +13,9 @@ public class CreepType
 	String		modChance;
 	String		speed;
 	String		dexterity;
-	String[]		armor;
+	String[]	armor;
+	String[]	reduction;
+	String[]	spellReduction;
 	int			id;
 	public CreepType(){}
 	public void getInfo() {

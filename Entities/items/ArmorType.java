@@ -12,6 +12,7 @@ public class ArmorType
 	String		goldCost;
 	String[]	evasionMod;
 	String[]	reduction;
+	String[]	spellReduction;
 	String		description;
 	String		durablityMax;
 	String[]	unusedStats;

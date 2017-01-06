@@ -21,14 +21,16 @@ public class EnemyGeneration {
 		newMob.printInfo();
 	}
 	
-	public EnemyGeneration() throws IOException{
+	public EnemyGeneration() throws IOException
+	{
 		mobs = new EnemyList();
 		wepGen = new WeaponGeneration();
 		Creep newMob = createCreep();
 		newMob.printInfo();
 	}
 	
-	public static Creep createCreep(int index) throws IOException{
+	public static Creep createCreep(int index) throws IOException
+	{
 		//no modifiers in terms of searching
 		//needs search modifiers
 		ArrayList<CreepType> enemies = mobs.getCreepList();
@@ -37,9 +39,13 @@ public class EnemyGeneration {
 		//handles the simple stuff
 		//null pointer exception
 		
-		int level = randVal(monsterType.challenge);
-		int hp = randVal(monsterType.hp);
-		int dmgBonus = randVal(monsterType.dmgBonus);
+		int level 		= randVal(monsterType.challenge);
+		int hp			 = randVal(monsterType.hp);
+		int dmgBonus	 = randVal(monsterType.dmgBonus);
+		int reduc		 = randVal(monsterType.reduction);
+		int spellReduc	 = randVal(monsterType.spellReduction);
+		
+		
 		String weapon = monsterType.weapons[rand.nextInt(monsterType.weapons.length)];
 		String armor = monsterType.armor[rand.nextInt(monsterType.weapons.length)];
 		Weapon wep	=	WeaponGeneration.createWeapon(weapon);
@@ -52,10 +58,11 @@ public class EnemyGeneration {
 		//TODO ADD LOOT, LOOT TABLES ARE IMPLEMENTED ALREADY.
 		
 		String[] loot = {null};		
-		return new Creep(name,hp,wep,loot, dmgBonus, modifiers, level, chest);
+		return new Creep(name,hp,wep,loot, dmgBonus, modifiers, level, chest,reduc,spellReduc);
 	}
 	
-	private static Creep createCreep() throws IOException{
+	private static Creep createCreep() throws IOException
+	{
 		//no modifiers in terms of searching
 		//needs search modifiers
 		ArrayList<CreepType> enemies = mobs.getCreepList();
@@ -69,6 +76,9 @@ public class EnemyGeneration {
 		int level = randVal(monsterType.challenge);
 		int hp = randVal(monsterType.hp);
 		int dmgBonus = randVal(monsterType.dmgBonus);
+		int reduc		 = randVal(monsterType.reduction);
+		int spellReduc	 = randVal(monsterType.spellReduction);
+		
 		String weapon = monsterType.weapons[rand.nextInt(monsterType.weapons.length)];
 		String armor = monsterType.armor[rand.nextInt(monsterType.weapons.length)];
 		Weapon wep	=	WeaponGeneration.createWeapon(weapon);
@@ -80,7 +90,7 @@ public class EnemyGeneration {
 		//TODO ADD LOOT, LOOT TABLES ARE IMPLEMENTED ALREADY.
 		
 		String[] loot = {null};		
-		return new Creep(name,hp,wep,loot, dmgBonus, modifiers, level,chest);
+		return new Creep(name,hp,wep,loot, dmgBonus, modifiers, level,chest,reduc,spellReduc);
 	}
 	
 

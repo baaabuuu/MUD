@@ -13,6 +13,7 @@
 	"goldCost": 	"15",
 	"evasionMod":	["10","15"],
 	"reduction":	["2","3"],
+	"spellReduction":	["1","2"],
 	"unusedStats":	["0"],
 	"durablityMax":	"10",
 	"description": "A regular piece of leather armor."
@@ -49,6 +50,7 @@
 	"goldCost": 	"15",
 	"evasionMod":	["-5","-5"],
 	"reduction":	["-1","0"],
+	"spellReduction":	["0","2"],
 	"unusedStats":	["0"],
 	"durablityMax":	"10",
 	"description": "A piece of goblin flesh used as armor."
@@ -67,6 +69,7 @@
 	"goldCost": 	"15",
 	"evasionMod":	["0","5"],
 	"reduction":	["1","0"],
+	"spellReduction":	["3","5"],
 	"unusedStats":	["0"],
 	"durablityMax":	"10",
 	"description": "A regular old robe."
@@ -85,6 +88,7 @@
 	"goldCost": 	"15",
 	"evasionMod":	["-5","0"],
 	"reduction":	["4","5"],
+	"spellReduction":	["2","4"],
 	"unusedStats":	["0"],
 	"durablityMax":	"10",
 	"description": "A regular chestpiece made out of iron."

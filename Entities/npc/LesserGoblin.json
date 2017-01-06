@@ -15,6 +15,8 @@
 		"Human Hide",
 		"Leather Chest"
 	],
+	"reduction":	["-1","1"],
+	"spellReduction":	["-3","0"],
 	"modifiers":[
 		"Enraged",
 		"Weakened"
@@ -42,6 +44,8 @@
 		"Human Hide",
 		"Shitty Leather Armor"
 	],
+	"reduction":	["-1","1"],
+	"spellReduction":	["-3","0"],
 	"modifiers":[
 		"Enraged",
 		"Weakened"

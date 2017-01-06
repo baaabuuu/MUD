@@ -49,6 +49,7 @@ public class ArmorGeneration {
 		int durability	= Integer.parseInt(armorType.durablityMax);
 		int evasionMod	= randVal(armorType.evasionMod);
 		int reduction	= randVal(armorType.reduction);
+		int spellReduc	= randVal(armorType.spellReduction);
 		int rarity 		= Integer.parseInt(armorType.rarity);
 		int goldCost	= Integer.parseInt(armorType.goldCost);
 		
@@ -64,7 +65,7 @@ public class ArmorGeneration {
 		String desc		= armorType.description;
 		String armClass	= armorType.armorClass;
 		
-		return new Armor(name, slot, rarity, level, goldCost, desc,durability,mod,evasionMod,reduction,armClass,stats);
+		return new Armor(name, slot, rarity, level, goldCost, desc,durability,mod,evasionMod,reduction,armClass,stats,spellReduc);
 	}
 	
 	public static Armor createArmor(int index){
@@ -79,6 +80,7 @@ public class ArmorGeneration {
 		int reduction	= randVal(armorType.reduction);
 		int rarity 		= Integer.parseInt(armorType.rarity);
 		int goldCost	= Integer.parseInt(armorType.goldCost);
+		int spellReduc	= randVal(armorType.spellReduction);
 		
 		//adds the unused stats to an array
 		int[] stats = new int[armorType.unusedStats.length];
@@ -92,7 +94,7 @@ public class ArmorGeneration {
 		String desc		= armorType.description;
 		String armClass	= armorType.armorClass;
 		
-		return new Armor(name, slot, rarity, level, goldCost, desc,durability,mod,evasionMod,reduction,armClass,stats);
+		return new Armor(name, slot, rarity, level, goldCost, desc,durability,mod,evasionMod,reduction,armClass,stats,spellReduc);
 	}
 	
 	
@@ -107,8 +109,10 @@ public class ArmorGeneration {
 		int durability	= Integer.parseInt(armorType.durablityMax);
 		int evasionMod	= randVal(armorType.evasionMod);
 		int reduction	= randVal(armorType.reduction);
+		int spellReduc	= randVal(armorType.spellReduction);
 		int rarity 		= Integer.parseInt(armorType.rarity);
 		int goldCost	= Integer.parseInt(armorType.goldCost);
+		
 		
 		//adds the unused stats to an array
 		int[] stats = new int[armorType.unusedStats.length];
@@ -122,7 +126,7 @@ public class ArmorGeneration {
 		String desc		= armorType.description;
 		String armClass	= armorType.armorClass;
 		
-		return new Armor(name, slot, rarity, level, goldCost, desc,durability,mod,evasionMod,reduction,armClass,stats);
+		return new Armor(name, slot, rarity, level, goldCost, desc,durability,mod,evasionMod,reduction,armClass,stats,spellReduc);
 	}
 	
 

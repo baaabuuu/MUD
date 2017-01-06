@@ -2,32 +2,73 @@ package playerPackage;
 
 import java.util.ArrayList;
 
+import items.Item;
 import npc.Entity;
 
 
 
 public class Character extends Entity{
-	private int playerID;
-	private ArrayList<Integer> stats;
-	private int exp;
+	protected int playerID;
+	protected ArrayList<Integer> stats;
+	protected int exp;
+	protected String	charClass;
+	protected ArrayList<Item> inventory;
+	protected ArrayList<Item> equipment;
 	
-	//TODO add spells, feats and classes
+	
+	//TODO add spells, feats
 	//private ArrayList<Abilities> spells;
 	//private ArrayList<Feats> feats;
-	//private CharacterCla charClass; 
 	
-	public Character(String name, int hp, int level, int playerID)
+	public Character(String name, int hp, int level, int playerID,String charClass)
 	{
 		super(name, hp, level);
 		this.playerID = playerID;
 		stats = new ArrayList<Integer>();
 		//sets all base stats to 5.
+		inventory 	=	new ArrayList<Item>();
+		equipment	=	new ArrayList<Item>();
+		this.charClass	=	charClass;
 		addStats(0,5);
 		addStats(1,5);
 		addStats(2,5);
 		addStats(3,5);
 		exp=0;
-		// TODO CHARACTER CLASSES
+	}
+	
+	
+	public String getCharClass()
+	{
+		return charClass;
+	}
+	
+	public void equipItem(Item item)
+	{
+		equipment.add(item);
+	}
+	
+	public void toInventory(Item item)
+	{
+		inventory.add(item);
+	}
+	
+	public void unequipItem(int slotID)
+	{
+		equipment.remove(slotID);
+	}
+	
+	public void removeFromInventory(int itemID)
+	{
+		inventory.remove(itemID);
+	}
+	
+	public ArrayList<Item>getInventory()
+	{
+		return inventory;
+	}
+	public ArrayList<Item>getEquipment()
+	{
+		return equipment;
 	}
 	
 	
@@ -64,9 +105,14 @@ public class Character extends Entity{
 		return playerID;
 	}
 	
-	public int getStats(int statID)
+	public int getStat(int statID)
 	{
 		return stats.get(statID);
+	}
+	
+	public ArrayList<Integer> getStats()
+	{
+		return stats;
 	}
 	
 	/**

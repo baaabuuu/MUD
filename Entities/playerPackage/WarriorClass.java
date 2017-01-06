@@ -2,10 +2,10 @@ package playerPackage;
 
 public class WarriorClass extends Character {
 
-	
+	//TODO FIX CHARACTER CONSTRUCOTR
 	int might	=	0; int dexterity	=	1;	int wisdom	=	2;	int constitution	=	3;
 	public WarriorClass(String name, int hp, int level, int playerID) {
-		super(name, hp, level, playerID);
+		super(name, hp, level, playerID,"Warrior");
 		//warriors have +5 might and +2 const
 		addStats(might,5);
 		addStats(constitution,5);
@@ -34,7 +34,7 @@ public class WarriorClass extends Character {
 		addStat(constitution,1);
 	}
 	
-	public String getCharacterClass()
+	public static String getCharacterClass()
 	{
 		return "Warrior";
 	}

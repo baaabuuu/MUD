@@ -21,10 +21,12 @@ public class Item {
 		durabilityMax	=	durability;
 		currDurrability	=	durability;
 	}
+	
 	public int getCurrDurrability()
 	{
 		return currDurrability;
 	}
+	
 	//setter method for changing the value
 	public void changeCurDurrability(int diff)
 	{
