@@ -1,27 +1,34 @@
-package entities;
+package npc;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import items.Armor;
+import items.ArmorGeneration;
+import items.Weapon;
+import items.WeaponGeneration;
+
 public class EnemyGeneration {
 	private static EnemyList mobs;
-	static Random rand = new Random(); 
+	static Random rand = new Random();
+	WeaponGeneration wepGen;
 	
 	public static void main(String[] args) throws IOException
 	{
 		mobs = new EnemyList();		
-		Creep newMob = createCreep();
+		Creep newMob = createCreep(1);
 		newMob.printInfo();
 	}
 	
 	public EnemyGeneration() throws IOException{
 		mobs = new EnemyList();
+		wepGen = new WeaponGeneration();
 		Creep newMob = createCreep();
 		newMob.printInfo();
 	}
 	
-	private static Creep createCreep(int index){
+	public static Creep createCreep(int index) throws IOException{
 		//no modifiers in terms of searching
 		//needs search modifiers
 		ArrayList<CreepType> enemies = mobs.getCreepList();
@@ -30,12 +37,14 @@ public class EnemyGeneration {
 		//handles the simple stuff
 		//null pointer exception
 		
-		
 		int level = randVal(monsterType.challenge);
 		int hp = randVal(monsterType.hp);
 		int dmgBonus = randVal(monsterType.dmgBonus);
-		
 		String weapon = monsterType.weapons[rand.nextInt(monsterType.weapons.length)];
+		String armor = monsterType.armor[rand.nextInt(monsterType.weapons.length)];
+		Weapon wep	=	WeaponGeneration.createWeapon(weapon);
+		Armor chest	=	ArmorGeneration.createArmor(armor);
+		
 
 		String[] modifiers = addModifiers(monsterType,level);
 		String name = addNameMods(monsterType.type,modifiers);
@@ -43,10 +52,10 @@ public class EnemyGeneration {
 		//TODO ADD LOOT, LOOT TABLES ARE IMPLEMENTED ALREADY.
 		
 		String[] loot = {null};		
-		return new Creep(name,hp,weapon,loot, dmgBonus, modifiers, level);
+		return new Creep(name,hp,wep,loot, dmgBonus, modifiers, level, chest);
 	}
 	
-	private static Creep createCreep(){
+	private static Creep createCreep() throws IOException{
 		//no modifiers in terms of searching
 		//needs search modifiers
 		ArrayList<CreepType> enemies = mobs.getCreepList();
@@ -60,8 +69,10 @@ public class EnemyGeneration {
 		int level = randVal(monsterType.challenge);
 		int hp = randVal(monsterType.hp);
 		int dmgBonus = randVal(monsterType.dmgBonus);
-		
 		String weapon = monsterType.weapons[rand.nextInt(monsterType.weapons.length)];
+		String armor = monsterType.armor[rand.nextInt(monsterType.weapons.length)];
+		Weapon wep	=	WeaponGeneration.createWeapon(weapon);
+		Armor chest	=	ArmorGeneration.createArmor(armor);
 
 		String[] modifiers = addModifiers(monsterType,level);
 		String name = addNameMods(monsterType.type,modifiers);
@@ -69,7 +80,7 @@ public class EnemyGeneration {
 		//TODO ADD LOOT, LOOT TABLES ARE IMPLEMENTED ALREADY.
 		
 		String[] loot = {null};		
-		return new Creep(name,hp,weapon,loot, dmgBonus, modifiers, level);
+		return new Creep(name,hp,wep,loot, dmgBonus, modifiers, level,chest);
 	}
 	
 

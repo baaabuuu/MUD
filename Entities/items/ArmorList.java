@@ -6,14 +6,14 @@ import java.util.ArrayList;
 import com.google.gson.*;
 
 //used to get the json files from package EnemyTypes
-public class WeaponList
+public class ArmorList
 {
 	//this array contains all the creep types.
-	protected static ArrayList<WeaponType> weaponList;
+	protected static ArrayList<ArmorType> armorList;
 	
-	public ArrayList<WeaponType> getWeaponList()
+	public ArrayList<ArmorType> getArmorList()
 	{
-		return weaponList;
+		return armorList;
 	}
 	
 	/**
@@ -21,13 +21,13 @@ public class WeaponList
 	 * @param filename, the file name from enemyTypes
 	 * @throws IOException 
 	 */
-	public WeaponList() throws IOException
+	public ArmorList() throws IOException
 	{
-		weaponList = new ArrayList<WeaponType>();
-		createWeapons();
-		for (WeaponType wep: weaponList)
+		armorList = new ArrayList<ArmorType>();
+		createArmors();
+		for (ArmorType armor: armorList)
 		{
-			wep.getInfo();
+			armor.getInfo();
 		}
 	}
 	/**
@@ -39,19 +39,19 @@ public class WeaponList
 	{
 		Gson gson = new GsonBuilder().create();
 		
-		InputStreamReader reader = new InputStreamReader(WeaponList.class.getResourceAsStream("/items/"+filename), "UTF-8");
-		WeaponType[] weaponType = gson.fromJson(reader, WeaponType[].class);
-		for(WeaponType weapon: weaponType)
+		InputStreamReader reader = new InputStreamReader(ArmorList.class.getResourceAsStream("/items/"+filename), "UTF-8");
+		ArmorType[] armorType = gson.fromJson(reader, ArmorType[].class);
+		for(ArmorType armor: armorType)
 		{
 			//appends the ID to the item
-			weapon.setID(weaponList.size());
+			armor.setID(armorList.size());
 			//adds it to the list.
-			weaponList.add(weapon);
+			armorList.add(armor);
 		}
 	}
 	
-	private static void createWeapons() throws IOException
+	private static void createArmors() throws IOException
 	{
-		addNewItem("weapons.json");
+		addNewItem("armor.json");
 	}
 }

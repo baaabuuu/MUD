@@ -1,4 +1,4 @@
-package entities;
+package npc;
 
 public class CreepType
 {
@@ -11,6 +11,9 @@ public class CreepType
 	String[]	loot;
 	String[]	dmgBonus;
 	String		modChance;
+	String		speed;
+	String		dexterity;
+	String[]		armor;
 	int			id;
 	public CreepType(){}
 	public void getInfo() {

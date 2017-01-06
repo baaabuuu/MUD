@@ -1,11 +1,10 @@
-package entities;
+package npc;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import com.google.gson.*;
 //used to get the jason files from package EnemyTypes
-import enemyTypes.fileClass;
 
 public class EnemyList
 {
@@ -32,22 +31,24 @@ public class EnemyList
 	 * @param filename, name of file
 	 * @throws IOException an IO exception in case of missing file - SHOULD NOT OCCUR EVER
 	 */
+	
+	
 	public static void addNewItem(String filename) throws IOException
 	{
 		Gson gson = new GsonBuilder().create();
-		InputStreamReader reader = new InputStreamReader(fileClass.class.getResourceAsStream("/enemyTypes/"+filename), "UTF-8");
-		CreepType enemyType = gson.fromJson(reader, CreepType.class);
-		enemyType.getInfo();
-		//appends an ID number to the list, esp usefull when using different copies of same
-		//mob
-		enemyType.setID(creepList.size());
-		creepList.add(enemyType);
-		System.out.println(creepList.size());
+		InputStreamReader reader = new InputStreamReader(CreepType.class.getResourceAsStream("/npc/"+filename), "UTF-8");
+		CreepType[] creepType = gson.fromJson(reader, CreepType[].class);
+		for(CreepType creep: creepType)
+		{
+			//appends the ID to the item
+			creep.setID(creepList.size());
+			//adds it to the list.
+			creepList.add(creep);
+		}
 	}
 	
 	public void createMobs() throws IOException
 	{
-		addNewItem("LesserGoblinChild.json");
-		addNewItem("LesserGoblinAdult.json");
+		addNewItem("LesserGoblin.json");
 	}
 }

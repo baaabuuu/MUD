@@ -1,0 +1,96 @@
+[
+{
+	"type": 		"Goblin Hammer",
+	"slot": 		"weapon",
+	"weaponClass":	"hammer",
+	"modifiers":[
+					"Fiery",
+					"Chilly",
+					"Accurate",
+					"Stunning",
+					"Unbreakable"
+	],
+	"rarity":	 	"1",
+	"level":		"1",
+	"modChance":	"10",
+	"goldCost": 	"25",
+	"accuracyMod":	"-5",
+	"critMod":		"-5",
+	"unusedStats":	["0"],
+	"damageHigh":	["6","8"],
+	"damageLow":	["4","5"],
+	"durablityMax":	"10",
+	"description": "Somekind of goblinish hammer, it looks like a construction hammer though.",
+	"attackDescription": "whacks"
+},
+{
+	"type": 		"Goblin Engineered Rock",
+	"slot": 		"weapon",
+	"weaponClass":	"special",
+	"modifiers":[
+					"Unbreakable"
+	],
+	"rarity":	 	"1",
+	"level":		"1",
+	"modChance":	"100",
+	"goldCost": 	"25",
+	"accuracyMod":	"20",
+	"critMod":		"15",
+	"unusedStats":	["0"],
+	"damageHigh":	["3","5"],
+	"damageLow":	["1","2"],
+	"durablityMax":	"10",
+	"description": "It seems like a regular pebble?",
+	"attackDescription": "throws a Goblin Engineered Rock"
+},
+{
+	"type": 		"Goblin Two-Handed Butterknife",
+	"slot": 		"weapon",
+	"weaponClass":	"shortsword",
+	"modifiers":[
+					"Fiery",
+					"Chilly",
+					"Accurate",
+					"Stunning",
+					"Unbreakable",
+					"Poisoned"
+	],
+	"rarity":	 	"1",
+	"level":		"1",
+	"modChance":	"5",
+	"goldCost": 	"25",
+	"accuracyMod":	"5",
+	"critMod":		"10",
+	"unusedStats":	["0"],
+	"damageHigh":	["3","5"],
+	"damageLow":	["1","3"],
+	"durablityMax":	"10",
+	"description": "Somekind of goblinish weapon, it looks like a butterknife for some reason..",
+	"attackDescription": "slices"
+},
+{
+	"type": 		"Goblin Axe",
+	"slot": 		"weapon",
+	"weaponClass":	"axe",
+	"modifiers":[
+					"Fiery",
+					"Chilly",
+					"Accurate",
+					"Stunning",
+					"Unbreakable",
+					"Poisoned"
+	],
+	"rarity":	 	"1",
+	"level":		"1",
+	"modChance":	"5",
+	"goldCost": 	"25",
+	"accuracyMod":	"0",
+	"critMod":		"30",
+	"unusedStats":	["0"],
+	"damageHigh":	["6","8"],
+	"damageLow":	["1","1"],
+	"durablityMax":	"10",
+	"description": "A basic Goblin Axe vastly increasing critical strike chance.",
+	"attackDescription": "slices"
+}
+]
