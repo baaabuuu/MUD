@@ -28,16 +28,18 @@ import java.awt.Toolkit;
 public class Cl_Main extends JFrame implements ActionListener, KeyListener{
 
 	private JPanel contentPane;
-	public JButton actionSend, chatSend;
-	public JLabel lblMainTitle, lblPlayerHealth, lblChat, lblTemp1, lblTemp2, lblRemainingWordsChat, lblRemainingWordsAction;
+	private JButton actionSend, chatSend;
+	public JLabel lblEvent, lblChat, lblRemainingWordsChat, lblRemainingWordsAction;
+	public JLabel  lblHP, lblMight, lblDex, lblWisdom, lblConstitution, lblCrit;
+	public JLabel lblAccuracy, lblEvasion, lblArmor, lblResist;
 	public JTextArea eventArea, actionArea, chatRecArea, chatTypArea;
 	private DefaultStyledDocument docAction, docChat;
-	private Label label_1;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -49,6 +51,7 @@ public class Cl_Main extends JFrame implements ActionListener, KeyListener{
 				}
 			}
 		});
+		
 	}
 	public Cl_Main() {
 		setTitle("The Game!");
@@ -137,21 +140,58 @@ public class Cl_Main extends JFrame implements ActionListener, KeyListener{
 		lblRemainingWordsChat.setBounds(800, 585, 200, 14);
 		contentPane.add(lblRemainingWordsChat);
 		
-		lblPlayerHealth = new JLabel("lblPlayerHealth");
-		lblPlayerHealth.setBounds(615, 56, 175, 14);
-		contentPane.add(lblPlayerHealth);
+		lblEvent = new JLabel("Event Area");
+		lblEvent.setBounds(10, 22, 200, 22);
+		contentPane.add(lblEvent);
 		
-		JLabel lblNewLabel_3 = new JLabel("New label");
-		lblNewLabel_3.setBounds(615, 81, 175, 14);
-		contentPane.add(lblNewLabel_3);
+		lblChat = new JLabel("Chat Area");
+		lblChat.setBounds(800, 22, 200, 22);
+		contentPane.add(lblChat);
+
+		lblHP = new JLabel("HP: 1");
+		lblHP.setBounds(615, 56, 175, 14);
+		contentPane.add(lblHP);
 		
-		Label label = new Label("Event Area");
-		label.setBounds(10, 22, 200, 22);
-		contentPane.add(label);
+		lblMight = new JLabel("Might: 9001");
+		lblMight.setBounds(615, 76, 175, 14);
+		contentPane.add(lblMight);
 		
-		label_1 = new Label("Chat Area");
-		label_1.setBounds(800, 22, 200, 22);
-		contentPane.add(label_1);
+		lblDex = new JLabel("Dex: Too much!");
+		lblDex.setBounds(615, 96, 175, 14);
+		contentPane.add(lblDex);
+		
+		lblWisdom = new JLabel("Wisdom: mom?");
+		lblWisdom.setBounds(615, 116, 175, 14);
+		contentPane.add(lblWisdom);
+		
+		lblConstitution = new JLabel("Constitution: 666");
+		lblConstitution.setBounds(615, 136, 175, 14);
+		contentPane.add(lblConstitution);
+		
+		lblCrit = new JLabel("Crit: 100%");
+		lblCrit.setBounds(615, 156, 175, 14);
+		contentPane.add(lblCrit);
+		
+		lblCrit = new JLabel("Crit: 100%");
+		lblCrit.setBounds(615, 156, 175, 14);
+		contentPane.add(lblCrit);
+		
+		lblAccuracy = new JLabel("Accuracy: 5%");
+		lblAccuracy.setBounds(615, 176, 175, 14);
+		contentPane.add(lblAccuracy);
+		
+		lblEvasion = new JLabel("Evasion: 95%");
+		lblEvasion.setBounds(615, 196, 175, 14);
+		contentPane.add(lblEvasion);
+		
+		lblArmor = new JLabel("Armor: 0%");
+		lblArmor.setBounds(615, 216, 175, 14);
+		contentPane.add(lblArmor);
+		
+		lblResist = new JLabel("Resist Element: 100%");
+		lblResist.setBounds(615, 236, 175, 14);
+		contentPane.add(lblResist);
+		
 		
 		updateCount(1);
 		updateCount(2);
@@ -162,7 +202,6 @@ public class Cl_Main extends JFrame implements ActionListener, KeyListener{
 		}else if(i == 2){
 			lblRemainingWordsChat.setText((255 -docChat.getLength()) + " characters remaining");
 		}
-		
     }
 	private String eventAreaInfo;
 	public void updEventArea(String text){
@@ -194,10 +233,15 @@ public class Cl_Main extends JFrame implements ActionListener, KeyListener{
 		//On ENTER release from actionArea, update eventArea with temporary
 		//text and reset actionArea.
 		if(e.getSource() == actionArea && e.getKeyCode() == KeyEvent.VK_ENTER){
-			updEventArea("Player: " + actionAreaTemp);
+			//Message must be more than 0 character.
+			if(actionAreaTemp.length() > 0){
+				updEventArea("Player: " + actionAreaTemp);
+			}
 			actionArea.setText("");
 		}else if(e.getSource() == chatTypArea && e.getKeyCode() == KeyEvent.VK_ENTER){
-			updChatArea("" + chatTypAreaTemp);
+			if(chatTypAreaTemp.length() > 0){
+				updChatArea("Player: " + chatTypAreaTemp);
+			}
 			chatTypArea.setText("");
 		}
 	}
