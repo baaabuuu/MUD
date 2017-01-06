@@ -10,20 +10,19 @@ import items.Weapon;
 import items.WeaponGeneration;
 
 public class EnemyGeneration {
-	private static EnemyList mobs;
 	static Random rand = new Random();
 	WeaponGeneration wepGen;
 	
 	public static void main(String[] args) throws IOException
 	{
-		mobs = new EnemyList();		
+		new EnemyList();		
 		Creep newMob = createCreep(1);
 		newMob.printInfo();
 	}
 	
 	public EnemyGeneration() throws IOException
 	{
-		mobs = new EnemyList();
+		new EnemyList();
 		wepGen = new WeaponGeneration();
 		Creep newMob = createCreep();
 		newMob.printInfo();
@@ -33,7 +32,7 @@ public class EnemyGeneration {
 	{
 		//no modifiers in terms of searching
 		//needs search modifiers
-		ArrayList<CreepType> enemies = mobs.getCreepList();
+		ArrayList<CreepType> enemies = EnemyList.getCreepList();
 		CreepType monsterType	= enemies.get(index);
 		
 		//handles the simple stuff
@@ -65,7 +64,7 @@ public class EnemyGeneration {
 	{
 		//no modifiers in terms of searching
 		//needs search modifiers
-		ArrayList<CreepType> enemies = mobs.getCreepList();
+		ArrayList<CreepType> enemies = EnemyList.getCreepList();
 		int index			= rand.nextInt(enemies.size());
 		CreepType monsterType	= enemies.get(index);
 		

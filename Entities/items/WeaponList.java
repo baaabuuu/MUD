@@ -9,7 +9,7 @@ import com.google.gson.*;
 public class WeaponList
 {
 	//this array contains all the creep types.
-	protected static ArrayList<WeaponType> weaponList;
+	public static ArrayList<WeaponType> weaponList = new ArrayList<WeaponType>();
 	
 	public ArrayList<WeaponType> getWeaponList()
 	{
@@ -23,12 +23,7 @@ public class WeaponList
 	 */
 	public WeaponList() throws IOException
 	{
-		weaponList = new ArrayList<WeaponType>();
 		createWeapons();
-		for (WeaponType wep: weaponList)
-		{
-			wep.getInfo();
-		}
 	}
 	/**
 	 * Adds the items to our itemList
@@ -50,7 +45,7 @@ public class WeaponList
 		}
 	}
 	
-	private static void createWeapons() throws IOException
+	public static void createWeapons() throws IOException
 	{
 		addNewItem("weapons.json");
 	}

@@ -9,7 +9,7 @@ import com.google.gson.*;
 public class ArmorList
 {
 	//this array contains all the creep types.
-	protected static ArrayList<ArmorType> armorList;
+	public static ArrayList<ArmorType> armorList = new ArrayList<ArmorType>();;
 	
 	public ArrayList<ArmorType> getArmorList()
 	{
@@ -23,12 +23,7 @@ public class ArmorList
 	 */
 	public ArmorList() throws IOException
 	{
-		armorList = new ArrayList<ArmorType>();
 		createArmors();
-		for (ArmorType armor: armorList)
-		{
-			armor.getInfo();
-		}
 	}
 	/**
 	 * Adds the items to our itemList
@@ -49,7 +44,7 @@ public class ArmorList
 		}
 	}
 	
-	private static void createArmors() throws IOException
+	public static void createArmors() throws IOException
 	{
 		addNewItem("armor.json");
 	}

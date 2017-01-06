@@ -33,6 +33,7 @@ public class PlayerAccount
 		levelDuration		=	"-1";
 		gmNotes				=	"";
 		banned				=	"false";
+		
 		//player can have up to 6 characters per account.
 		characterID			=	new String[6];
 		
@@ -40,6 +41,13 @@ public class PlayerAccount
 		//characterID is used to hold how many characters that player owns.
 	}
 
+	
+	public void getInfo()
+	{
+		System.out.println("username: " + getName() + " lastLogin: " + getLastLogin());
+	}
+	
+	
 	public void setID(int val)
 	{
 		this.playerID	=	String.valueOf(val);
@@ -92,6 +100,10 @@ public class PlayerAccount
 	public boolean isBanned()
 	{
 		return banned.equals("true");
+	}
+
+	public String getPassword() {
+		return password;
 	}
 	
 }

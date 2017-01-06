@@ -16,15 +16,16 @@ public class AccountHandling {
 	
 	//never changed - only has things added to it - 
 	//updated whenever the player adds new characters - though
-	private static ArrayList<PlayerAccount> createdAccounts = new ArrayList<PlayerAccount>();
+	public static ArrayList<PlayerAccount> createdAccounts = new ArrayList<PlayerAccount>();
 	//actively has accounts added and removed
-	private static ArrayList<PlayerAccount> activeAccounts = new ArrayList<PlayerAccount>();
+	public static ArrayList<PlayerAccount> activeAccounts = new ArrayList<PlayerAccount>();
 	
 	public static void main(String[] args) throws UnsupportedEncodingException, MalformedJsonException
 	{		
-		createNewAccount("TestAccount","workingPassword","Blib@blob.dtu.dk");
-		createNewAccount("a","non","Balib@blob.dtu.dk");
-		createNewAccount("TestAbccount","workingPassword","hohn");
+		createNewAccount("TestAccount","a","Blib@blob.dtu.dk");
+		createNewAccount("paa","b","Balib@blob.dtu.dk");
+		createNewAccount("a","","Balib@blob.dtu.dk");
+		createNewAccount("TestAbccount","c","hohn");
 	}
 	
 	
@@ -34,6 +35,9 @@ public class AccountHandling {
 		{
 			if (checkUsername(username))
 			{
+				System.out.println("old password: " + password);
+				password = encryptPassword(password);
+				System.out.println("new password: " + password);
 				PlayerAccount	newPlayer 	= 	new PlayerAccount(username,password,email);
 				newPlayer.setID(createdAccounts.size());
 				createdAccounts.add(newPlayer);
@@ -70,6 +74,32 @@ public class AccountHandling {
 			}
 		}
 	}
+	
+	
+	public static String encryptPassword(String password)
+	{
+		return BCrypt.hashpw(password, BCrypt.gensalt());
+	}
+	
+	
+	
+	/**
+	 * Used to check whether or whether not a username is legal - if it is check for password
+	 * could be used for username guessing - maybe something more secure later on.
+	 * @param username - the login username the user is trying to use
+	 * @return a playerAccount - used to check passwords afterwards
+	 */
+	public static PlayerAccount loginUser(String username)
+	{
+		for (PlayerAccount match: createdAccounts)
+		{
+			if (match.getName().equals(username))
+				return match;
+		}
+		return null;
+	}
+	
+	
 	
 	public static boolean loadDatabase()
 	{

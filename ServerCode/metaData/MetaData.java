@@ -1,34 +1,13 @@
 package metaData;
 
-import playerPackage.PlayerAccount;
-
 public class MetaData
 {
-	private String 			gameName;
-	private String			gameVersion;
-	private String			totalPlayerCount;
-	private String			totalCharacterCount;
-	private String			totalKills;
-	private String			totalCharDeath;
-	//used to checks tuff
-	private PlayerAccount[]	players;
-	private	PlayerAccount[]	activePlayers;
-	
-	
-	public void updatePlayerCount(){
-		//checks an array with players if size is greater do X.
-		//if the number is greater than playerCount, increase it
-	}
-	
-	public void updateCharacterCount(){
-		//updates an array with the player count
-	}
-	
-	public void updateActivePlayerCount(){
-		//updates an array containing activePlayers
-	}
-	
-	
+	public static String 	gameName	=	"Baaabuuu Rules, everyone else Drools the game";
+	public static String	gameVersion	=	"0.1";
+	public static String	totalPlayerCount;
+	public static String	totalCharacterCount;
+	public static String	totalKills;
+	public static String	totalCharDeath;	
 	
 	/**
 	 * Returns the game name

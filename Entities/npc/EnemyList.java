@@ -11,7 +11,7 @@ public class EnemyList
 	//this array contains all the creep types.
 	public static ArrayList<CreepType> creepList;
 	
-	public ArrayList<CreepType> getCreepList()
+	public static ArrayList<CreepType> getCreepList()
 	{
 		return creepList;
 	}
@@ -23,7 +23,6 @@ public class EnemyList
 	 */
 	public EnemyList() throws IOException
 	{
-		creepList = new ArrayList<CreepType>();
 		createMobs();
 	}
 	/**
@@ -47,8 +46,9 @@ public class EnemyList
 		}
 	}
 	
-	public void createMobs() throws IOException
+	public static void createMobs() throws IOException
 	{
+		creepList = new ArrayList<CreepType>();
 		addNewItem("LesserGoblin.json");
 	}
 }
