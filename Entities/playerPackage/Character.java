@@ -8,12 +8,13 @@ import npc.Entity;
 
 
 public class Character extends Entity{
-	protected int playerID;
-	protected ArrayList<Integer> stats;
-	protected int exp;
-	protected String	charClass;
-	protected ArrayList<Item> inventory;
-	protected ArrayList<Item> equipment;
+	protected 	int playerID;
+	protected	ArrayList<Integer> stats;
+	protected	int exp;
+	protected	String	charClass;
+	protected	ArrayList<Item> inventory;
+	protected 	ArrayList<Item> equipment;
+	protected	String	characterID;
 	
 	
 	//TODO add spells, feats
@@ -29,11 +30,26 @@ public class Character extends Entity{
 		inventory 	=	new ArrayList<Item>();
 		equipment	=	new ArrayList<Item>();
 		this.charClass	=	charClass;
-		addStats(0,5);
-		addStats(1,5);
-		addStats(2,5);
-		addStats(3,5);
+		stats.add(5);
+		stats.add(5);
+		stats.add(5);
+		stats.add(5);
 		exp=0;
+	}
+	
+	public void setLevel(int val)
+	{
+		super.setLevel(val);
+	}
+	
+	public void setID(int val)
+	{
+		characterID		=	String.valueOf(val);
+	}
+	
+	public String getCharacterID()
+	{
+		return characterID;
 	}
 	
 	
@@ -124,11 +140,20 @@ public class Character extends Entity{
 	
 	public void addStats(int statID, int val)
 	{
-		stats.set(statID, stats.get(statID)+val);
+		if (stats.get(statID).equals(null))
+		{
+			stats.add(statID, val);
+		}
+		else
+		{
+			stats.set(statID, stats.get(statID)+val);
+		}
+		
 	}
 
 	public void levelUP() {
 		// TODO level up function
 		
-	}	
+	}
+
 }

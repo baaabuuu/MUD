@@ -22,6 +22,10 @@ public class Item {
 		currDurrability	=	durability;
 	}
 	
+	public String toSaveString() {
+		return "";
+	}
+	
 	public int getCurrDurrability()
 	{
 		return currDurrability;

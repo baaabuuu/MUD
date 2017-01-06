@@ -16,7 +16,10 @@ public class Entity {
 	protected void recalcHP(){
 		if (hp>this.maxHP) hp	=	maxHP;
 	}
-	
+	public void setLevel(int val)
+	{
+		this.level=val;
+	}
 	public String getName()
 	{
 		return name;

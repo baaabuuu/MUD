@@ -38,7 +38,6 @@ public class ArmorList
 	private static void addNewItem(String filename) throws IOException
 	{
 		Gson gson = new GsonBuilder().create();
-		
 		InputStreamReader reader = new InputStreamReader(ArmorList.class.getResourceAsStream("/items/"+filename), "UTF-8");
 		ArmorType[] armorType = gson.fromJson(reader, ArmorType[].class);
 		for(ArmorType armor: armorType)

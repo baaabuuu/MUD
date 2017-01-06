@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class CharacterType {
 	String		name;
 	String		charClass;
-	String		playerID;
 	String[]	stats;
 	String		exp;
 	String		level;
@@ -13,6 +12,9 @@ public class CharacterType {
 	String[]	equipment;
 	String[]	spells;
 	String[]	feats;
+	String 		characterID;
+	String		playerID;
+
 	
 	public ArrayList<String> convertToArrayList(String[] array)
 	{

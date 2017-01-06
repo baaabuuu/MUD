@@ -30,7 +30,6 @@ public class Accounts {
 		Gson gson = new GsonBuilder().create();
 		InputStreamReader reader = new InputStreamReader(Accounts.class.getResourceAsStream("/playerPackage/PlayerAccount.json"), "UTF-8");
 		PlayerAccount[] accounts = gson.fromJson(reader, PlayerAccount[].class);
-		
 		for(PlayerAccount account: accounts)
 		{
 			//adds it to the list.

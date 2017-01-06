@@ -20,22 +20,24 @@ public class Armor extends Item
 		this.spellReduction		=	spellReduction;
 	}
 	
-	public Armor(boolean load, String name, String slot, int rarity, int level, int goldCost, String desc, int durability, String modifier, int evasionMod, int reduction,
+	public Armor(String name, String slot, int rarity, int level, int goldCost, String desc, int curDurability, int durability, String modifier, int evasionMod, int reduction,
 			String armorClass, int[] stats,int spellReduction) 
 		{
 			super(name, slot, rarity, level, goldCost, desc, modifier, durability);
 			this.reduction 			=	reduction;
 			this.evasionMod			=	evasionMod;
 			this.armorClass			=	armorClass;
+			this.currDurrability	=	curDurability;
 			//currently unused stats
 			this.unusedStats		=	stats;
 			this.spellReduction		=	spellReduction;
 		}
 	
 	
+	
 	public String toSaveString()
 	{
-		String returnString = "armor@"+name+"@"+slot+"@"+rarity+"@"+goldCost+"@"+description+"@"+modifier+"@"+durabilityMax+"@"+currDurrability+"@"+evasionMod+"@"+reduction+"@"+spellReduction+"@"+
+		String returnString = "armor@"+name+"@"+slot+"@"+rarity+"@"+level+"@"+goldCost+"@"+description+"@"+modifier+"@"+durabilityMax+"@"+currDurrability+"@"+evasionMod+"@"+reduction+"@"+spellReduction+"@"+
 				"@"+armorClass;
 		for (int stat: unusedStats)
 		{

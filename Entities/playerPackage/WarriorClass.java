@@ -20,7 +20,7 @@ public class WarriorClass extends Character {
 	
 	public int getStat(int stat)
 	{
-		return super.getStats(stat);
+		return super.getStat(stat);
 	}
 	
 	
