@@ -8,13 +8,13 @@ import npc.Entity;
 
 
 public class Character extends Entity{
-	protected 	int playerID;
-	protected	ArrayList<Integer> stats;
-	protected	int exp;
-	protected	String	charClass;
-	protected	ArrayList<Item> inventory;
-	protected 	ArrayList<Item> equipment;
-	protected	String	characterID;
+	 	int playerID;
+		ArrayList<Integer> stats;
+		int exp;
+		String	charClass;
+		ArrayList<Item> inventory;
+	 	ArrayList<Item> equipment;
+		String	characterID;
 	
 	
 	//TODO add spells, feats
@@ -35,6 +35,11 @@ public class Character extends Entity{
 		stats.add(5);
 		stats.add(5);
 		exp=0;
+	}
+	
+	public void setExp(int val)
+	{
+		exp+=val;
 	}
 	
 	public void setLevel(int val)

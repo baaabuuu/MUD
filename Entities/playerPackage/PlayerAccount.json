@@ -1,0 +1,62 @@
+[
+  {
+    "accountName": "TestAccount",
+    "password": "workingPassword",
+    "email": "Blib@blob.dtu.dk",
+    "creationDate": "2017-01-06T20:41:19.911Z",
+    "lastLogin": "2017-01-06T20:41:19.911Z",
+    "level": "0",
+    "levelDuration": "-1",
+    "gmNotes": "",
+    "banned": "false",
+    "playerID": "0",
+    "characterID": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "accountName": "a",
+    "password": "non",
+    "email": "Balib@blob.dtu.dk",
+    "creationDate": "2017-01-06T20:41:20.029Z",
+    "lastLogin": "2017-01-06T20:41:20.029Z",
+    "level": "0",
+    "levelDuration": "-1",
+    "gmNotes": "",
+    "banned": "false",
+    "playerID": "1",
+    "characterID": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "accountName": "TestAbccount",
+    "password": "workingPassword",
+    "email": "hohn",
+    "creationDate": "2017-01-06T20:41:20.034Z",
+    "lastLogin": "2017-01-06T20:41:20.034Z",
+    "level": "0",
+    "levelDuration": "-1",
+    "gmNotes": "",
+    "banned": "false",
+    "playerID": "2",
+    "characterID": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  }
+]

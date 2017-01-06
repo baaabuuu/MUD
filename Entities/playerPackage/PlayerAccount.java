@@ -54,6 +54,12 @@ public class PlayerAccount
 	{
 		return characterID;
 	}
+	
+	public void addCharacter(int i,int id)
+	{
+		characterID[i]=String.valueOf(id);
+	}
+	
 	//get methods for non-encrypted data?
 	public String getName()
 	{

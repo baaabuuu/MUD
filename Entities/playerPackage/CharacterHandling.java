@@ -22,6 +22,19 @@ public class CharacterHandling {
 	private static ArrayList<Character> characters = new ArrayList<Character>();
 	
 	
+	//player characters demoing
+	public static void main(String[] args) throws UnsupportedEncodingException, MalformedJsonException
+	{
+		loadCharacters();
+		createNewCharacter("Warrior","TempWarrior1",1);
+		createNewCharacter("Warrior","TempWarrior6",10);
+		createNewCharacter("Warrior","TempWarrior3",12);
+		createNewCharacter("Warrior","TempWarrior4",1);
+		createNewCharacter("Warrior","TempWarrior5",1);
+		saveCharacters();
+	}
+	
+	
 	public CharacterHandling() throws UnsupportedEncodingException{}	
 	
 	public static Character createNewCharacter(String charClass,String name, int playerID)
@@ -32,18 +45,24 @@ public class CharacterHandling {
 			//create a warrior
 			character = new WarriorClass(name, 1, 1, playerID);
 		}
-		if (!character.equals(null))
+		try {
+			if (!character.equals(null))
+			{
+				 character.setID(createdCharacters.size());
+				 CharacterType saveObject = initalizeSaveObject(character);
+				 createdCharacters.add(saveObject);
+				 characters.add(character);
+				 return character;
+			}
+			else
+			{
+				System.out.println("COULD NOT CREATE CHARACTER");
+			}
+		} catch (NullPointerException e)
 		{
-			 character.setID(createdCharacters.size());
-			 CharacterType saveObject = initalizeSaveObject(character);
-			 createdCharacters.add(saveObject);
-			 characters.add(character);
-			 return character;
+			System.out.println("Could not create a character");
 		}
-		else
-		{
-			System.out.println("COULD NOT CREATE CHARACTER");
-		}
+		
 		return null;
 	}
 	
@@ -51,12 +70,11 @@ public class CharacterHandling {
 	 * takes every character in characters converts them to save objects and then saves the game
 	 * @return
 	 */
-	
 	public static boolean loadCharacters()
 	{
 		InputStreamReader reader;
 		try {
-			reader = new InputStreamReader(Accounts.class.getResourceAsStream("/items/Characters.json"), "UTF-8");
+			reader = new InputStreamReader(AccountHandling.class.getResourceAsStream("/playerPackage/Characters.json"), "UTF-8");
 			Gson gson = new GsonBuilder().create();
 			CharacterType[] savedCharacters = gson.fromJson(reader, CharacterType[].class);
 			for(CharacterType saved: savedCharacters)
@@ -64,57 +82,27 @@ public class CharacterHandling {
 				characters.add(convertToCharacter(saved));
 			}
 			return true;
-			
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
-		
-		
 	}
-	
-	
-	
-	private static CharacterType initalizeSaveObject3(Character character) {
-		// TODO Auto-generated method stub
-		CharacterType saveObject = new CharacterType();
-		saveObject.name=character.getName();
-		saveObject.charClass=character.getCharClass();
-		saveObject.level		=	String.valueOf(character.getLevel());
-		saveObject.exp			=	String.valueOf(character.getExp());
-		saveObject.stats		=	new String[character.getStats().size()];
-		saveObject.characterID	=	String.valueOf(character.characterID);
-		for (int i=0;i<character.getStats().size();i++)
-		{
-			saveObject.stats[i]=String.valueOf(character.getStat(i));
-		}
 		
-		saveObject.inventory	=	new String[character.getInventory().size()];
-		for (int i=0;i<character.getInventory().size();i++)
-		{
-			saveObject.inventory[i]	=	String.valueOf(character.getInventory().get(i).toSaveString());
-		}
-		
-		saveObject.equipment	=	new String[character.getEquipment().size()];
-		for (int i=0;i<character.getStats().size();i++)
-		{
-			saveObject.equipment[i]	=	String.valueOf(character.getEquipment().get(i).toSaveString());
-		}
-		return saveObject;
-	}
-	
 	public static Character convertToCharacter(CharacterType saved) {
 		//load values
 		String name				=	saved.name;
 		String charClass 		= 	saved.charClass;
 		int playerID			=	Integer.parseInt(saved.playerID);
 		int level				=	Integer.parseInt(saved.level);
-		int exp					=	Integer.parseInt(saved.exp);
+		int exps					=	Integer.parseInt(saved.exp);
+		//reads values
 		
 		//set values
-		Character loadedChar	=	createNewCharacter(name,charClass,playerID);
-		loadedChar.exp			=	exp;
+		Character loadedChar	=	createNewCharacter(charClass,name,playerID);
+		loadedChar.exp			=	exps;
+		
+		
 		loadedChar.setLevel(level);
 		loadedChar.equipment	=	loadItems(saved.equipment);
 		loadedChar.inventory	=	loadItems(saved.inventory);
@@ -221,7 +209,7 @@ public class CharacterHandling {
 		return true;
 	}
 	
-	private static void saveCharacters() {
+	public static void saveCharacters() {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		updateCharacterSaves();
 		String s = gson.toJson(createdCharacters);
@@ -278,18 +266,6 @@ public class CharacterHandling {
 	}
 	
 	
-
-	public static void main(String[] args) throws UnsupportedEncodingException, MalformedJsonException
-	{
-		//loadCharacters();
-		createNewCharacter("Warrior","TempWarrior1",1);
-		createNewCharacter("Warrior","TempWarrior6",10);
-		createNewCharacter("Warrior","TempWarrior3",12);
-		createNewCharacter("Warrior","TempWarrior4",1);
-		createNewCharacter("Warrior","TempWarrior5",1);
-		saveCharacters();
-	}
-	
 	/**
 	 * adds our createdCharater list
 	 * @throws UnsupportedEncodingException
@@ -297,7 +273,7 @@ public class CharacterHandling {
 	public void addSavedCharacters() throws UnsupportedEncodingException
 	{
 		Gson gson = new GsonBuilder().create();
-		InputStreamReader reader = new InputStreamReader(Accounts.class.getResourceAsStream("playerPackage/Characters.json"), "UTF-8");
+		InputStreamReader reader = new InputStreamReader(AccountHandling.class.getResourceAsStream("playerPackage/Characters.json"), "UTF-8");
 		CharacterType[] characterTypes = gson.fromJson(reader, CharacterType[].class);
 		for(CharacterType character: characterTypes)
 		{
