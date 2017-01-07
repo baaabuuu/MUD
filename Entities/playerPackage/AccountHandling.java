@@ -185,4 +185,13 @@ public class AccountHandling {
 		}
 		return true;
 	}
+
+
+	public static void login(PlayerAccount user) {
+		activeAccounts.add(user);
+		user.updateLogin();
+		
+		
+		
+	}
 }

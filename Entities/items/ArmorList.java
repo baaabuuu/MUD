@@ -9,7 +9,7 @@ import com.google.gson.*;
 public class ArmorList
 {
 	//this array contains all the creep types.
-	public static ArrayList<ArmorType> armorList = new ArrayList<ArmorType>();;
+	public static ArrayList<ArmorType> armorList = new ArrayList<ArmorType>();
 	
 	public ArrayList<ArmorType> getArmorList()
 	{

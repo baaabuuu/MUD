@@ -21,6 +21,7 @@ public class PlayerAccount
 	private String		playerID;
 	private String[]	characterID;
 	
+	
 	public PlayerAccount(String name, String pass, String email)
 	{
 		accountName 		=	name;
@@ -36,12 +37,20 @@ public class PlayerAccount
 		
 		//player can have up to 6 characters per account.
 		characterID			=	new String[6];
+		//-1 means not created account
+		for (int i=0;i<characterID.length;i++)
+		{
+			characterID[i]="-1";
+		}
 		
 		//needs to get a check on how many playerIDs exist
 		//characterID is used to hold how many characters that player owns.
 	}
 
-	
+	public void updateLogin()
+	{
+		lastLogin = Instant.now().toString();
+	}
 	public void getInfo()
 	{
 		System.out.println("username: " + getName() + " lastLogin: " + getLastLogin());
@@ -63,9 +72,9 @@ public class PlayerAccount
 		return characterID;
 	}
 	
-	public void addCharacter(int i,int id)
+	public void addCharacter(int i, String id)
 	{
-		characterID[i]=String.valueOf(id);
+		characterID[i]=id;
 	}
 	
 	//get methods for non-encrypted data?

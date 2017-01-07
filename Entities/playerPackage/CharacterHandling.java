@@ -17,9 +17,12 @@ import items.Weapon;
 
 public class CharacterHandling {
 	//contains the save objects
-	private static ArrayList<CharacterType> createdCharacters = new ArrayList<CharacterType>();
+	public static ArrayList<CharacterType> createdCharacters = new ArrayList<CharacterType>();
 	//contains characters
-	private static ArrayList<Character> characters = new ArrayList<Character>();
+	public static ArrayList<Character> characters = new ArrayList<Character>();
+	//add classes to this array, so that other parts of the game can referer to it
+	//Note, they also need to be added to createNewCharacter
+	public static String[] characterClasses	=	{"Warrior"};
 	
 	
 	//player characters demoing
