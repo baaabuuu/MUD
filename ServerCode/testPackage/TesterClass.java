@@ -1,4 +1,4 @@
-
+package testPackage;
 
 
 import java.io.IOException;
@@ -18,9 +18,8 @@ import playerPackage.CharacterHandling;
 import playerPackage.PlayerAccount;
 import playerPackage.Character;
 
-public class testClass
+public class TesterClass
 {
-	
 	public static void main(String[] args) throws UnsupportedEncodingException
 	{
 		//load required data first
@@ -43,9 +42,8 @@ public class testClass
 		//select character
 		Character userChar = selectCharacter(user,input);
 		userChar.getInfo();
+		CharacterHandling.saveCharacters();
 		AccountHandling.updateAccountDatabase();
-			
-
         input.close();
 	}	
 	
@@ -81,7 +79,7 @@ public class testClass
 		while(true)
 		{
 			System.out.println("Please select which character you'd like to play as:");
-			for (int i	=	0;	i<5	;i++)
+			for (int i	=	0;	i<6	;i++)
 			{
 				System.out.println("    ["+(1+i)	+	"]    ---    "+charName[i] + ".");
 			}
@@ -89,7 +87,7 @@ public class testClass
 			id = input.nextInt();
 			input.nextLine();
 			System.out.println(id);
-			if (id>0 && id <6)
+			if (id>0 && id <7)
 			{
 				if (!charName[id-1].equals("NEW CHARACTER"))
 				{
@@ -125,7 +123,7 @@ public class testClass
 							{
 								//TODO delete character function
 							}
-								deleteCommand	=	"n";
+							deleteCommand	=	"n";
 						}
 					}
 				}
@@ -135,6 +133,7 @@ public class testClass
 				System.out.println("Please type in a whole number between 1 and 5 only.");
 			}
 		}
+		
 		//Create new character
 		if (charName[id-1].equals("NEW CHARACTER"))
 		{
@@ -193,36 +192,84 @@ public class testClass
 	{
 		String username;
 		String password;
+		String accept;
+		String email;
 		PlayerAccount user = null;
 		while(true)
 		{
 	        username = input.nextLine();
-	        user = AccountHandling.loginUser(username);
-	        if (!user.equals(null))
-	        {
-		        password	= 	input.nextLine();
-		        // TODO Password encryption here - we need to encrypt it!
-		        
-		        if (BCrypt.checkpw(password,user.getPassword()))
+	        try{
+	        	user = AccountHandling.loginUser(username);
+		        if (!user.equals(null))
 		        {
-		        	AccountHandling.login(user);
-		        	break;
+			        password	= 	input.nextLine();			        
+			        if (BCrypt.checkpw(password,user.getPassword()))
+			        {
+			        	AccountHandling.login(user);
+			        	break;
+			        }
+			        else
+			        {
+			        	System.out.println("INVALID PASSWORD!");
+			        }
 		        }
 		        else
 		        {
-		        	System.out.println("INVALID PASSWORD!");
+		        	System.out.println("INVALID USERNAME!");
 		        }
-	        }
-	        else
+	        } catch (NullPointerException e)
 	        {
-	        	System.out.println("INVALID USERNAME!");
+	        	System.out.println("We are unable to find the user: " + username + ".");
+	        	System.out.println("Please type: <Y> if you wish to create this account.");
+				accept	=	input.nextLine().toLowerCase();
+				if (accept.equals("y") || accept.equals("<y>"))
+				{
+					System.out.println("Please type your prefered password.");
+					password	=	input.nextLine();
+					System.out.println("Please type your prefered password again.");
+					if (password.equals(input.nextLine()))
+					{
+						System.out.println("Please type in your email.");
+						email	=	input.nextLine();
+						System.out.println("Is: " + email + " your email?");
+						System.out.println("If so, please type: <Y>.");
+						accept	=	input.nextLine().toLowerCase();
+						if (accept.equals("y") || accept.equals("<y>"))
+						{
+							boolean newAccount = true;
+							if (AccountHandling.checkUsername(username))
+							{
+								System.out.println("Username is already in use");
+								newAccount	=	false;
+							}
+							if (AccountHandling.checkEmail(email))
+							{
+								System.out.println("Email is already in use");
+								newAccount	=	false;
+							}
+							if (newAccount)
+							{
+								System.out.println("Sucessfully created a new account.");
+								password = AccountHandling.encryptPassword(password);
+								user =  new PlayerAccount(username,password,email);
+								user.setID(AccountHandling.createdAccounts.size());
+								AccountHandling.createdAccounts.add(user);
+								AccountHandling.updateAccountDatabase();
+								break;
+							}
+							//do checks
+						}
+						
+					}
+				}
+				else // default message if user does not wish to insert username
+					System.out.println("Please insert your username again.");
+				
 	        }
+	        
 		}
-		return user;
-		
+		return user;	
 	}
-	
-	
 	
 	//sets up every system the server uses for data.
 	public static void intiateSeverData()

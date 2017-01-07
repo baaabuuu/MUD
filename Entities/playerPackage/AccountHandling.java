@@ -165,25 +165,25 @@ public class AccountHandling {
 		activeAccounts.remove(acc);
 	}
 
-	private static boolean checkUsername(String name) {
+	public static boolean checkUsername(String name) {
 		// TODO Auto-generated method stub
 		name	=	name.toUpperCase();
 		for (int i=0;i<createdAccounts.size();i++)
 		{
 			if (createdAccounts.get(i).getName().toUpperCase().equals(name))
-				return false;
+				return true;
 		}
-		return true;
+		return false;
 	}
 
-	private static boolean checkEmail(String email) {
+	public static boolean checkEmail(String email) {
 		email	=	email.toUpperCase();
 		for (int i = 0; i < createdAccounts.size(); i++)
 		{
 			if (createdAccounts.get(i).getEmail().toUpperCase().equals(email))
-				return false;
+				return true;
 		}
-		return true;
+		return false;
 	}
 
 

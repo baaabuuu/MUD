@@ -1,4 +1,4 @@
-package metaData;
+package testPackage;
 
 
 import java.io.IOException;
@@ -18,7 +18,7 @@ import playerPackage.CharacterHandling;
 import playerPackage.PlayerAccount;
 import playerPackage.Character;
 
-public class testClass
+public class ShitTierClass
 {
 	public static void main(String[] args) throws UnsupportedEncodingException
 	{
