@@ -1,4 +1,4 @@
-package testPackage;
+package shitTierPackage;
 
 
 import java.io.IOException;
@@ -25,6 +25,7 @@ public class ShitTierClass
 		//load required data first
 		//this needs to be done on server startup
 		//load up our databases
+		System.out.println("test");
 		intiateSeverData();
 		String gameName = MetaData.gameName;
 		String gameVersion	=	MetaData.gameVersion;
@@ -40,10 +41,12 @@ public class ShitTierClass
 		System.out.println("Thank you for logging in " + user.getName() + ".");
 		
 		//select character
-		Character userChar = selectCharacter(user,input);
-		userChar.getInfo();
+		//also updated the database - so that the last login etc. updates
+		Character userChar = selectCharacter(user,input);		
 		CharacterHandling.saveCharacters();
 		AccountHandling.updateAccountDatabase();
+		
+		
         input.close();
 	}	
 	
@@ -101,6 +104,7 @@ public class ShitTierClass
 				command2	=	input.nextLine().toLowerCase();
 				if (command2.equals("<y>") || command2.equals("y"))
 				{
+					character	=	chars[id-1];
 					//character selected
 					break;
 				}
@@ -257,14 +261,11 @@ public class ShitTierClass
 								AccountHandling.updateAccountDatabase();
 								break;
 							}
-							//do checks
 						}
-						
 					}
 				}
 				else // default message if user does not wish to insert username
 					System.out.println("Please insert your username again.");
-				
 	        }
 	        
 		}
