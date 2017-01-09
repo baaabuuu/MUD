@@ -1,11 +1,16 @@
 package Client;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -49,6 +54,7 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener{
         });
 		
 		eventArea = new JTextArea("Welcome Adventurer!");
+		eventArea.setFont(new Font("Bookman Old Style", Font.PLAIN, 14));
 		eventArea.setToolTipText("Read me!");
 		eventArea.setLineWrap(true);
 		eventArea.setEditable(false);
@@ -59,7 +65,8 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener{
 		eventAreaScroll.setBounds(10, 50, 600, 440);
 		add(eventAreaScroll);
 		
-		actionArea = new JTextArea();
+		actionArea = new MyTextArea();
+		actionArea.setBackground(new Color(1,1,1, (float) 0.01));
 		actionArea.setLineWrap(true);
 		actionArea.setWrapStyleWord(true);
 		actionArea.setToolTipText("Type me!");
@@ -68,8 +75,8 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener{
 		actionArea.setDocument(docAction);
 		add(actionArea);
 		
-		
 		chatRecArea = new JTextArea("Welcome to the chat!");
+		chatRecArea.setFont(new Font("Bookman Old Style", Font.PLAIN, 14));
 		chatRecArea.setToolTipText("Read me!");
 		chatRecArea.setLineWrap(true);
 		chatRecArea.setEditable(false);
@@ -90,74 +97,90 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener{
 		
 		
 		actionSend = new JButton("Send");
-		actionSend.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		actionSend.setForeground(Color.white);
+		actionSend.setFocusPainted(false);
+		actionSend.setBackground(new Color(219, 142, 27));
+		actionSend.setFont(new Font("Tahoma", Font.BOLD, 12));
 		actionSend.setBounds(510, 500, 100, 75);
 		add(actionSend);
 		
 		chatSend = new JButton("Send");
-		chatSend.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		chatSend.setForeground(Color.white);
+		chatSend.setFocusPainted(false);
+		chatSend.setBackground(new Color(219, 142, 27));
+		chatSend.setFont(new Font("Tahoma", Font.BOLD, 12));
 		chatSend.setBounds(1164, 500, 100, 75);
 		add(chatSend);
 		
 		lblRemainingWordsAction = new JLabel("Action");
+		lblRemainingWordsAction.setForeground(Color.white);
 		lblRemainingWordsAction.setBounds(10, 585, 200, 14);
 		add(lblRemainingWordsAction);
 		
 		lblRemainingWordsChat = new JLabel("Chat");
+		lblRemainingWordsChat.setForeground(Color.white);
 		lblRemainingWordsChat.setBounds(800, 585, 200, 14);
 		add(lblRemainingWordsChat);
 		
 		lblEvent = new JLabel("Event Area");
+		lblEvent.setForeground(Color.white);
 		lblEvent.setBounds(10, 22, 200, 22);
 		add(lblEvent);
 		
 		lblChat = new JLabel("Chat Area");
+		lblChat.setForeground(Color.white);
 		lblChat.setBounds(800, 22, 200, 22);
 		add(lblChat);
-
+		
 		lblHP = new JLabel("HP: 1");
+		lblHP.setForeground(Color.white);
 		lblHP.setBounds(615, 56, 175, 14);
 		lblHP.setToolTipText("Seems serious...");
 		add(lblHP);
 		
 		lblMight = new JLabel("Might: 9001");
+		lblMight.setForeground(Color.white);
 		lblMight.setBounds(615, 76, 175, 14);
 		lblMight.setToolTipText("A god among men!");
 		add(lblMight);
 		
 		lblDex = new JLabel("Dex: Too much!");
+		lblDex.setForeground(Color.white);
 		lblDex.setBounds(615, 96, 175, 14);
 		add(lblDex);
 		
 		lblWisdom = new JLabel("Wisdom: mom?");
+		lblWisdom.setForeground(Color.white);
 		lblWisdom.setBounds(615, 116, 175, 14);
 		add(lblWisdom);
 		
 		lblConstitution = new JLabel("Constitution: 666");
+		lblConstitution.setForeground(Color.white);
 		lblConstitution.setBounds(615, 136, 175, 14);
 		add(lblConstitution);
 		
 		lblCrit = new JLabel("Crit: 100%");
-		lblCrit.setBounds(615, 156, 175, 14);
-		add(lblCrit);
-		
-		lblCrit = new JLabel("Crit: 100%");
+		lblCrit.setForeground(Color.white);
 		lblCrit.setBounds(615, 156, 175, 14);
 		add(lblCrit);
 		
 		lblAccuracy = new JLabel("Accuracy: 5%");
+		lblAccuracy.setForeground(Color.white);
 		lblAccuracy.setBounds(615, 176, 175, 14);
 		add(lblAccuracy);
 		
 		lblEvasion = new JLabel("Evasion: 95%");
+		lblEvasion.setForeground(Color.white);
 		lblEvasion.setBounds(615, 196, 175, 14);
 		add(lblEvasion);
 		
 		lblArmor = new JLabel("Armor: 0%");
+		lblArmor.setForeground(Color.white);
 		lblArmor.setBounds(615, 216, 175, 14);
 		add(lblArmor);
 		
 		lblResist = new JLabel("Resist Element: 100%");
+		lblResist.setForeground(Color.white);
 		lblResist.setBounds(615, 236, 175, 14);
 		add(lblResist);
 		
@@ -221,4 +244,14 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener{
 			updChatArea(chatTypArea.getText());
 		}
 	}
+}
+class MyTextArea extends JTextArea {
+    private Image img;
+    public MyTextArea() {
+        img = new ImageIcon(Cl_Main.class.getResource("loginBackground.png")).getImage();
+    }
+    protected void paintComponent(Graphics g) {
+        g.drawImage(img,0,0,null);
+        super.paintComponent(g);
+    }
 }

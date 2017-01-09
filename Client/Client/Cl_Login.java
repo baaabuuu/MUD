@@ -2,6 +2,8 @@ package Client;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
@@ -17,7 +19,7 @@ public class Cl_Login extends JDialog implements ActionListener {
 	private JTextField userField;
 	private JPasswordField passField;
 	private JLabel userLabel, passLabel, empty, empty2, empty3;
-	private JButton btnLogin, btnCancel;
+	private JButton btnLogin, btnExit;
     private boolean succeeded;
 	
 	Cl_Login(Frame parent){
@@ -35,7 +37,7 @@ public class Cl_Login extends JDialog implements ActionListener {
         GridBagConstraints cs = new GridBagConstraints();
         
         cs.fill = GridBagConstraints.HORIZONTAL;
-		
+        
         empty = new JLabel(" ");
         cs.gridx = 0;
         cs.gridy = 0;
@@ -55,6 +57,7 @@ public class Cl_Login extends JDialog implements ActionListener {
         panel.add(empty3, cs);
         
         userLabel = new JLabel("Username: ");
+        userLabel.setForeground(Color.white);
         cs.gridx = 1;
         cs.gridy = 1;
         cs.gridwidth = 1;
@@ -67,6 +70,7 @@ public class Cl_Login extends JDialog implements ActionListener {
         panel.add(userField, cs);
         
         passLabel = new JLabel("Password: ");
+        passLabel.setForeground(Color.white);
         cs.gridx = 1;
         cs.gridy = 2;
         cs.gridwidth = 1;
@@ -79,9 +83,19 @@ public class Cl_Login extends JDialog implements ActionListener {
         panel.add(passField, cs);
         
         btnLogin = new JButton("Login");
+        btnLogin.setPreferredSize(new Dimension(75,25));
+        btnLogin.setForeground(Color.white);
+        btnLogin.setFocusPainted(false);
+        btnLogin.setBackground(new Color(219, 142, 27));
+        btnLogin.setFont(new Font("Tahoma", Font.BOLD, 12));
         
-        btnCancel = new JButton("Exit");
-        btnCancel.addActionListener(new ActionListener() {
+        btnExit = new JButton("Exit");
+        btnExit.setPreferredSize(new Dimension(75,25));
+        btnExit.setForeground(Color.white);
+        btnExit.setFocusPainted(false);
+        btnExit.setBackground(new Color(219, 142, 27));
+        btnExit.setFont(new Font("Tahoma", Font.BOLD, 12));
+        btnExit.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
                 dispose();
@@ -92,14 +106,12 @@ public class Cl_Login extends JDialog implements ActionListener {
         JPanel bp = new JPanel();
         bp.setOpaque(false);
         bp.add(btnLogin);
-        bp.add(btnCancel);
+        bp.add(btnExit);
         
         JPanel logBack = new Login_Background(); 
         logBack.setLayout(new BorderLayout());
         logBack.add(panel,BorderLayout.CENTER);
         logBack.add(bp,BorderLayout.PAGE_END);
-        //getContentPane().add(panel, BorderLayout.CENTER);
-        //getContentPane().add(bp, BorderLayout.PAGE_END);
         
         getContentPane().add(logBack, BorderLayout.CENTER);
         

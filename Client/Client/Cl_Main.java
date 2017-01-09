@@ -28,8 +28,8 @@ public class Cl_Main extends JFrame{
 					mainFrame.setVisible(true);
 					mainFrame.setSize(1280,650);
 					mainFrame.setContentPane(G_BG);
-					Cl_Login loginDlg = new Cl_Login(mainFrame);
-			        loginDlg.setVisible(true);
+					//Cl_Login loginDlg = new Cl_Login(mainFrame);
+			        //loginDlg.setVisible(true);
 			        
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -39,7 +39,7 @@ public class Cl_Main extends JFrame{
 	}
 	Cl_Main() {
 		setTitle("The Game!");
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Cl_Main.class.getResource("IconImage.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Cl_Main.class.getResource("/Client/IconImage.png")));
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1280, 600);
