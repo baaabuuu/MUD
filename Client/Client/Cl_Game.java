@@ -30,7 +30,6 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener{
 	private DefaultStyledDocument docAction, docChat;
 	
 	public Cl_Game() {
-		setBackground(Color.LIGHT_GRAY);
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLayout(null);
 		setOpaque(false);
