@@ -30,6 +30,7 @@ public class Cl_Main extends JFrame{
 					mainFrame.setContentPane(G_BG);
 					Cl_Login loginDlg = new Cl_Login(mainFrame);
 			        loginDlg.setVisible(true);
+			        
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

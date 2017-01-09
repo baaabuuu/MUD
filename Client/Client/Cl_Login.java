@@ -110,7 +110,7 @@ public class Cl_Login extends JDialog implements ActionListener {
 	public String getUsername() {
         return userField.getText().trim();
     }
-
+	
     public String getPassword() {
         return new String(passField.getPassword());
     }
