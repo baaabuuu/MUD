@@ -2,65 +2,142 @@ package dungeons;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Scanner;
+
+import dungeons.Room2.Event;
+import npc.Entity;
 
 public class Room 
 {
+	
+	public int currEvent =	0;
+	
+	public boolean hasEntered = false;
+	
+	public enum Event {
+		FIGHT,
+		TEXT;
+		
+	}
+		
 	/**
-	 * Contains the ID of another room - this room is used to connect to the new room
+	 * Contains a list of all events:
+	 * <p>0 = first time entering a room.
+	 * <p>1	= when entering the room afterwards.
+	 * <p>Other IDs have different functions and can be refered to in different ways.
 	 */
-	private ArrayList<Integer>	connectionID;
-	/**
-	 * Contains a string with the description of the connection.
-	 * things like <door> etc.
-	 */
-	private ArrayList<String>	connectionDescription;
+	@SuppressWarnings("rawtypes")
+	public ArrayList<ArrayList> eventStack			=	new ArrayList<ArrayList>();
 	
-	/**
-	 * Contains an ID integer which refers to a connectionID and a connectionDescription
-	 * It only displays visible connections
-	 */
-	private ArrayList<Integer>	visibleConnections;
 	
-	/** 
-	 * Contains the events for the room ex.
-	 * <p> reveal-x-: = reveals connection x from connectionID and connectionDescription.</p>
-	 * <p> fight-x-= causes a fight to occur with x enemy from the enemylist - can be grouped</p>
-	 * <p>newOption-x- reveals option x as a possible option.</p>
-	 * Refer to eventDescription for a text reference. 
-	 */
-	private ArrayList<String> eventList;
+	@SuppressWarnings("rawtypes")
+	public ArrayList<ArrayList> eventTextStack		=	new ArrayList<ArrayList>();
 	
-	/**
-	 * A string containing the description of an event within the room.
-	 */
-	ArrayList<String> eventDescription;
+	@SuppressWarnings("rawtypes")
+	public ArrayList<ArrayList> eventOptionStack	=	new ArrayList<ArrayList>();
+	@SuppressWarnings("rawtypes")
+	public ArrayList<ArrayList> eventOptionIDStack	=	new ArrayList<ArrayList>();
 	
-	//description text starts when the player enters the room
-	ArrayList<String> description;
+	public void newTextEvent(String text, ArrayList<Event> events, ArrayList<String> textList)
+	{		
+		events.add(Event.TEXT);
+		textList.add(text);
+	}
 	
-	/**
-	 * A room contains our lists and nothing else
-	 */
-	
-	public Room()
+	public void newOptionEvent(String text, int id, ArrayList<String> textList, ArrayList<Integer> id2)
 	{
-		connectionID			=	new ArrayList<Integer>();
-		connectionDescription	=	new ArrayList<String>();
-		visibleConnections		=	new ArrayList<Integer>();
-		eventList				=	new ArrayList<String>();
-		eventDescription		=	new ArrayList<String>();
-		description				=	new ArrayList<String>();
+		textList.add(text);
+		id2.add(id);
+		
 	}
 	
 	/**
-	 * Adds a new connection for this room to another
-	 * @param id the ID of the new room
-	 * @param desc
+	 * Adds a new event to our event stack.
 	 */
-	public void addConnection(int id, String desc)
+	public void newEvent()
 	{
-		connectionID.add(id);
-		connectionDescription.add(desc);
+		eventStack.add(new ArrayList<Event>());
+		eventTextStack.add(new ArrayList<String>());
+		eventOptionStack.add(new ArrayList<String>());
+		eventOptionIDStack.add(new ArrayList<Integer>());
+		
 	}
+
+	public void runEvent(int id)
+	{
+		ArrayList<Event>	events		=	eventStack.get(id);
+		ArrayList<String>	text		=	eventTextStack.get(id);
+		ArrayList<String>	options		= 	eventOptionStack.get(id);
+		ArrayList<Integer>	nextEvent	=	eventOptionIDStack.get(id);
+		options.add("Exit");
+		nextEvent.add(-1);
+		
+		int 				textCounter	=	0;
+		
+		for (Event event : events)
+		{
+			switch (event){					
+				case FIGHT:
+					break;
+				case TEXT: // prints the first line in eventDescription and then deletes it.
+					try {
+						Thread.sleep(750);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					System.out.println(text.get(textCounter));
+					try {
+						Thread.sleep(750);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					textCounter++;
+					break;
+				default://nothing happens kek
+			}
+		}
+		//Things can occur here
+		//run game logic
+		Scanner input = new Scanner(System.in);
+		System.out.println("Select which option you'd like to take:");	
+		for (String option : options)
+		{
+			System.out.println(" --- <" + option +">" );
+		}
+		String newInput;
+		boolean correctValue;
+		while(true)
+		{
+			
+			newInput	=	input.nextLine().toLowerCase();
+			if (newInput.startsWith("<"))
+				newInput	=	newInput.substring(1, newInput.length());
+			if (newInput.endsWith(">"))
+				newInput	=	newInput.substring(0, newInput.length()-1);
+				
+			correctValue	=	true;
+			for (String option : options)
+			{
+				System.out.println(option.toLowerCase() + " = " + newInput.toLowerCase());
+				if (option.toLowerCase().equals(newInput.toLowerCase()))
+				{	correctValue	=	true;
+					break;
+				}
+			}
+			if (correctValue)
+			{
+				break;
+			} else
+			{
+				System.out.println("WRONG INPUT, TRY AGAIN");
+			}
+			
+		}
+	}	
+	
+	
+	
 	
 }
