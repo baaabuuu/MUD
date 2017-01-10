@@ -95,7 +95,6 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener{
 		chatTypArea.setDocument(docChat);
 		add(chatTypArea);
 		
-		
 		actionSend = new JButton("Send");
 		actionSend.setForeground(Color.white);
 		actionSend.setFocusPainted(false);

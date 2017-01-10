@@ -15,21 +15,24 @@ import java.awt.Toolkit;
 public class Cl_Main extends JFrame{
 	private String userName;
 	private boolean loggedIn = false;
+	static JPanel G_BG;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					JPanel G_BG = new Game_Background();
-					Cl_Game game = new Cl_Game();
-					G_BG.setLayout(new BorderLayout());
-					G_BG.add(game, BorderLayout.CENTER);
+					G_BG = new Game_Background();
 					Cl_Main mainFrame = new Cl_Main();
 					mainFrame.setVisible(true);
 					mainFrame.setSize(1280,650);
 					mainFrame.setContentPane(G_BG);
-					//Cl_Login loginDlg = new Cl_Login(mainFrame);
-			        //loginDlg.setVisible(true);
+					Cl_Login loginDlg = new Cl_Login(mainFrame);
+			        loginDlg.setVisible(true);
+					
+			        
+					
+					
+					
 			        
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -46,10 +49,14 @@ public class Cl_Main extends JFrame{
 		//getContentPane().setBackground(Color.RED);
 		//setContentPane(new JLabel(new ImageIcon(Cl_Main.class.getResource("IconImage.png"))));
 	}
+	public static void runGame(){
+		Cl_Game game = new Cl_Game();
+		G_BG.setLayout(new BorderLayout());
+		G_BG.add(game, BorderLayout.CENTER);
+	}
 }
 class Game_Background extends JPanel{
 	Image bg = new ImageIcon(Cl_Main.class.getResource("BackgroundImage.jpg")).getImage();
-	@Override
     public void paintComponent(Graphics g) {
         g.drawImage(bg, 0, 0, getWidth(), getHeight(), this);
     }

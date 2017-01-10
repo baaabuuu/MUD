@@ -20,7 +20,6 @@ public class Cl_Login extends JDialog implements ActionListener {
 	private JPasswordField passField;
 	private JLabel userLabel, passLabel, empty, empty2, empty3;
 	private JButton btnLogin, btnExit;
-    private boolean succeeded;
 	
 	Cl_Login(Frame parent){
 		super(parent,"Login",true);
@@ -88,6 +87,12 @@ public class Cl_Login extends JDialog implements ActionListener {
         btnLogin.setFocusPainted(false);
         btnLogin.setBackground(new Color(219, 142, 27));
         btnLogin.setFont(new Font("Tahoma", Font.BOLD, 12));
+        btnLogin.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                
+            	
+            }
+        });
         
         btnExit = new JButton("Exit");
         btnExit.setPreferredSize(new Dimension(75,25));
