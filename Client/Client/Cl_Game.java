@@ -32,8 +32,10 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener{
 	public JLabel lblAccuracy, lblEvasion, lblArmor, lblResist;
 	public JTextArea eventArea, actionArea, chatRecArea, chatTypArea;
 	private DefaultStyledDocument docAction, docChat;
+	Cl_Main parent;
 	
-	public Cl_Game() {
+	public Cl_Game(Cl_Main parent) {
+		this.parent = parent;
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLayout(null);
 		setOpaque(false);
@@ -55,6 +57,8 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener{
 		
 		eventArea = new JTextArea("Welcome Adventurer!");
 		eventArea.setFont(new Font("Bookman Old Style", Font.PLAIN, 14));
+		eventArea.setForeground(Color.white);
+		eventArea.setOpaque(false);
 		eventArea.setToolTipText("Read me!");
 		eventArea.setLineWrap(true);
 		eventArea.setEditable(false);
@@ -62,11 +66,14 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener{
 		JScrollPane eventAreaScroll = new JScrollPane(eventArea);
 		eventAreaScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		eventAreaScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		eventAreaScroll.setOpaque(false);
+		eventAreaScroll.getViewport().setOpaque(false);
 		eventAreaScroll.setBounds(10, 50, 600, 440);
 		add(eventAreaScroll);
 		
-		actionArea = new MyTextArea();
-		actionArea.setBackground(new Color(1,1,1, (float) 0.01));
+		actionArea = new JTextArea();
+		actionArea.setForeground(Color.white);
+		actionArea.setOpaque(false);
 		actionArea.setLineWrap(true);
 		actionArea.setWrapStyleWord(true);
 		actionArea.setToolTipText("Type me!");
@@ -194,18 +201,7 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener{
 			lblRemainingWordsChat.setText((255 -docChat.getLength()) + " characters remaining");
 		}
     }
-	private String eventAreaInfo;
-	public void updEventArea(String text){
-		eventAreaInfo = eventArea.getText();
-		eventAreaInfo += "\n" + text;
-		eventArea.setText(eventAreaInfo);
-	}
-	private String chatRecAreaInfo;
-	public void updChatArea(String text){
-		chatRecAreaInfo = chatRecArea.getText();
-		chatRecAreaInfo += "\n" + text;
-		chatRecArea.setText(chatRecAreaInfo);
-	}
+	
 	public void keyTyped(KeyEvent e) {}
 	private String actionAreaTemp;
 	private String chatTypAreaTemp;
@@ -226,21 +222,21 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener{
 		if(e.getSource() == actionArea && e.getKeyCode() == KeyEvent.VK_ENTER){
 			//Message must be more than 0 character.
 			if(actionAreaTemp.length() > 0){
-				updEventArea("Player: " + actionAreaTemp);
+				parent.updEventArea("Player: " + actionAreaTemp);
 			}
 			actionArea.setText("");
 		}else if(e.getSource() == chatTypArea && e.getKeyCode() == KeyEvent.VK_ENTER){
 			if(chatTypAreaTemp.length() > 0){
-				updChatArea("Player: " + chatTypAreaTemp);
+				parent.updChatArea("Player: " + chatTypAreaTemp);
 			}
 			chatTypArea.setText("");
 		}
 	}
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == actionSend){
-			updEventArea(actionArea.getText());
+			parent.updEventArea(actionArea.getText());
 		}else if(e.getSource() == chatTypArea || e.getSource() == chatSend){
-			updChatArea(chatTypArea.getText());
+			parent.updChatArea(chatTypArea.getText());
 		}
 	}
 }

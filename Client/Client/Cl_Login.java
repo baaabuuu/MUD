@@ -25,7 +25,7 @@ public class Cl_Login extends JDialog implements ActionListener {
 		super(parent,"Login",true);
 		
 		getRootPane().setOpaque(false);
-		getContentPane ().setBackground (new Color (0, 0, 0, 0));
+		getContentPane().setBackground (new Color (0, 0, 0, 0));
 		
 		//Removes top tool-bar.
 		setUndecorated(true);
@@ -89,8 +89,8 @@ public class Cl_Login extends JDialog implements ActionListener {
         btnLogin.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                
-            	
+            	dispose();
+            	Cl_Main.runGame();
             }
         });
         
