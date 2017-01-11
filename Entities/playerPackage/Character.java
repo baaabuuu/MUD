@@ -37,6 +37,11 @@ public class Character extends Entity{
 		exp=0;
 	}
 	
+	public int getDex()
+	{
+		return stats.get(1);
+	}
+	
 	public void getInfo()
 	{
 		System.out.println("Name: " + name + " Class: " + charClass + " level " + level);

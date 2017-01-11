@@ -7,15 +7,36 @@ public class Entity {
 	int[] dmg = new int[2];
 	protected int hp;
 	protected int level;
+	protected int dexterity;
+	
+	
 	public Entity(String name, int hp, int level){
 		this.name	=	name;
 		maxHP		= 	hp;
 		this.hp		=	hp;
 		this.level	= 	level;
+		//dexterity	= dex;
 	}
 	protected void recalcHP(){
 		if (hp>this.maxHP) hp	=	maxHP;
 	}
+	
+	
+	public int getDex()
+	{
+		return dexterity;
+	}
+	
+	public void addDex(int val)
+	{
+		dexterity+=val;
+	}
+	
+	public void setDex(int val)
+	{
+		dexterity=val;
+	}
+	
 	public void setLevel(int val)
 	{
 		this.level=val;

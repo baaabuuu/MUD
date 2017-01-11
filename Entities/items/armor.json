@@ -32,6 +32,7 @@
 	"goldCost": 	"15",
 	"evasionMod":	["-5","-5"],
 	"reduction":	["0","1"],
+	"spellReduction":	["1","2"],
 	"unusedStats":	["0"],
 	"durablityMax":	"10",
 	"description": "A piece of human flesh used as armor."

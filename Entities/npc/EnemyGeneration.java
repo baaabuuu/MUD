@@ -11,7 +11,7 @@ import items.WeaponGeneration;
 
 public class EnemyGeneration {
 	static Random rand = new Random();
-	WeaponGeneration wepGen;
+	WeaponGeneration wepGen	=	new WeaponGeneration();
 	
 	public static void main(String[] args) throws IOException
 	{
@@ -22,7 +22,7 @@ public class EnemyGeneration {
 	
 	public EnemyGeneration() throws IOException
 	{
-		new EnemyList();
+		
 		wepGen = new WeaponGeneration();
 		Creep newMob = createCreep();
 		newMob.printInfo();
@@ -32,21 +32,24 @@ public class EnemyGeneration {
 	{
 		//no modifiers in terms of searching
 		//needs search modifiers
+		new EnemyList();
 		ArrayList<CreepType> enemies = EnemyList.getCreepList();
 		CreepType monsterType	= enemies.get(index);
 		
 		//handles the simple stuff
 		//null pointer exception
 		
-		int level 		= randVal(monsterType.challenge);
+		int level 		 = randVal(monsterType.challenge);
 		int hp			 = randVal(monsterType.hp);
 		int dmgBonus	 = randVal(monsterType.dmgBonus);
 		int reduc		 = randVal(monsterType.reduction);
 		int spellReduc	 = randVal(monsterType.spellReduction);
 		
+		int dex			= Integer.parseInt(monsterType.dexterity);
+		
 		
 		String weapon = monsterType.weapons[rand.nextInt(monsterType.weapons.length)];
-		String armor = monsterType.armor[rand.nextInt(monsterType.weapons.length)];
+		String armor = monsterType.armor[rand.nextInt(monsterType.armor.length)];
 		Weapon wep	=	WeaponGeneration.createWeapon(weapon);
 		Armor chest	=	ArmorGeneration.createArmor(armor);
 		
@@ -57,7 +60,7 @@ public class EnemyGeneration {
 		//TODO ADD LOOT, LOOT TABLES ARE IMPLEMENTED ALREADY.
 		
 		String[] loot = {null};		
-		return new Creep(name,hp,wep,loot, dmgBonus, modifiers, level, chest,reduc,spellReduc);
+		return new Creep(name,hp,wep,loot, dmgBonus, modifiers, level, chest,reduc,spellReduc,dex);
 	}
 	
 	private static Creep createCreep() throws IOException
@@ -89,7 +92,7 @@ public class EnemyGeneration {
 		//TODO ADD LOOT, LOOT TABLES ARE IMPLEMENTED ALREADY.
 		
 		String[] loot = {null};		
-		return new Creep(name,hp,wep,loot, dmgBonus, modifiers, level,chest,reduc,spellReduc);
+		return new Creep(name,hp,wep,loot, dmgBonus, modifiers, level,chest,reduc,spellReduc,0);
 	}
 	
 

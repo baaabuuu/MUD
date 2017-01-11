@@ -36,6 +36,10 @@ public class ArmorGeneration {
 	}
 	
 	public static Armor createArmor(String id) throws IOException{
+		if (armors == null)
+		{
+			armors	=	new ArmorList();
+		}
 		if (armorHash.isEmpty())
 		{
 			generateHash();
@@ -49,6 +53,7 @@ public class ArmorGeneration {
 		int durability	= Integer.parseInt(armorType.durablityMax);
 		int evasionMod	= randVal(armorType.evasionMod);
 		int reduction	= randVal(armorType.reduction);
+		System.out.println(armorType.spellReduction[0] + " spellReduc: " + armorType.spellReduction[1]);
 		int spellReduc	= randVal(armorType.spellReduction);
 		int rarity 		= Integer.parseInt(armorType.rarity);
 		int goldCost	= Integer.parseInt(armorType.goldCost);
@@ -69,7 +74,15 @@ public class ArmorGeneration {
 	}
 	
 	public static Armor createArmor(int index){
-
+		if (armors.equals(null))
+		{
+			try {
+				armors	=	new ArmorList();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		//weaps is short form of armors
 		ArrayList<ArmorType> armor = armors.getArmorList();
 		ArmorType armorType		= armor.get(index);
@@ -80,6 +93,9 @@ public class ArmorGeneration {
 		int reduction	= randVal(armorType.reduction);
 		int rarity 		= Integer.parseInt(armorType.rarity);
 		int goldCost	= Integer.parseInt(armorType.goldCost);
+		
+		System.out.println(armorType.spellReduction[0] + " spellReduc: " + armorType.spellReduction[1]);
+
 		int spellReduc	= randVal(armorType.spellReduction);
 		
 		//adds the unused stats to an array

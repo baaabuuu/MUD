@@ -78,7 +78,7 @@ public class CharacterHandling {
 		InputStreamReader reader;
 		try {
 			reader = new InputStreamReader(AccountHandling.class.getResourceAsStream("/playerPackage/Characters.json"), "UTF-8");
-			Gson gson = new GsonBuilder().create();
+			Gson gson = new GsonBuilder().setPrettyPrinting().create();
 			CharacterType[] savedCharacters = gson.fromJson(reader, CharacterType[].class);
 			for(CharacterType saved: savedCharacters)
 			{
@@ -86,7 +86,6 @@ public class CharacterHandling {
 			}
 			return true;
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
@@ -239,7 +238,6 @@ public class CharacterHandling {
 	 * @return
 	 */
 	private static CharacterType initalizeSaveObject(Character character) {
-		// TODO Auto-generated method stub
 		CharacterType saveObject = new CharacterType();
 		saveObject.name=character.getName();
 		saveObject.charClass=character.getCharClass();
@@ -260,7 +258,6 @@ public class CharacterHandling {
 			saveObject.inventory[i]	=	String.valueOf(character.getInventory().get(i).toSaveString());
 		}
 		saveObject.equipment	=	new String[character.getEquipment().size()];
-		
 		for (int i=0;i<character.getEquipment().size();i++)
 		{
 			saveObject.equipment[i]	=	String.valueOf(character.getEquipment().get(i).toSaveString());

@@ -12,8 +12,9 @@ public class Creep extends Entity
 	String[] modifier;
 	int		spellReduction;
 	int		reduction;
+	int		dexterity;
 	
-	public Creep(String name, int hp, Weapon weapon, String[] loot, int dmgBonus,String[] modifier, int level, Armor chest, int spellRes, int armorRess)
+	public Creep(String name, int hp, Weapon weapon, String[] loot, int dmgBonus,String[] modifier, int level, Armor chest, int spellRes, int armorRess, int dex)
 	{
 		super(name, hp,level);
 		//array containing loot
@@ -22,9 +23,15 @@ public class Creep extends Entity
 		this.modifier	=	modifier;
 		this.weapon		=	weapon;
 		this.chest		=	chest;
+		dexterity		=	dex;
 		spellReduction	=	spellRes;
 		reduction		=	armorRess;
 		applyModifierEffect();
+	}
+	
+	public int getDex()
+	{
+		return dexterity;
 	}
 	
 	private void applyModifierEffect()

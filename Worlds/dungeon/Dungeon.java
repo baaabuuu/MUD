@@ -1,6 +1,8 @@
-package dungeons;
+package dungeon;
 
 import java.util.ArrayList;
+
+import dungeons.Room;
 
 public class Dungeon {
 	
@@ -8,11 +10,11 @@ public class Dungeon {
 	String	dungeonName			=	"unnamed dungeon";	
 	String	dungeonDescription	=	"undescried Dungeon";
 	//our list of rooms
-	ArrayList<Room> rooms;
+	public ArrayList<Room> rooms;
 	//player location, usually starts on 0 as the entry point.
 	int playerLoc	=	0;
 	//
-	Room newRoom	=	null;
+	public Room newRoom	=	null;
 	
 	
 	/**

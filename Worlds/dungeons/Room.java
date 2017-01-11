@@ -1,10 +1,10 @@
 package dungeons;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.Scanner;
 
-import dungeons.Room2.Event;
+import npc.EnemyGeneration;
 import npc.Entity;
 
 public class Room 
@@ -18,7 +18,6 @@ public class Room
 		FIGHT,
 		EXIT,
 		TEXT;
-		
 	}
 		
 	/**
@@ -28,11 +27,28 @@ public class Room
 	 * <p>Other IDs have different functions and can be refered to in different ways.
 	 */	
 	@SuppressWarnings("rawtypes")
-	public ArrayList<ArrayList> eventStack			=	new ArrayList<ArrayList>();
+	public ArrayList<ArrayList> eventStack		=	new ArrayList<ArrayList>();
 	
-	public ArrayList<String>	exitOption			=	new ArrayList<String>();
+	public ArrayList<String>	exitOption		=	new ArrayList<String>();
 	
-	public ArrayList<Integer>	exitID				=	new ArrayList<Integer>();
+	public ArrayList<Integer>	exitID			=	new ArrayList<Integer>();
+	
+	public ArrayList<Integer>	exitEvent		=	new ArrayList<Integer>();
+	
+	@SuppressWarnings("rawtypes")
+	public ArrayList<ArrayList> eventExitStack	=	new ArrayList<ArrayList>();
+	
+	@SuppressWarnings("rawtypes")
+	public ArrayList<ArrayList> eventExitID		=	new ArrayList<ArrayList>();
+	
+	/**
+	 * Contains which events launches upon entering the room - 0 is default
+	 */
+	@SuppressWarnings("rawtypes")
+	public ArrayList<ArrayList> eventExitEvent	=	new ArrayList<ArrayList>();
+	
+	@SuppressWarnings("rawtypes")
+	public ArrayList<ArrayList> eventEnemies	=	new ArrayList<ArrayList>();
 	
 	@SuppressWarnings("rawtypes")
 	public ArrayList<ArrayList> eventTextStack		=	new ArrayList<ArrayList>();
@@ -44,16 +60,26 @@ public class Room
 	public ArrayList<ArrayList> eventOptionIDStack	=	new ArrayList<ArrayList>();
 	
 	
-	@SuppressWarnings("rawtypes")
-	public ArrayList<ArrayList> eventExitStack	=	new ArrayList<ArrayList>();
-	
-	@SuppressWarnings("rawtypes")
-	public ArrayList<ArrayList> eventExitID		=	new ArrayList<ArrayList>();
-	
 	public void newTextEvent(String text, ArrayList<Event> events, ArrayList<String> textList)
 	{		
 		events.add(Event.TEXT);
 		textList.add(text);
+	}
+	
+	public void newFight(int[] enemyID, ArrayList<Event> events, ArrayList<Entity[]> eventEnemies)
+	{		
+		events.add(Event.FIGHT);
+		Entity[]	enemies	=	new Entity[enemyID.length];
+		for (int i = 0;i<enemyID.length;i++)
+		{
+			try {
+				enemies[i]	=	EnemyGeneration.createCreep(enemyID[i]);
+			} catch (IOException e) {
+				System.out.println("Could not create enemy NPC");
+			}
+		}
+		eventEnemies.add(enemies);
+
 	}
 	
 	public void newOptionEvent(String text, int id, ArrayList<String> textList, ArrayList<Integer> id2)
@@ -62,11 +88,12 @@ public class Room
 		id2.add(id);
 	}
 	
-	public void newExit(String text, int id, ArrayList<Event> events, ArrayList<String> textList, ArrayList<Integer> id2)
+	public void newExit(String text, int id, int newEventID, ArrayList<Event> events, ArrayList<String> textList, ArrayList<Integer> id2, ArrayList<Integer> newEvent)
 	{
 		events.add(Event.EXIT);
 		textList.add(text);
 		id2.add(id);
+		newEvent.add(newEventID);
 	}
 	
 	/**
@@ -81,21 +108,28 @@ public class Room
 		eventOptionIDStack.add(new ArrayList<Integer>());
 		eventExitStack.add(new ArrayList<String>());
 		eventExitID.add(new ArrayList<Integer>());
-		
+		eventExitEvent.add(new ArrayList<Integer>());
+		eventEnemies.add(new ArrayList<Entity[]>());
 	}
 
 	@SuppressWarnings({"unchecked" })
 	public String runEvent(int id)
 	{
-		ArrayList<Event>	events		=	eventStack.get(id);
-		ArrayList<String>	text		=	eventTextStack.get(id);
-		ArrayList<String>	options		= 	eventOptionStack.get(id);
-		ArrayList<Integer>	nextEvent	=	eventOptionIDStack.get(id);
-		ArrayList<String>	exits		=	eventExitStack.get(id);
-		ArrayList<Integer>	exitIDs		=	eventExitID.get(id);
+		ArrayList<Event>	events			=	eventStack.get(id);
+		ArrayList<String>	text			=	eventTextStack.get(id);
+		ArrayList<String>	options			= 	eventOptionStack.get(id);
+		ArrayList<Integer>	nextEvent		=	eventOptionIDStack.get(id);
 		
-		int 				textCounter	=	0;
-		int 				exitCounter	=	0;
+		ArrayList<String>	exits			=	eventExitStack.get(id);
+		ArrayList<Integer>	exitIDs			=	eventExitID.get(id);
+		ArrayList<Integer>	exitEvents		=	eventExitEvent.get(id);
+		ArrayList<Entity[]>	enemies			=	eventEnemies.get(id);
+		
+		int 				textCounter		=	0;
+		int 				exitCounter		=	0;
+		int					battleCounter	=	0;
+		int					result			=	0;
+		Battle				battle;
 		if (!options.contains("Exit"))
 		{
 			options.add("Exit");
@@ -105,12 +139,24 @@ public class Room
 		for (Event event : events)
 		{
 			switch (event){
-				case EXIT:
-					exitOption.add(exits.get(exitCounter));
-					exitID.add(exitIDs.get(exitCounter));
-					exitCounter++;
+				case EXIT: //adds a new exit event - note they are permanent for this room
+					
+					//duplicate detection!
+					if (!exitOption.contains(exits.get(exitCounter)))
+					{
+						exitOption.add(exits.get(exitCounter));
+						exitID.add(exitIDs.get(exitCounter));
+						exitEvent.add(exitEvents.get(exitCounter));
+						exitCounter++;
+					}
 					break;
+			
+					
+					
 				case FIGHT:
+					//battlecode!
+					result	= new Battle().fight(enemies.get(battleCounter));
+					battleCounter++;
 					break;
 				case TEXT: // prints the first line in eventDescription and then deletes it.
 					try {
@@ -135,7 +181,6 @@ public class Room
 		String newInput;
 		String answer;
 		boolean correctValue;
-		boolean correctValue2;
 		int		newEvent	=	-1;
 		while(true)
 		{
@@ -189,9 +234,10 @@ public class Room
 						{
 							for (int i = 0; i<exitOption.size();i++)
 							{
+								
 								if (answer.equals(exitOption.get(i).toLowerCase()))
 								{
-									return "exit@" + exitID.get(i);
+									return "exit@" + exitID.get(i) + "@" + exitEvent.get(i);
 								}
 							}
 						}
@@ -219,6 +265,7 @@ public class Room
 	{
 		exitOption.add("None");
 		exitID.add(-1);
+		exitEvent.add(0);
 	}
 	
 	
