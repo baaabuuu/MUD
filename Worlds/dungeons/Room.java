@@ -150,9 +150,6 @@ public class Room
 						exitCounter++;
 					}
 					break;
-			
-					
-					
 				case FIGHT:
 					//battlecode!
 					result	= new Battle().fight(enemies.get(battleCounter));

@@ -7,6 +7,8 @@ public class Weapon extends Item {
 	protected String	attackDescription;
 	protected String 	weaponClass;
 	protected int[]		unusedStats;
+	protected String	mod;
+	
 
 	public Weapon(String name, String slot, int rarity, int level, int goldCost, String desc, String modifier, int accuracyMod, int critmod,
 			int[] damage, String attackDescription, String weaponClass,int durability, int[] stats) 
@@ -17,8 +19,23 @@ public class Weapon extends Item {
 		this.damage 			=	damage;
 		this.attackDescription	=	attackDescription;
 		this.weaponClass		=	weaponClass;
+		this.mod				=	modifier;
 		//currently unused stats
 		this.unusedStats		=	stats;
+	}
+	
+	public Weapon() 
+	{
+		super("Fists", "Weapon", 0, 1, 0, "a fist","", 1000);
+		this.accuracyMod 		=	0;
+		this.critMod			=	0;
+		this.damage 			=	new int[2];
+		this.damage[0]			=	2;
+		this.damage[1]			=	5;
+		this.attackDescription	=	"punches";
+		this.weaponClass		=	"martial";
+		this.mod				=	"";
+		//currently unused stats
 	}
 	
 	public Weapon(String name, String slot, int rarity, int level, int goldCost, String desc,
@@ -33,10 +50,14 @@ public class Weapon extends Item {
 		this.attackDescription	=	attackDescription;
 		this.weaponClass		=	weaponClass;
 		this.currDurrability	=	currDurability;
+		this.mod				=	modifier;
 		//currently unused stats
 		this.unusedStats		=	stats;
 	}
 	
+	public String getModifier() {
+		return mod;
+	}
 	
 	public String toSaveString()
 	{

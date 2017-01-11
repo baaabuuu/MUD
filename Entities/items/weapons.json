@@ -8,6 +8,7 @@
 					"Chilly",
 					"Accurate",
 					"Stunning",
+					"Vampiric",
 					"Unbreakable"
 	],
 	"rarity":	 	"1",
@@ -52,8 +53,8 @@
 					"Chilly",
 					"Accurate",
 					"Stunning",
-					"Unbreakable",
-					"Poisoned"
+					"Vampiric",
+					"Unbreakable"
 	],
 	"rarity":	 	"1",
 	"level":		"1",
@@ -76,9 +77,9 @@
 					"Fiery",
 					"Chilly",
 					"Accurate",
+					"Vampiric",
 					"Stunning",
-					"Unbreakable",
-					"Poisoned"
+					"Unbreakable"
 	],
 	"rarity":	 	"1",
 	"level":		"1",

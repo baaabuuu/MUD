@@ -29,6 +29,11 @@ public class Creep extends Entity
 		applyModifierEffect();
 	}
 	
+	public Weapon getWeapon()
+	{
+		return weapon;
+	}
+	
 	public int getDex()
 	{
 		return dexterity;

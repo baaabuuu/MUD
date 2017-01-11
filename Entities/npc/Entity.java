@@ -1,5 +1,9 @@
 package npc;
 
+import java.util.ArrayList;
+
+import items.Item;
+
 public class Entity {
 	protected String name;
 	protected int maxHP;
@@ -21,6 +25,16 @@ public class Entity {
 		if (hp>this.maxHP) hp	=	maxHP;
 	}
 	
+	
+	public void reduceHP(int amm)
+	{
+		hp-=amm;
+	}
+	
+	public void heal(int amm)
+	{
+		hp	=	(hp+amm<=maxHP) ? hp+amm : maxHP;
+	}
 	
 	public int getDex()
 	{
@@ -62,6 +76,10 @@ public class Entity {
 	public int getLevel()
 	{
 		return level;
+	}
+	public ArrayList<Item> getEquipment() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

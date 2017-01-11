@@ -3,6 +3,7 @@ package playerPackage;
 import java.util.ArrayList;
 
 import items.Item;
+import items.Weapon;
 import npc.Entity;
 
 
@@ -12,6 +13,7 @@ public class Character extends Entity{
 		ArrayList<Integer> stats;
 		int exp;
 		String	charClass;
+		Weapon	wep;
 		ArrayList<Item> inventory;
 	 	ArrayList<Item> equipment;
 		String	characterID;
@@ -36,7 +38,7 @@ public class Character extends Entity{
 		stats.add(5);
 		exp=0;
 	}
-	
+		
 	public int getDex()
 	{
 		return stats.get(1);
@@ -93,11 +95,12 @@ public class Character extends Entity{
 		inventory.remove(itemID);
 	}
 	
-	public ArrayList<Item>getInventory()
+	public ArrayList<Item> getInventory()
 	{
 		return inventory;
 	}
-	public ArrayList<Item>getEquipment()
+	
+	public ArrayList<Item> getEquipment()
 	{
 		return equipment;
 	}
@@ -169,6 +172,11 @@ public class Character extends Entity{
 	public void levelUP() {
 		// TODO level up function
 		
+	}
+
+	public Weapon getWeapon() {
+		// TODO Auto-generated method stub
+		return wep;
 	}
 
 }
