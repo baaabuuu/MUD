@@ -13,6 +13,7 @@ import java.awt.event.KeyListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -29,8 +30,9 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener{
 	private JButton actionSend, chatSend;
 	public JLabel lblEvent, lblChat, lblRemainingWordsChat, lblRemainingWordsAction;
 	public JLabel  lblHP, lblMight, lblDex, lblWisdom, lblConstitution, lblCrit;
-	public JLabel lblAccuracy, lblEvasion, lblArmor, lblResist;
+	public JLabel lblAccuracy, lblEvasion, lblArmor, lblResist, lblName;
 	public JTextArea eventArea, actionArea, chatRecArea, chatTypArea;
+	public JList itemList;
 	private DefaultStyledDocument docAction, docChat;
 	Cl_Main parent;
 	
@@ -102,6 +104,7 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener{
 		chatTypArea.setDocument(docChat);
 		add(chatTypArea);
 		
+		// Buttons.
 		actionSend = new JButton("Send");
 		actionSend.setForeground(Color.white);
 		actionSend.setFocusPainted(false);
@@ -118,6 +121,11 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener{
 		chatSend.setBounds(1164, 500, 100, 75);
 		add(chatSend);
 		
+		itemList = new MyList();
+		itemList.setBounds(620, 281, 170, 209);
+		itemList.setBackground(new Color(1,1,1, (float) 0.01));
+		add(itemList);
+		
 		lblRemainingWordsAction = new JLabel("Action");
 		lblRemainingWordsAction.setForeground(Color.white);
 		lblRemainingWordsAction.setBounds(10, 585, 200, 14);
@@ -128,69 +136,65 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener{
 		lblRemainingWordsChat.setBounds(800, 585, 200, 14);
 		add(lblRemainingWordsChat);
 		
-		lblEvent = new JLabel("Event Area");
-		lblEvent.setForeground(Color.white);
-		lblEvent.setBounds(10, 22, 200, 22);
-		add(lblEvent);
-		
-		lblChat = new JLabel("Chat Area");
-		lblChat.setForeground(Color.white);
-		lblChat.setBounds(800, 22, 200, 22);
-		add(lblChat);
+		// Middle Area Labels.
+		lblName = new JLabel("Character: GhandiErGUD!");
+		lblName.setForeground(Color.white);
+		lblName.setBounds(615, 56, 175, 14);
+		add(lblName);
 		
 		lblHP = new JLabel("HP: 1");
 		lblHP.setForeground(Color.white);
-		lblHP.setBounds(615, 56, 175, 14);
+		lblHP.setBounds(615, 76, 175, 14);
 		lblHP.setToolTipText("Seems serious...");
 		add(lblHP);
 		
 		lblMight = new JLabel("Might: 9001");
 		lblMight.setForeground(Color.white);
-		lblMight.setBounds(615, 76, 175, 14);
+		lblMight.setBounds(615, 96, 175, 14);
 		lblMight.setToolTipText("A god among men!");
 		add(lblMight);
 		
 		lblDex = new JLabel("Dex: Too much!");
 		lblDex.setForeground(Color.white);
-		lblDex.setBounds(615, 96, 175, 14);
+		lblDex.setBounds(615, 116, 175, 14);
 		add(lblDex);
 		
 		lblWisdom = new JLabel("Wisdom: mom?");
 		lblWisdom.setForeground(Color.white);
-		lblWisdom.setBounds(615, 116, 175, 14);
+		lblWisdom.setBounds(615, 136, 175, 14);
 		add(lblWisdom);
 		
 		lblConstitution = new JLabel("Constitution: 666");
 		lblConstitution.setForeground(Color.white);
-		lblConstitution.setBounds(615, 136, 175, 14);
+		lblConstitution.setBounds(615, 156, 175, 14);
 		add(lblConstitution);
 		
 		lblCrit = new JLabel("Crit: 100%");
 		lblCrit.setForeground(Color.white);
-		lblCrit.setBounds(615, 156, 175, 14);
+		lblCrit.setBounds(615, 176, 175, 14);
 		add(lblCrit);
 		
 		lblAccuracy = new JLabel("Accuracy: 5%");
 		lblAccuracy.setForeground(Color.white);
-		lblAccuracy.setBounds(615, 176, 175, 14);
+		lblAccuracy.setBounds(615, 196, 175, 14);
 		add(lblAccuracy);
 		
 		lblEvasion = new JLabel("Evasion: 95%");
 		lblEvasion.setForeground(Color.white);
-		lblEvasion.setBounds(615, 196, 175, 14);
+		lblEvasion.setBounds(615, 216, 175, 14);
 		add(lblEvasion);
 		
 		lblArmor = new JLabel("Armor: 0%");
 		lblArmor.setForeground(Color.white);
-		lblArmor.setBounds(615, 216, 175, 14);
+		lblArmor.setBounds(615, 236, 175, 14);
 		add(lblArmor);
 		
 		lblResist = new JLabel("Resist Element: 100%");
 		lblResist.setForeground(Color.white);
-		lblResist.setBounds(615, 236, 175, 14);
+		lblResist.setBounds(615, 256, 175, 14);
 		add(lblResist);
 		
-		
+		// Update remainingWords labels.
 		updateCount(1);
 		updateCount(2);
 	}
@@ -240,6 +244,7 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener{
 		}
 	}
 }
+//Modified JTextarea that adds a background.
 class MyTextArea extends JTextArea {
     private Image img;
     public MyTextArea() {
@@ -249,4 +254,15 @@ class MyTextArea extends JTextArea {
         g.drawImage(img,0,0,null);
         super.paintComponent(g);
     }
+}
+//Modified JList that adds a background.
+class MyList extends JList {
+  private Image img;
+  public MyList() {
+      img = new ImageIcon(Cl_Main.class.getResource("loginBackground.png")).getImage();
+  }
+  protected void paintComponent(Graphics g) {
+      g.drawImage(img,0,0,null);
+      super.paintComponent(g);
+  }
 }

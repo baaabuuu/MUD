@@ -52,10 +52,14 @@ public class Cl_Main extends JFrame{
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Cl_Main.class.getResource("/Client/IconImage.png")));
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1280, 600);
+		setBounds(100, 100, 1280, 650);
 		//getContentPane().setBackground(Color.RED);
 		//setContentPane(new JLabel(new ImageIcon(Cl_Main.class.getResource("IconImage.png"))));
 	}
+	/**
+	 * Initialize the Cl_Game JPanel and adds it to the Game_Background panel, then updates
+	 * the Cl_Main JFrame with the modified JPanel.
+	 */
 	public static void runGame(){
 		game = new Cl_Game(mainFrame);
 		G_BG.setLayout(new BorderLayout());
@@ -94,6 +98,9 @@ public class Cl_Main extends JFrame{
 		
 	}
 }
+/** 
+ * A JPanel that contains the "BackgroundImage.jpg" background image.
+ */
 class Game_Background extends JPanel{
 	Image bg = new ImageIcon(Cl_Main.class.getResource("BackgroundImage.jpg")).getImage();
     public void paintComponent(Graphics g) {

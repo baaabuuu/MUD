@@ -89,8 +89,22 @@ public class Cl_Login extends JDialog implements ActionListener {
         btnLogin.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	dispose();
-            	Cl_Main.runGame();
+            	// send userField.getText();
+            	String hashed = "";
+            	
+            	char[] pass = passField.getPassword();
+            	String plainText = "";
+            	
+            	for(int i = 0; i < pass.length; i++){
+            		plainText += pass;
+            	}
+            	
+            	//BCrypt.checkpw(plainText, hashed)
+            	
+            	if(true){
+            		Cl_Main.runGame();
+            		dispose();
+            	}
             }
         });
         
@@ -134,9 +148,11 @@ public class Cl_Login extends JDialog implements ActionListener {
 	public void actionPerformed(ActionEvent e) {}
 	
 }
+/** 
+ * A JPanel that contains the "loginBackground.png" background image.
+ */
 class Login_Background extends JPanel{
 	Image bg = new ImageIcon(Cl_Login.class.getResource("loginBackground.png")).getImage();
-	@Override
     public void paintComponent(Graphics g) {
         g.drawImage(bg, 0, 0, getWidth(), getHeight(), this);
     }
