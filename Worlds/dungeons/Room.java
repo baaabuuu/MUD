@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import items.Item;
 import npc.EnemyGeneration;
 import npc.Entity;
 
@@ -17,8 +18,11 @@ public class Room
 	public enum Event {
 		FIGHT,
 		EXIT,
+		SHOP,
 		TEXT;
 	}
+	
+	public Shop shop		=	new Shop();
 		
 	/**
 	 * Contains a list of all events:
@@ -27,28 +31,28 @@ public class Room
 	 * <p>Other IDs have different functions and can be refered to in different ways.
 	 */	
 	@SuppressWarnings("rawtypes")
-	public ArrayList<ArrayList> eventStack		=	new ArrayList<ArrayList>();
+	public ArrayList<ArrayList> eventStack			=	new ArrayList<ArrayList>();
 	
-	public ArrayList<String>	exitOption		=	new ArrayList<String>();
+	public ArrayList<String>	exitOption			=	new ArrayList<String>();
 	
-	public ArrayList<Integer>	exitID			=	new ArrayList<Integer>();
+	public ArrayList<Integer>	exitID				=	new ArrayList<Integer>();
 	
-	public ArrayList<Integer>	exitEvent		=	new ArrayList<Integer>();
-	
-	@SuppressWarnings("rawtypes")
-	public ArrayList<ArrayList> eventExitStack	=	new ArrayList<ArrayList>();
+	public ArrayList<Integer>	exitEvent			=	new ArrayList<Integer>();
 	
 	@SuppressWarnings("rawtypes")
-	public ArrayList<ArrayList> eventExitID		=	new ArrayList<ArrayList>();
+	public ArrayList<ArrayList> eventExitStack		=	new ArrayList<ArrayList>();
+		
+	@SuppressWarnings("rawtypes")
+	public ArrayList<ArrayList> eventExitID			=	new ArrayList<ArrayList>();
 	
 	/**
 	 * Contains which events launches upon entering the room - 0 is default
 	 */
 	@SuppressWarnings("rawtypes")
-	public ArrayList<ArrayList> eventExitEvent	=	new ArrayList<ArrayList>();
+	public ArrayList<ArrayList> eventExitEvent		=	new ArrayList<ArrayList>();
 	
 	@SuppressWarnings("rawtypes")
-	public ArrayList<ArrayList> eventEnemies	=	new ArrayList<ArrayList>();
+	public ArrayList<ArrayList> eventEnemies		=	new ArrayList<ArrayList>();
 	
 	@SuppressWarnings("rawtypes")
 	public ArrayList<ArrayList> eventTextStack		=	new ArrayList<ArrayList>();
@@ -58,6 +62,29 @@ public class Room
 	
 	@SuppressWarnings("rawtypes")
 	public ArrayList<ArrayList> eventOptionIDStack	=	new ArrayList<ArrayList>();
+	
+	
+	@SuppressWarnings("rawtypes")
+	public ArrayList<ArrayList> eventShops			=	new ArrayList<ArrayList>();
+	
+	@SuppressWarnings("rawtypes")
+	public ArrayList<ArrayList> eventShopsText		=	new ArrayList<ArrayList>();	
+	
+	//requires an arraylist of shops
+	//an arraylist of texts for that shop
+	
+	@SuppressWarnings("rawtypes")
+	public void newShopEvent(ArrayList<Event> events,
+							 ArrayList<ArrayList> shops,
+							 ArrayList<ArrayList> texts,
+						 	 ArrayList<Item> items,
+						     ArrayList<String> text)
+	{	
+		shops.add(items);
+		texts.add(text);
+		events.add(Event.SHOP);
+
+	}
 	
 	
 	public void newTextEvent(String text, ArrayList<Event> events, ArrayList<String> textList)
@@ -100,6 +127,7 @@ public class Room
 	 * Adds a new event to our event stack.
 	 * <p>When adding new event types remember to add them here as well
 	 */
+	@SuppressWarnings("rawtypes")
 	public void newEvent()
 	{
 		eventStack.add(new ArrayList<Event>());
@@ -110,25 +138,32 @@ public class Room
 		eventExitID.add(new ArrayList<Integer>());
 		eventExitEvent.add(new ArrayList<Integer>());
 		eventEnemies.add(new ArrayList<Entity[]>());
+		//might need more work here
+		eventShops.add(new ArrayList<ArrayList>());
+		eventShopsText.add(new ArrayList<ArrayList>());
 	}
 
-	@SuppressWarnings({"unchecked" })
+	@SuppressWarnings({"unchecked","rawtypes" })
 	public String runEvent(int id)
 	{
-		ArrayList<Event>	events			=	eventStack.get(id);
-		ArrayList<String>	text			=	eventTextStack.get(id);
-		ArrayList<String>	options			= 	eventOptionStack.get(id);
-		ArrayList<Integer>	nextEvent		=	eventOptionIDStack.get(id);
+		ArrayList<Event>		events			=	eventStack.get(id);
+		ArrayList<String>		text			=	eventTextStack.get(id);
+		ArrayList<String>		options			= 	eventOptionStack.get(id);
+		ArrayList<Integer>		nextEvent		=	eventOptionIDStack.get(id);
 		
-		ArrayList<String>	exits			=	eventExitStack.get(id);
-		ArrayList<Integer>	exitIDs			=	eventExitID.get(id);
-		ArrayList<Integer>	exitEvents		=	eventExitEvent.get(id);
-		ArrayList<Entity[]>	enemies			=	eventEnemies.get(id);
+		ArrayList<String>		exits			=	eventExitStack.get(id);
+		ArrayList<Integer>		exitIDs			=	eventExitID.get(id);
+		ArrayList<Integer>		exitEvents		=	eventExitEvent.get(id);
+		ArrayList<Entity[]>		enemies			=	eventEnemies.get(id);
+		
+		ArrayList<ArrayList>	shops			=	eventShops.get(id);
+		ArrayList<ArrayList> 	shopText		=	eventShopsText.get(id);
 		
 		int 				textCounter		=	0;
 		int 				exitCounter		=	0;
 		int					battleCounter	=	0;
 		int					result			=	0;
+		int					shopCounter		=	0;
 		Battle				battle;
 		if (!options.contains("Exit"))
 		{
@@ -139,6 +174,11 @@ public class Room
 		for (Event event : events)
 		{
 			switch (event){
+				case SHOP:
+					System.out.println("new shop");
+					Shop.newShop(shops.get(shopCounter),shopText.get(shopCounter));
+					shopCounter++;
+					break;
 				case EXIT: //adds a new exit event - note they are permanent for this room
 					
 					//duplicate detection!

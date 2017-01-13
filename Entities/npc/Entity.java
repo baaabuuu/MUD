@@ -81,6 +81,10 @@ public class Entity {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	public ArrayList<Item> getInventory() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 }

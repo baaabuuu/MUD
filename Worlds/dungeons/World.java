@@ -1,22 +1,28 @@
 package dungeons;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import dungeon.Dungeon;
 import dungeons.Room.Event;
+import items.ArmorGeneration;
+import items.Item;
+import items.WeaponGeneration;
 import npc.Entity;
 import playerPackage.CharacterHandling;
 import shitTierPackage.ShitTierClass;
 
 public class World {
-	
+	static Random rand = new Random(); 
 	//TEMP DATA - REMEMBER TO EDIT
 	public static Entity	playerChar;	
+	//TODO CHANGE THIS VALUE!
 	
 	public static ArrayList<Dungeon> dungeonList = new ArrayList<Dungeon>();
 	
 	public static void main(String[] args)
 	{
+		System.out.println("test");
 		ShitTierClass.intiateSeverData();
 
 		Dungeon dung = new Dungeon("Test Town","A bussy little town.");
@@ -29,7 +35,7 @@ public class World {
 	 * different events for each path for that reason.
 	 */
 	//used to get rid of annoying yellow flags
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked" })
 	public static void createTestTown(Dungeon dung)
 	{
 		dung.newRoom();
@@ -39,21 +45,27 @@ public class World {
 		int[] enemies;
 		
 		room.newEvent();
-		ArrayList<Event>	event			=	room.eventStack.get(room.eventStack.size()-1);
-		ArrayList<String>	textEvent		=	room.eventTextStack.get(room.eventTextStack.size()-1);
-		ArrayList<String>	optionEvent		=	room.eventOptionStack.get(room.eventOptionStack.size()-1);
-		ArrayList<Integer>	optionIDevent	=	room.eventOptionIDStack.get(room.eventOptionIDStack.size()-1);
-		ArrayList<String>	exitEvent		=	room.eventExitStack.get(room.eventExitStack.size()-1);
-		ArrayList<Integer>	exitEventID		=	room.eventExitID.get(room.eventExitID.size()-1);
-		ArrayList<Integer>	exitEvents		=	room.eventExitEvent.get(room.eventExitEvent.size()-1);
-		ArrayList<Entity[]>	enemyEvents		=	room.eventEnemies.get(room.eventEnemies.size()-1);
+		ArrayList<Event>	 event			=	room.eventStack.get(room.eventStack.size()-1);
+		ArrayList<String>	 textEvent		=	room.eventTextStack.get(room.eventTextStack.size()-1);
+		ArrayList<String>	 optionEvent	=	room.eventOptionStack.get(room.eventOptionStack.size()-1);
+		ArrayList<Integer>	 optionIDevent	=	room.eventOptionIDStack.get(room.eventOptionIDStack.size()-1);
+		ArrayList<String>	 exitEvent		=	room.eventExitStack.get(room.eventExitStack.size()-1);
+		ArrayList<Integer>	 exitEventID	=	room.eventExitID.get(room.eventExitID.size()-1);
+		ArrayList<Integer>	 exitEvents		=	room.eventExitEvent.get(room.eventExitEvent.size()-1);
+		ArrayList<Entity[]>	 enemyEvents	=	room.eventEnemies.get(room.eventEnemies.size()-1);
+		ArrayList<ArrayList> eventShops		=	room.eventShops.get(room.eventShops.size()-1);
+		ArrayList<ArrayList> eventShopsText	=	room.eventShopsText.get(room.eventShopsText.size()-1);
+		
+		ArrayList<Item>		shopItems		=	new ArrayList<Item>();
+		ArrayList<String>	shopText		=	new ArrayList<String>();
+		
 		
 		//this is the order in which events occur.
 		room.newTextEvent("Running event 0 in room 0.",event,textEvent);
 		room.newOptionEvent("Run event 1", 1, optionEvent, optionIDevent);
 		enemies = new int[1];
 		enemies[0]	=	0;
-		room.newFight(enemies,event,enemyEvents);
+		//room.newFight(enemies,event,enemyEvents);
 
 		
 		//adds the exit if event 0 launches
@@ -72,9 +84,47 @@ public class World {
 		exitEventID		=	room.eventExitID.get(room.eventExitID.size()-1);
 		exitEvents		=	room.eventExitEvent.get(room.eventExitEvent.size()-1);
 		enemyEvents		=	room.eventEnemies.get(room.eventEnemies.size()-1);
+		eventShops		=	room.eventShops.get(room.eventShops.size()-1);
+		eventShopsText	=	room.eventShopsText.get(room.eventShopsText.size()-1);
+		
 		
 		room.newTextEvent("Running event 1 in room 0.",event,textEvent);
 		
+		//let's just add some random items to the shop
+		
+		//clear arrayLists used for items beforehand!
+		shopItems.clear();
+		shopText.clear();
+		
+		//adding items to our shop
+		shopItems.add(WeaponGeneration.createWeapon(rand.nextInt(2)));
+		shopItems.add(WeaponGeneration.createWeapon(rand.nextInt(2)));
+		shopItems.add(WeaponGeneration.createWeapon(rand.nextInt(2)));
+		shopItems.add(WeaponGeneration.createWeapon(rand.nextInt(2)));
+		shopItems.add(WeaponGeneration.createWeapon(rand.nextInt(2)));
+		
+		shopItems.add(ArmorGeneration.createArmor(rand.nextInt(2)));
+		shopItems.add(ArmorGeneration.createArmor(rand.nextInt(2)));
+		shopItems.add(ArmorGeneration.createArmor(rand.nextInt(2)));
+		shopItems.add(ArmorGeneration.createArmor(rand.nextInt(2)));
+		
+		//first  = intro to shop
+		//second = "you want to buy X?
+		//third  = "it's a good item smth smth"
+		//fourth = "you bought x"
+		//fifth  = you don't have enough gold
+		//sixth	 = invalid ID
+		//seventh= leave shop
+		
+		shopText.add("Old man: Wha, what ar yu doin' in mah shop?");
+		shopText.add("Old man: Oh, ya want to buy the ");
+		shopText.add(" , that's a mighty fine item.");
+		shopText.add("Old man: Aight, here ya go");
+		shopText.add("Old man: Ya ain't got the money bud.");
+		shopText.add("Old man: I'm pretty sure what'cha tryina buy ain't something I've got for sale.");
+		shopText.add("Old man: Come back any time ya want to, if yu have the cash.");
+		
+		room.newShopEvent(event, eventShops, eventShopsText, shopItems, shopText);
 		
 		
 		room.newOptionEvent("Run event 0", 0, optionEvent, optionIDevent);
@@ -93,6 +143,9 @@ public class World {
 		exitEventID		=	room.eventExitID.get(room.eventExitID.size()-1);
 		exitEvents		=	room.eventExitEvent.get(room.eventExitEvent.size()-1);
 		enemyEvents		=	room.eventEnemies.get(room.eventEnemies.size()-1);
+		eventShops		= 	room.eventShops.get(room.eventShops.size()-1);
+		eventShopsText	=	room.eventShopsText.get(room.eventShopsText.size()-1);
+		
 		
 		//this is the order in which events occur.
 		room.newTextEvent("Running event 0 in room 1.",event,textEvent);
@@ -108,6 +161,8 @@ public class World {
 		exitEventID		=	room.eventExitID.get(room.eventExitID.size()-1);
 		exitEvents		=	room.eventExitEvent.get(room.eventExitEvent.size()-1);
 		enemyEvents		=	room.eventEnemies.get(room.eventEnemies.size()-1);
+		eventShops		= 	room.eventShops.get(room.eventShops.size()-1);
+		eventShopsText	=	room.eventShopsText.get(room.eventShopsText.size()-1);
 		
 		//this is the order in which events occur.
 		room.newTextEvent("Running event 1 in room 1.",event,textEvent);

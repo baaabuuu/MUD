@@ -74,7 +74,7 @@ public class ArmorGeneration {
 	}
 	
 	public static Armor createArmor(int index){
-		if (armors.equals(null))
+		if (armors==null)
 		{
 			try {
 				armors	=	new ArmorList();

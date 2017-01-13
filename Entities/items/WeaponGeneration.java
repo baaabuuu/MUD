@@ -37,6 +37,8 @@ public class WeaponGeneration {
 	}
 	
 	public static Weapon createWeapon(String id) throws IOException{
+		if (weapons	== null)
+			weapons = new WeaponList();
 		if (weaponHash.isEmpty())
 		{
 			generateHash();
@@ -72,7 +74,15 @@ public class WeaponGeneration {
 	}
 	
 	public static Weapon createWeapon(int index){
-
+		if (weapons	== null)
+		{
+			try {
+				weapons = new WeaponList();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		//weaps is short form of weapons
 		ArrayList<WeaponType> weaps = weapons.getWeaponList();
 		WeaponType armorType		= weaps.get(index);
