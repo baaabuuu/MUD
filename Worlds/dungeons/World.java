@@ -74,7 +74,6 @@ public class World {
 		//please note that this is only true for 0 and 1, no other value is changed
 		room.newExit("Market",1,0,event,exitEvent,exitEventID,exitEvents);
 		
-		
 		room.newEvent();
 		event			=	room.eventStack.get(room.eventStack.size()-1);
 		textEvent		=	room.eventTextStack.get(room.eventTextStack.size()-1);
@@ -87,9 +86,8 @@ public class World {
 		eventShops		=	room.eventShops.get(room.eventShops.size()-1);
 		eventShopsText	=	room.eventShopsText.get(room.eventShopsText.size()-1);
 		
-		
 		room.newTextEvent("Running event 1 in room 0.",event,textEvent);
-		
+		room.newTextEvent("Running event 2 in room 0.",event,textEvent);
 		//let's just add some random items to the shop
 		
 		//clear arrayLists used for items beforehand!
@@ -130,7 +128,66 @@ public class World {
 		room.newOptionEvent("Run event 0", 0, optionEvent, optionIDevent);
 		room.newExit("Market",1,0,event,exitEvent,exitEventID,exitEvents);
 		
+		room.newEvent();
+		event			=	room.eventStack.get(room.eventStack.size()-1);
+		textEvent		=	room.eventTextStack.get(room.eventTextStack.size()-1);
+		optionEvent		=	room.eventOptionStack.get(room.eventOptionStack.size()-1);
+		optionIDevent	=	room.eventOptionIDStack.get(room.eventOptionIDStack.size()-1);
+		exitEvent		=	room.eventExitStack.get(room.eventExitStack.size()-1);
+		exitEventID		=	room.eventExitID.get(room.eventExitID.size()-1);
+		exitEvents		=	room.eventExitEvent.get(room.eventExitEvent.size()-1);
+		enemyEvents		=	room.eventEnemies.get(room.eventEnemies.size()-1);
+		eventShops		=	room.eventShops.get(room.eventShops.size()-1);
+		eventShopsText	=	room.eventShopsText.get(room.eventShopsText.size()-1);
+
+		room.newTextEvent("Greetings traveller.", event, textEvent);
+		room.newTextEvent("Dark times these days... Where are you from stranger?", event, textEvent);
+		room.newOptionEvent("Darkshire?", 4, optionEvent, optionIDevent);
 		
+		room.newEvent();
+		event			=	room.eventStack.get(room.eventStack.size()-1);
+		textEvent		=	room.eventTextStack.get(room.eventTextStack.size()-1);
+		optionEvent		=	room.eventOptionStack.get(room.eventOptionStack.size()-1);
+		optionIDevent	=	room.eventOptionIDStack.get(room.eventOptionIDStack.size()-1);
+		exitEvent		=	room.eventExitStack.get(room.eventExitStack.size()-1);
+		exitEventID		=	room.eventExitID.get(room.eventExitID.size()-1);
+		exitEvents		=	room.eventExitEvent.get(room.eventExitEvent.size()-1);
+		enemyEvents		=	room.eventEnemies.get(room.eventEnemies.size()-1);
+		eventShops		=	room.eventShops.get(room.eventShops.size()-1);
+		eventShopsText	=	room.eventShopsText.get(room.eventShopsText.size()-1);
+
+		room.newTextEvent("That's a long way form here. Sad time you would come here though...", event, textEvent);
+		room.newOptionEvent("Why is that so?", 5, optionEvent, optionIDevent);
+		
+		room.newEvent();
+		event			=	room.eventStack.get(room.eventStack.size()-1);
+		textEvent		=	room.eventTextStack.get(room.eventTextStack.size()-1);
+		optionEvent		=	room.eventOptionStack.get(room.eventOptionStack.size()-1);
+		optionIDevent	=	room.eventOptionIDStack.get(room.eventOptionIDStack.size()-1);
+		exitEvent		=	room.eventExitStack.get(room.eventExitStack.size()-1);
+		exitEventID		=	room.eventExitID.get(room.eventExitID.size()-1);
+		exitEvents		=	room.eventExitEvent.get(room.eventExitEvent.size()-1);
+		enemyEvents		=	room.eventEnemies.get(room.eventEnemies.size()-1);
+		eventShops		=	room.eventShops.get(room.eventShops.size()-1);
+		eventShopsText	=	room.eventShopsText.get(room.eventShopsText.size()-1);
+
+		room.newTextEvent("Werewolves are preying on the surrounding woods, no one knows why they've come, but the city council is trying to figure out where they're coming from.", event, textEvent);
+		room.newOptionEvent("Okay, thank you.", 6, optionEvent, optionIDevent);
+		
+		room.newEvent();
+		event			=	room.eventStack.get(room.eventStack.size()-1);
+		textEvent		=	room.eventTextStack.get(room.eventTextStack.size()-1);
+		optionEvent		=	room.eventOptionStack.get(room.eventOptionStack.size()-1);
+		optionIDevent	=	room.eventOptionIDStack.get(room.eventOptionIDStack.size()-1);
+		exitEvent		=	room.eventExitStack.get(room.eventExitStack.size()-1);
+		exitEventID		=	room.eventExitID.get(room.eventExitID.size()-1);
+		exitEvents		=	room.eventExitEvent.get(room.eventExitEvent.size()-1);
+		enemyEvents		=	room.eventEnemies.get(room.eventEnemies.size()-1);
+		eventShops		=	room.eventShops.get(room.eventShops.size()-1);
+		eventShopsText	=	room.eventShopsText.get(room.eventShopsText.size()-1);
+
+		room.newExit("Town hall",2,0,event,exitEvent,exitEventID,exitEvents);
+	
 		//room 1 market
 		dung.newRoom();
 		room		=	dung.newRoom;
