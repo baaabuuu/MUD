@@ -108,6 +108,7 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener{
 		actionSend = new JButton("Send");
 		actionSend.setForeground(Color.white);
 		actionSend.setFocusPainted(false);
+		actionSend.addActionListener(this);
 		actionSend.setBackground(new Color(219, 142, 27));
 		actionSend.setFont(new Font("Tahoma", Font.BOLD, 12));
 		actionSend.setBounds(510, 500, 100, 75);
@@ -116,11 +117,13 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener{
 		chatSend = new JButton("Send");
 		chatSend.setForeground(Color.white);
 		chatSend.setFocusPainted(false);
+		chatSend.addActionListener(this);
 		chatSend.setBackground(new Color(219, 142, 27));
 		chatSend.setFont(new Font("Tahoma", Font.BOLD, 12));
 		chatSend.setBounds(1164, 500, 100, 75);
 		add(chatSend);
 		
+		// List and label counters.
 		itemList = new MyList();
 		itemList.setBounds(620, 281, 170, 209);
 		itemList.setBackground(new Color(1,1,1, (float) 0.01));
@@ -137,7 +140,7 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener{
 		add(lblRemainingWordsChat);
 		
 		// Middle Area Labels.
-		lblName = new JLabel("Character: GhandiErGUD!");
+		lblName = new JLabel("User: GhandiErGUD!");
 		lblName.setForeground(Color.white);
 		lblName.setBounds(615, 56, 175, 14);
 		add(lblName);
@@ -227,6 +230,7 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener{
 			//Message must be more than 0 character.
 			if(actionAreaTemp.length() > 0){
 				parent.updEventArea("Player: " + actionAreaTemp);
+				parent.transmit.putToQueue(":ACT:" + actionAreaTemp);
 			}
 			actionArea.setText("");
 		}else if(e.getSource() == chatTypArea && e.getKeyCode() == KeyEvent.VK_ENTER){
@@ -238,9 +242,12 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener{
 	}
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == actionSend){
-			parent.updEventArea(actionArea.getText());
+			parent.updEventArea("Player: " + actionArea.getText());
+			parent.transmit.putToQueue(":ACT:" + actionArea.getText());
+			actionArea.setText("");
 		}else if(e.getSource() == chatTypArea || e.getSource() == chatSend){
-			parent.updChatArea(chatTypArea.getText());
+			parent.updChatArea("Player: " + chatTypArea.getText());
+			chatTypArea.setText("");
 		}
 	}
 }

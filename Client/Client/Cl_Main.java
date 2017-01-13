@@ -14,13 +14,12 @@ import java.awt.Toolkit;
 
 public class Cl_Main extends JFrame{
 	
-	private String userName;
 	private boolean loggedIn = false;
 	static JPanel G_BG;
 	static Cl_Game game;
 	static Cl_Main mainFrame;
 	static Cl_Login login;
-	static Cl_Consumer input;
+	static Cl_Consumer consumer;
 	static Cl_Transmit transmit;
 	
 	public static void main(String[] args) {
@@ -33,13 +32,16 @@ public class Cl_Main extends JFrame{
 					mainFrame.setVisible(true);
 					mainFrame.setSize(1280,650);
 					mainFrame.setContentPane(G_BG);
-					login = new Cl_Login(mainFrame);
+					String ipaddress = "192.168.1.50";
+					transmit = new Cl_Transmit("transmitter", ipaddress, 8080);
+			        transmit.start();
+			        
+			        consumer = new Cl_Consumer(mainFrame, transmit);
+			        consumer.start();
+			        
+					login = new Cl_Login(mainFrame, transmit);
 			        login.setVisible(true);
 					
-			        transmit = new Cl_Transmit("transmitter name", "servername", 8080);
-			        
-			        input = new Cl_Consumer(mainFrame, transmit);
-			        input.start();
 			        
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -66,6 +68,11 @@ public class Cl_Main extends JFrame{
 		G_BG.add(game, BorderLayout.CENTER);
 		mainFrame.setContentPane(G_BG);
 	}
+	private String userName;
+	public void updUsername(String name){
+		userName = name;
+		//game.lblName.setText("User: " + userName);
+	}
 	private String eventAreaInfo;
 	public void updEventArea(String text){
 		eventAreaInfo = game.eventArea.getText();
@@ -79,22 +86,26 @@ public class Cl_Main extends JFrame{
 		game.chatRecArea.setText(chatRecAreaInfo);
 		transmit.putToQueue("" + text);
 	}
-	private String[] labelSplit;
+	private String[] lblSplit;
 	public void updLabels(String inbound){
-		labelSplit = inbound.split(" ");
+		lblSplit = inbound.split(" ");
 		
-		game.lblHP.setText("HP: " + labelSplit[0]);
-		game.lblMight.setText("Might: " + labelSplit[1]);
-		game.lblDex.setText("Dexterity: " + labelSplit[2]);
-		game.lblWisdom.setText("Widom: " + labelSplit[3]);
-		game.lblConstitution.setText("Constitution: " + labelSplit[4]);
-		game.lblCrit.setText("Crit: " + labelSplit[5]);
-		game.lblAccuracy.setText("Accuracy: " + labelSplit[6]);
-		game.lblEvasion.setText("Evasion: " + labelSplit[7]);
-		game.lblArmor.setText("Armor: " + labelSplit[8]);
-		game.lblResist.setText("Resist: " + labelSplit[9]);
+		game.lblHP.setText("HP: " + lblSplit[0]);
+		game.lblMight.setText("Might: " + lblSplit[1]);
+		game.lblDex.setText("Dexterity: " + lblSplit[2]);
+		game.lblWisdom.setText("Widom: " + lblSplit[3]);
+		game.lblConstitution.setText("Constitution: " + lblSplit[4]);
+		game.lblCrit.setText("Crit: " + lblSplit[5]);
+		game.lblAccuracy.setText("Accuracy: " + lblSplit[6]);
+		game.lblEvasion.setText("Evasion: " + lblSplit[7]);
+		game.lblArmor.setText("Armor: " + lblSplit[8]);
+		game.lblResist.setText("Resist: " + lblSplit[9]);
 	}
-	public void updList(String temp){
+	private String[] listSplit;
+	public void updList(String inbound){
+		listSplit = inbound.split("@");
+		
+		
 		
 	}
 }

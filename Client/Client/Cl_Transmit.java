@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 
 
 public class Cl_Transmit extends Thread {
@@ -17,61 +18,51 @@ public class Cl_Transmit extends Thread {
 	String server;
 	String inbound;
 	
-	static ArrayBlockingQueue<String> inboundQueue = new ArrayBlockingQueue<String>(20);
+	ArrayBlockingQueue<String> inboundQueue = new ArrayBlockingQueue<String>(20);
 	ArrayBlockingQueue<String> outbound = new ArrayBlockingQueue<String>(20);
 	
 	Cl_Transmit(String transmitterName, String server, int portNumber)
 	{
-		transmitterName = this.transmitterName;
-		portNumber = this.portNumber;
-		server = this.server;
+		this.transmitterName = transmitterName;
+		this.portNumber = portNumber;
+		this.server = server;
 		System.out.println("Thread created: " + transmitterName);
 	}
 	
-	
-	public void start()
-	{
-		if (transmitter != null)
-		{
-			transmitter = new Thread(this, transmitterName);
-			transmitter.start();
-		}
-	}
-	
-	public void run()
-	{
+	public void run(){
+		System.out.println("Transmitter running!");
 		try{
 		Socket sock = new Socket(server, portNumber);
-		
+		System.out.println(sock.toString());
+		BufferedReader buffRead = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+		OutputStream out = sock.getOutputStream();
+		OutputStreamWriter outW = new OutputStreamWriter(out);
+		BufferedWriter outBW = new BufferedWriter(outW);
 		while(sock.isConnected())
 		{
-			BufferedReader buffRead = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-			inbound = buffRead.readLine();
-			if (outbound.size() != 0)
+			if (!outbound.isEmpty())
 			{
-				OutputStream out = sock.getOutputStream();
-				OutputStreamWriter outW = new OutputStreamWriter(out);
-				BufferedWriter outBW = new BufferedWriter(outW);
 				try {
-					outBW.write(outbound.take());
+					String a = outbound.take();
+					outBW.write(a);
+					System.out.println(a);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				outBW.flush();
 			}
-			if (inbound != null)
+			if (buffRead.ready())
 			{
 				try {
-					inboundQueue.put(inbound);
+					inboundQueue.put(buffRead.readLine());
 				} catch (InterruptedException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				inbound = null;
 			}
 		}
-		sock.close();
+	//	sock.close();
 		
 		} catch(IOException e){
 			System.out.println(e);
@@ -80,7 +71,7 @@ public class Cl_Transmit extends Thread {
 	public void putToQueue(String toQueue)
 	{
 		try {
-			outbound.put(toQueue);
+			outbound.put(toQueue + "\r\n");
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -91,7 +82,7 @@ public class Cl_Transmit extends Thread {
 	{
 		String get = "";
 		try {
-			if (inboundQueue.size() != 0){
+			if (!inboundQueue.isEmpty()){
 				get = inboundQueue.take();
 			}
 			} catch (InterruptedException e) {

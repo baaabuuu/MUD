@@ -11,6 +11,7 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -18,11 +19,17 @@ import javax.swing.border.LineBorder;
 public class Cl_Login extends JDialog implements ActionListener {
 	private JTextField userField;
 	private JPasswordField passField;
-	private JLabel userLabel, passLabel, empty, empty2, empty3;
+	private JLabel lblUser, lblPass, lblError, empty, empty2;
 	private JButton btnLogin, btnExit;
+	private String hashed;
+	private Cl_Transmit transmit;
+	private Cl_Main parent;
 	
-	Cl_Login(Frame parent){
+	Cl_Login(Cl_Main parent, Cl_Transmit transmit){
 		super(parent,"Login",true);
+		this.transmit = transmit;
+		this.parent = parent;
+		
 		
 		getRootPane().setOpaque(false);
 		getContentPane().setBackground (new Color (0, 0, 0, 0));
@@ -37,30 +44,31 @@ public class Cl_Login extends JDialog implements ActionListener {
         
         cs.fill = GridBagConstraints.HORIZONTAL;
         
-        empty = new JLabel(" ");
-        cs.gridx = 0;
+        lblError = new JLabel(" ");
+        lblError.setForeground(Color.red);
+        cs.gridx = 1;
         cs.gridy = 0;
-        cs.gridwidth = 3;
+        cs.gridwidth = 2;
+        panel.add(lblError, cs);
+        
+        empty = new JLabel("     ");
+        cs.gridx = 4;
+        cs.gridy = 1;
+        cs.gridwidth = 1;
         panel.add(empty, cs);
         
         empty2 = new JLabel("     ");
-        cs.gridx = 4;
+        cs.gridx = 0;
         cs.gridy = 1;
         cs.gridwidth = 1;
         panel.add(empty2, cs);
         
-        empty3 = new JLabel("     ");
-        cs.gridx = 0;
-        cs.gridy = 1;
-        cs.gridwidth = 1;
-        panel.add(empty3, cs);
-        
-        userLabel = new JLabel("Username: ");
-        userLabel.setForeground(Color.white);
+        lblUser = new JLabel("Username: ");
+        lblUser.setForeground(Color.white);
         cs.gridx = 1;
         cs.gridy = 1;
         cs.gridwidth = 1;
-        panel.add(userLabel, cs);
+        panel.add(lblUser, cs);
         
         userField = new JTextField(20);
         cs.gridx = 2;
@@ -68,17 +76,22 @@ public class Cl_Login extends JDialog implements ActionListener {
         cs.gridwidth = 2;
         panel.add(userField, cs);
         
-        passLabel = new JLabel("Password: ");
-        passLabel.setForeground(Color.white);
+        lblPass = new JLabel("Password: ");
+        lblPass.setForeground(Color.white);
         cs.gridx = 1;
         cs.gridy = 2;
         cs.gridwidth = 1;
-        panel.add(passLabel, cs);
+        panel.add(lblPass, cs);
         
         passField = new JPasswordField(20);
         cs.gridx = 2;
         cs.gridy = 2;
         cs.gridwidth = 2;
+        passField.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                login();
+            }
+        });
         panel.add(passField, cs);
         
         btnLogin = new JButton("Login");
@@ -89,22 +102,7 @@ public class Cl_Login extends JDialog implements ActionListener {
         btnLogin.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	// send userField.getText();
-            	String hashed = "";
-            	
-            	char[] pass = passField.getPassword();
-            	String plainText = "";
-            	
-            	for(int i = 0; i < pass.length; i++){
-            		plainText += pass;
-            	}
-            	
-            	//BCrypt.checkpw(plainText, hashed)
-            	
-            	if(true){
-            		Cl_Main.runGame();
-            		dispose();
-            	}
+            	login();
             }
         });
         
@@ -119,6 +117,7 @@ public class Cl_Login extends JDialog implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 dispose();
                 parent.dispose();
+                System.exit(0);
             }
         });
         
@@ -138,16 +137,51 @@ public class Cl_Login extends JDialog implements ActionListener {
         setResizable(false);
         setLocationRelativeTo(parent);
 	}
-	public String getUsername() {
-        return userField.getText().trim();
-    }
-	
-    public String getPassword() {
-        return new String(passField.getPassword());
+	private void login(){
+		lblError.setText(" ");
+		
+    	transmit.putToQueue(":DAT:" + userField.getText());
+    	
+    	//hashed = "$2a$10$PeCKmQYkxo/B0kb8Ccda8.xmlh8aAc20OkRFlrvuaiiZua14n/bKG";
+    	
+    	char[] pass = passField.getPassword();
+    	String plainText = "";
+    	
+    	for(int i = 0; i < pass.length; i++){
+    		plainText += pass[i];
+    	}
+    	System.out.println("plaintext " + plainText);
+    	for(int i = 0; i<3; i++){
+    		System.out.println("hashed " + hashed);
+    		try {
+				TimeUnit.SECONDS.sleep(1);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+    		if(hashed != null){
+    			if(BCrypt.checkpw(plainText, hashed)){
+            		parent.updUsername(userField.getText());
+            		Cl_Main.runGame();
+            		transmit.putToQueue(":DAT:" + "YES");
+            		dispose();
+            		break;
+            	}
+    		}
+    		if(i == 2){
+        		lblError.setText("ERROR");
+        	}
+    	}
+    	plainText = "";
+    	hashed = null;
+    	pass = null;
+	}
+    public void updHashed(String hashed){
+    	this.hashed = hashed;
     }
 	public void actionPerformed(ActionEvent e) {}
 	
 }
+
 /** 
  * A JPanel that contains the "loginBackground.png" background image.
  */

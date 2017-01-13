@@ -19,16 +19,21 @@ public class Cl_Consumer extends Thread {
 			}
 			inbound = transmit.takeFromQueue();
 			if(inbound != ""){
-				tag = inbound.substring(inbound.indexOf(":") + 1, inbound.indexOf(":"));
-				inbound.replace(tag, "");
+				System.out.println("Tagged info: " + inbound);
+				tag = inbound.substring(0,5);
+				inbound = inbound.replace(tag, "");
+				System.out.println("Tag: " + tag);
+				System.out.println("info: " + inbound);
 				
-				if(tag.equals("ACT")){
+				if(tag.equals(":DAT:")){
+					main.login.updHashed(inbound);
+				}else if(tag.equals(":ACT:")){
 					main.updEventArea(inbound);
-				}else if(tag.equals("INV")){
+				}else if(tag.equals(":INV:")){
 					main.updList(inbound);
-				}else if(tag.equals("CHAT")){
+				}else if(tag.equals(":CHA:")){
 					main.updChatArea(inbound);
-				}else if(tag.equals("LABEL")){
+				}else if(tag.equals(":LAB:")){
 					main.updLabels(inbound);
 				}
 			}
