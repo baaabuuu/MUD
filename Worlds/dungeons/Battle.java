@@ -154,7 +154,7 @@ public class Battle
 	private void dealDamage(Entity player, Weapon wep, Entity target) {
 		int damage 	=	calcWeaponDamage(wep);
 		//crit chance = weapon crit chance + dexterity / 2
-		if (wep.getCrit() + player.getDex()/2>= rand.nextInt(100)+1)
+		if (wep.getCrit() + player.getDex()/2 >= rand.nextInt(100)+1)
 			damage*=2;
 		for (Item equip: target.getEquipment())
 		{
