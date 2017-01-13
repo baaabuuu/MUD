@@ -14,7 +14,7 @@ public class Listener extends Thread {
 	String threadName = "Connection ";
 	
 	
-	Listener(String _listenerName, int _port)
+	public Listener(String _listenerName, int _port)
 	{
 		listenerName = _listenerName;
 		port = _port;
@@ -34,11 +34,10 @@ public class Listener extends Thread {
 			{
 				Socket sAccept = null;		//Allows a new connection to be established and handed off to a thread.
 				sAccept = this.servSock.accept();
-				
-				Sender transmitter = new Sender(threadName + threadNumber, sAccept);
+				MainGame	newgame	=	new MainGame();
+				newgame.start();
+				newgame.createSender(threadName+threadNumber,sAccept,threadNumber);
 				threadNumber ++;
-				System.out.println("A client has connected to the server. Creating thread" + threadName + threadNumber );
-				transmitter.start();	//Allocates threads to clients.
 			}
 		} catch(IOException e){
 			e.printStackTrace();

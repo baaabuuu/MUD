@@ -10,12 +10,14 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
 public class ClientTransmit extends Thread {
-	String transmitterName;
+	//initiate variables
 	int portNumber;
 	Thread transmitter;
+	Thread gameData;
+	String transmitterName;
 	String server;
 	String inbound;
-	
+	//queues used for data
 	ArrayBlockingQueue<String> inboundQueue = new ArrayBlockingQueue<String>(20);
 	ArrayBlockingQueue<String> outbound = new ArrayBlockingQueue<String>(20);
 	
@@ -34,6 +36,9 @@ public class ClientTransmit extends Thread {
 		{
 			transmitter = new Thread(this, transmitterName);
 			transmitter.start();
+			
+			gameData	= new Thread(this, "gameMainThread");
+			
 		}
 	}
 	
@@ -45,7 +50,6 @@ public class ClientTransmit extends Thread {
 		while(sock.isConnected())
 		{
 			BufferedReader buffRead = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-			inbound = buffRead.readLine();
 			if (outbound.size() != 0)
 			{
 				OutputStream out = sock.getOutputStream();
@@ -59,10 +63,12 @@ public class ClientTransmit extends Thread {
 				}
 				outBW.flush();
 			}
-			if (inbound != null)
+			if (true)
 			{
 				try {
+					System.out.println("IT GETS TO HERE");
 					inboundQueue.put(inbound);
+					
 				} catch (InterruptedException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

@@ -76,13 +76,17 @@ public class CharacterHandling {
 	public static boolean loadCharacters()
 	{
 		InputStreamReader reader;
+		Character chara;
 		try {
+			characters.clear();
 			reader = new InputStreamReader(AccountHandling.class.getResourceAsStream("/playerPackage/Characters.json"), "UTF-8");
 			Gson gson = new GsonBuilder().setPrettyPrinting().create();
 			CharacterType[] savedCharacters = gson.fromJson(reader, CharacterType[].class);
 			for(CharacterType saved: savedCharacters)
 			{
-				characters.add(convertToCharacter(saved));
+				chara =	convertToCharacter(saved);
+				if (!characters.contains(chara))
+					characters.add(convertToCharacter(saved));
 			}
 			return true;
 		} catch (UnsupportedEncodingException e) {

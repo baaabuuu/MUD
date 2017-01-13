@@ -1,6 +1,6 @@
 [
   {
-    "accountName": "TestAccount",
+    "accountName": "a",
     "password": "$2a$10$PeCKmQYkxo/B0kb8Ccda8.xmlh8aAc20OkRFlrvuaiiZua14n/bKG",
     "email": "Blib@blob.dtu.dk",
     "creationDate": "2017-01-06T22:44:51.571Z",
@@ -12,7 +12,7 @@
     "playerID": "0",
     "characterID": [
       "0",
-      null,
+      "1",
       null,
       null,
       null,
@@ -20,7 +20,7 @@
     ]
   },
   {
-    "accountName": "a",
+    "accountName": "b",
     "password": "$2a$10$5PWaB9pnjTp.8YD7hL8iGeob4jQx8a2Czf9Inuzl0yAUQWFZmSTGO",
     "email": "Balib@blob.dtu.dk",
     "creationDate": "2017-01-06T22:44:51.758Z",

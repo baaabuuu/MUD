@@ -15,18 +15,22 @@ import shitTierPackage.ShitTierClass;
 public class World {
 	static Random rand = new Random(); 
 	//TEMP DATA - REMEMBER TO EDIT
-	public static Entity	playerChar;	
+	public static Entity playerChar;	
 	//TODO CHANGE THIS VALUE!
 	
-	public static ArrayList<Dungeon> dungeonList = new ArrayList<Dungeon>();
+	public ArrayList<Dungeon> dungeonList = new ArrayList<Dungeon>();
 	
-	public static void main(String[] args)
+	public World()
 	{
-		System.out.println("test");
-		ShitTierClass.intiateSeverData();
-
+		initateWorld();
+	}
+	
+	
+	public boolean initateWorld()
+	{
 		Dungeon dung = new Dungeon("Test Town","A bussy little town.");
 		createTestTown(dung);
+		return true;
 	}
 	
 	/**
@@ -36,7 +40,7 @@ public class World {
 	 */
 	//used to get rid of annoying yellow flags
 	@SuppressWarnings({ "unchecked" })
-	public static void createTestTown(Dungeon dung)
+	public void createTestTown(Dungeon dung)
 	{
 		dung.newRoom();
 		Room 				room		=	dung.newRoom;
@@ -174,8 +178,17 @@ public class World {
 		
 		playerChar	= CharacterHandling.characters.get(0);
 		
-		//call this when entering a new room
+
+		
+	}
+
+	
+	public void runGame()
+	{
+		//starts in dungeon 0 room 0
 		int dungID	=	0;
+		int	roomID	=	0;
+		Room playerRoom = dungeonList.get(dungID).rooms.get(0);
 		String[]	dungeon;
 		while(true)
 		{
@@ -192,14 +205,16 @@ public class World {
 				{
 					dungID	=	Integer.parseInt(dungeon[1]);
 				}
+				//server operations
+				
+				//operation
 			}
 			//switch rooms
-			playerRoom	=	dung.rooms.get(Integer.parseInt(dungeon[1]));
-			dungID	=	Integer.parseInt(dungeon[2]);
+			playerRoom	=	dungeonList.get(dungID).rooms.get(Integer.parseInt(dungeon[1]));
+			roomID	=	Integer.parseInt(dungeon[2]);
 			// if dungID is equal to 1 or 0, check if room has been entered in the past.
-			dungID	=	(playerRoom.hasEntered && (dungID == 1 || dungID == 0)) ? 1: 0;
+			roomID	=	(playerRoom.hasEntered && (roomID == 1 || roomID == 0)) ? 1: 0;
 		}
-		
 	}
 	
 }

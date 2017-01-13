@@ -14,7 +14,6 @@ public class Sender extends Thread {
 	private Thread connectionCheck;
 
 	private String threadName;
-	
 	public String inbound;
 	
 	ArrayBlockingQueue<String> inboundQueue = new ArrayBlockingQueue<String>(20);
@@ -34,60 +33,56 @@ public class Sender extends Thread {
 	}
 	
 	public void run() {
+		String input;
 		System.out.println("Thread " + Thread.currentThread().getName() + " created");	//Test if thread is starting at all.
-		timeToDie = 300;		//Amount of times the thread will run through the true loop before closing socket.
+		timeToDie = 300;		//Amount of times the thread will run through the true loop before closing socket. current software cannot connect
 		try {
 			
 			// New thread, job is to constantly check for new attempt to connect
 			// to server.
 			
 			BufferedReader buffRead;
+								
 			
-			while (sAccept.isConnected()) {
-
-				
+			while (sAccept.isConnected()) {	
 				buffRead = new BufferedReader(new InputStreamReader(sAccept.getInputStream()));
-				
-
-				inbound = buffRead.readLine(); // Save data received to public
-												// variable to be processed
-												// elsewhere.
-				
-				System.out.println(inbound);
 				// code to send data to client if there is new data to be sent.
-				if (inbound != null) {
+				if (buffRead.ready()) {
 					timeToDie = 300;
 					try {
-						inboundQueue.put(inbound);
+						input	=	buffRead.readLine();
+						inboundQueue.put(input);
 					} catch (InterruptedException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				}
-				if (outbound.size() != 0) {
+				
+				//System.out.print(outbound.isEmpty());
+				
+				if (!outbound.isEmpty())
+				{
 					OutputStream out = sAccept.getOutputStream();
 					OutputStreamWriter outW = new OutputStreamWriter(out);
 					BufferedWriter outBW = new BufferedWriter(outW);
 					try {
-						outBW.write(outbound.take());
+						String a = outbound.take();
+						outBW.write(a);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					outBW.flush(); // Not much sense in streaming the data sent
-									// considering only a string is sent. If
-									// these strings somehow end up exceeding a
-									// few Kb, needs rewriting.
-					outbound = null;
+					outBW.flush();
+				}
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 
 				
-				if(timeToDie <= 0){
-					//This is where player data should be saved, so nothing is lost if a player disconnects.
-					sAccept.close();	//Cleanup. Just in case sockets do not close if the thread they are defined in dies.
-				}
-				
-				timeToDie--;
+
 			}
 			
 		} catch (IOException e) {
@@ -143,7 +138,7 @@ public class Sender extends Thread {
 	
 	public void sendCHA(String toQueue)
 	{
-		String sendCHA = ":CHA:" + toQueue;
+		String sendCHA = ":CHA:" + toQueue + "\r\n";
 		try {
 			outbound.put(sendCHA);
 		} catch (InterruptedException e) {
@@ -154,7 +149,7 @@ public class Sender extends Thread {
 	
 	public void sendLAB(String toQueue)
 	{
-		String sendLAB = ":LAB:" + toQueue;
+		String sendLAB = ":LAB:" + toQueue + "\r\n";
 		try {
 			outbound.put(sendLAB);
 		} catch (InterruptedException e) {
@@ -165,7 +160,7 @@ public class Sender extends Thread {
 	
 	public void sendINV(String toQueue)
 	{
-		String sendINV = ":INV:" + toQueue;
+		String sendINV = ":INV:" + toQueue + "\r\n";
 		try {
 			outbound.put(sendINV);
 		} catch (InterruptedException e) {
@@ -176,9 +171,21 @@ public class Sender extends Thread {
 	
 	public void sendACT(String toQueue)
 	{
-		String sendACT = ":ACT:" + toQueue;
+		String sendACT = ":ACT:" + toQueue + "\r\n";
 		try {
 			outbound.put(sendACT);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void sendDAT(String toQueue)
+	{
+		String sendLAB = ":DAT:" + toQueue + "\r\n";
+		try {
+			outbound.put(sendLAB);
+			System.out.println(sendLAB);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

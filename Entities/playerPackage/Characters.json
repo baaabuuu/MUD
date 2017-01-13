@@ -14,5 +14,21 @@
     "equipment": [],
     "characterID": "0",
     "playerID": "0"
+  },
+  {
+    "name": "Derperino",
+    "charClass": "Warrior",
+    "stats": [
+      "10",
+      "5",
+      "5",
+      "10"
+    ],
+    "exp": "0",
+    "level": "1",
+    "inventory": [],
+    "equipment": [],
+    "characterID": "1",
+    "playerID": "0"
   }
 ]
