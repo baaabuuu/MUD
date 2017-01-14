@@ -19,6 +19,7 @@ public class Sender extends Thread {
 	
 	ArrayBlockingQueue<String> inboundQueue = new ArrayBlockingQueue<String>(20);
 	ArrayBlockingQueue<String> outbound = new ArrayBlockingQueue<String>(20);
+	ArrayBlockingQueue<String> outboundChat = new ArrayBlockingQueue<String>(20);
 	
 	private int timeToDie; // Decrements each loop where the server has no data
 							// to send. Requires periodic messages sent to keep
@@ -69,6 +70,11 @@ public class Sender extends Thread {
 					OutputStreamWriter outW = new OutputStreamWriter(out);
 					BufferedWriter outBW = new BufferedWriter(outW);
 					try {
+					if(outboundChat.size() != 0)
+					{
+						outBW.write(outboundChat.take());
+					}
+					
 						outBW.write(outbound.take());
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
@@ -178,7 +184,7 @@ public class Sender extends Thread {
 	{
 		String sendACT = ":ACT:" + toQueue;
 		try {
-			outbound.put(sendACT);
+			outboundChat.put(sendACT);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
