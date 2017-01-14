@@ -2,6 +2,7 @@ package dungeons;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
 import java.util.Scanner;
@@ -16,16 +17,21 @@ import playerPackage.Character;
 public class Battle 
 {
 	Entity				playerCharacter;
-	Entity[]			enemies;
+	ArrayList<Entity>	enemies;
 	ArrayList<Entity>	iniative	=	new ArrayList<Entity>();
 	Random rand = new Random(); 
 
-	public int fight(Entity[] entities) 
+	/**
+	 * Starts a new battle
+	 * @param entities an array consisting of enemies
+	 * @param player the player character
+	 * @return 0 = battle won, 1 = battle lost
+	 */
+	public int fight(Entity[] entities, Character player) 
 	{
-		//TODO CHANGE THIS VALUE - once we have a player value like in shittytestclass
-		playerCharacter	=	World.playerChar;
-		//TODO CHANGE THIS VALUE TODO
-		enemies=entities;
+		playerCharacter	=	player;
+		enemies	=	new ArrayList<Entity>(Arrays.asList(entities));
+		
 		System.out.println(enemyAppears());
 		boolean	battleDone	=	false;
 		Entity	currChar;
@@ -36,8 +42,10 @@ public class Battle
 		String output;
 		int counter;
 		String msg;
+		rollForIniative();
 		while(!battleDone)
 		{
+			//we get the iniative for number 0 - in other words
 			currChar	=	iniative.get(0);
 			if (currChar.equals(playerCharacter))
 			{
@@ -58,11 +66,11 @@ public class Battle
 					//it also checks if those characters are legal - by checking if it is greather than the size
 					if (msg.startsWith("[") && msg.endsWith("]") &&
 							msg.substring(1, msg.length()-1).matches("^(?!0+$)\\d+$") &&
-							enemies.length>Integer.parseInt(msg.substring(1, msg.length()-1)) &&
+							enemies.size()>Integer.parseInt(msg.substring(1, msg.length()-1)) &&
 							Integer.parseInt(msg.substring(1, msg.length()-1))>0)
 					{
 						currHero	=	(Character) currChar;
-						currTarget	=	enemies[Integer.parseInt(msg.substring(1, msg.length()-1))-1];
+						currTarget	=	enemies.get(Integer.parseInt(msg.substring(1, msg.length()-1))-1);
 						wep			=	currHero.getWeapon();
 						//if no weapon create a fist weapon
 						if (wep==null)
@@ -78,6 +86,16 @@ public class Battle
 							//effects that occur afterwards (stuns and slows)
 							afterHitEffects(currChar,wep,currTarget);
 							//hit occurred
+							//check if hp of target is less than or equal to 0
+							if (currTarget.getCurrHp()<=0)
+							{
+								System.out.println("You defeated the <" + currTarget + ">!");
+								enemies.remove(currTarget);
+								iniative.remove(currTarget);
+								if (enemies.size()==0)
+										return 0;
+							}
+
 						}
 						else
 						{
@@ -105,6 +123,10 @@ public class Battle
 					//effects that occur afterwards (stuns and slows)
 					afterHitEffects(currChar,wep,playerCharacter);
 					//hit occurred
+					if (playerCharacter.getCurrHp()<=0)
+					{
+						return 1;
+					}
 				}
 				else
 				{
@@ -114,7 +136,6 @@ public class Battle
 				}
 			}
 		}
-		rollForIniative();
 		//return the result
 		return 0;
 	}
@@ -244,16 +265,16 @@ public class Battle
 	
 	private String enemyAppears()
 	{
-		if (enemies.length==1)
+		if (enemies.size() == 1)
 		{
-			return "You are attacked by a <" + enemies[0].getName() + ">.";
+			return "You are attacked by a <" + enemies.get(0).getName() + ">.";
 		}
 		String enemyString = "You are attacked by a ";
-		for (int i	=	0;i<enemies.length-2;i++)
+		for (int i	=	0;i<enemies.size()-1;i++)
 		{
-			enemyString+= " <" + enemies[i].getName() + ">, ";
+			enemyString+= " <" + enemies.get(i).getName() + ">, ";
 		}
 		return enemyString.substring(0, enemyString.length()-2) +
-				" and a <" + enemies[enemies.length-1].getName() + ">.";
+				" and a <" + enemies.get(enemies.size()-1).getName() + ">.";
 	}
 }

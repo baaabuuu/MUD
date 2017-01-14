@@ -100,7 +100,9 @@ public class MainGame extends Thread {
 		
 		
 		//starts in dungeon 0 room 0
+		// new world crashes?
 		World gameWorld = new World();
+		// new world crashes?
 		int dungID	=	0;
 		int	roomID	=	0;
 		Room playerRoom = gameWorld.dungeonList.get(dungID).rooms.get(0);
@@ -110,7 +112,9 @@ public class MainGame extends Thread {
 			while(true)
 			{
 				//Run event for the room
-				dungeon	=	playerRoom.runEvent(dungID).split("@");
+				//reason for split is due to the fact that it returns a value/
+				// and also plays the content of the room
+				dungeon	=	playerRoom.runEvent(dungID, player).split("@");
 				playerRoom.hasEntered	=	true;
 				if (dungeon[0].equals("exit"))
 				{

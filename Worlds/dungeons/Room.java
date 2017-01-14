@@ -7,6 +7,7 @@ import java.util.Scanner;
 import items.Item;
 import npc.EnemyGeneration;
 import npc.Entity;
+import playerPackage.Character;
 
 public class Room 
 {
@@ -144,7 +145,7 @@ public class Room
 	}
 
 	@SuppressWarnings({"unchecked","rawtypes" })
-	public String runEvent(int id)
+	public String runEvent(int id, Character player)
 	{
 		ArrayList<Event>		events			=	eventStack.get(id);
 		ArrayList<String>		text			=	eventTextStack.get(id);
@@ -164,7 +165,6 @@ public class Room
 		int					battleCounter	=	0;
 		int					result			=	0;
 		int					shopCounter		=	0;
-		Battle				battle;
 		if (!options.contains("Exit"))
 		{
 			options.add("Exit");
@@ -192,7 +192,7 @@ public class Room
 					break;
 				case FIGHT:
 					//battlecode!
-					result	= new Battle().fight(enemies.get(battleCounter));
+					result	= new Battle().fight(enemies.get(battleCounter),player);
 					battleCounter++;
 					break;
 				case TEXT: // prints the first line in eventDescription and then deletes it.
