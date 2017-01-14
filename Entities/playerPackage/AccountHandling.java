@@ -23,11 +23,12 @@ public class AccountHandling {
 	public static ArrayList<PlayerAccount> activeAccounts = new ArrayList<PlayerAccount>();
 	
 	public static void main(String[] args) throws UnsupportedEncodingException, MalformedJsonException
-	{		
+	{	
 		createNewAccount("TestAccount","a","Blib@blob.dtu.dk");
-		createNewAccount("paa","b","Balib@blob.dtu.dk");
-		createNewAccount("a","","Balib@blob.dtu.dk");
+		createNewAccount("b","b","a");
 		createNewAccount("TestAbccount","c","hohn");
+		
+		
 	}
 	
 	
@@ -43,16 +44,20 @@ public class AccountHandling {
 				PlayerAccount	newPlayer 	= 	new PlayerAccount(username,password,email);
 				newPlayer.setID(createdAccounts.size());
 				createdAccounts.add(newPlayer);
+				System.out.println("test");
+				System.out.println("writing");
 				updateAccountDatabase();
 			} 
 			else
 			{
+				System.out.println("username in use?");
 				//username is already in use
 				return 2;
 			}
 		}
 		else
 		{
+			System.out.println("email in use?");
 			//email is already in use
 			return 1;
 		}
@@ -129,6 +134,7 @@ public class AccountHandling {
 	 */
 	public static boolean updateAccountDatabase() {		
 		PrintWriter writer;
+		System.out.println("writing");
 		try {
 			Gson gson = new GsonBuilder().setPrettyPrinting().create();
 			String s = gson.toJson(createdAccounts);
@@ -171,9 +177,9 @@ public class AccountHandling {
 		for (int i=0;i<createdAccounts.size();i++)
 		{
 			if (createdAccounts.get(i).getName().toUpperCase().equals(name))
-				return true;
+				return false;
 		}
-		return false;
+		return true;
 	}
 
 	public static boolean checkEmail(String email) {
@@ -181,9 +187,9 @@ public class AccountHandling {
 		for (int i = 0; i < createdAccounts.size(); i++)
 		{
 			if (createdAccounts.get(i).getEmail().toUpperCase().equals(email))
-				return true;
+				return false;
 		}
-		return false;
+		return true;
 	}
 
 

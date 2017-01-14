@@ -36,12 +36,9 @@ public class PlayerAccount
 		banned				=	"false";
 		
 		//player can have up to 6 characters per account.
+		//if it is null - it is not created
 		characterID			=	new String[6];
-		//-1 means not created account
-		for (int i=0;i<characterID.length;i++)
-		{
-			characterID[i]="-1";
-		}
+
 		
 		//needs to get a check on how many playerIDs exist
 		//characterID is used to hold how many characters that player owns.

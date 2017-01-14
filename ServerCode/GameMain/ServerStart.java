@@ -1,7 +1,8 @@
-package gameServer;
+package GameMain;
 
 import java.io.IOException;
 
+import gameServer.Listener;
 import items.ArmorList;
 import items.WeaponList;
 import npc.EnemyList;
@@ -12,16 +13,10 @@ public class ServerStart {
 	private static int port = 8080;
 	
 	public static void main(String argv[]) {
-		
 		intiateSeverData();		
-		
 		//listener waits for incoming connections, then hands them off to the sender.
 		Listener listener = new Listener("mainListener", port);
 		listener.start();
-		
-		
-		
-		
 	}
 	
 	//sets up every system the server uses for data.

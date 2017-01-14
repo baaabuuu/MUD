@@ -2,7 +2,6 @@ package gameServer;
 
 import java.net.Socket;
 import java.util.Arrays;
-import java.util.Scanner;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import dungeons.Room;
@@ -101,12 +100,15 @@ public class MainGame extends Thread {
 		
 		//starts in dungeon 0 room 0
 		// new world crashes?
+		
 		World gameWorld = new World();
+		System.out.println(gameWorld);
+		System.out.println(" game world " + gameWorld.dungeonList.size());
 		// new world crashes?
 		int dungID	=	0;
 		int	roomID	=	0;
 		Room playerRoom = gameWorld.dungeonList.get(dungID).rooms.get(0);
-		String[]	dungeon;
+		String[]	dungeon = null;
 		while(true)
 		{
 			while(true)
@@ -114,16 +116,25 @@ public class MainGame extends Thread {
 				//Run event for the room
 				//reason for split is due to the fact that it returns a value/
 				// and also plays the content of the room
-				dungeon	=	playerRoom.runEvent(dungID, player).split("@");
+				try {
+					dungeon	=	playerRoom.runEvent(dungID, player,transmitter).split("@");
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ArrayIndexOutOfBoundsException e)
+				{
+					e.printStackTrace();
+				}
 				playerRoom.hasEntered	=	true;
 				if (dungeon[0].equals("exit"))
 				{
-					//switch room
 					break;
 				}
 				else if (dungeon[0].equals("newEvent"))
 				{
 					dungID	=	Integer.parseInt(dungeon[1]);
+					System.out.println(dungeon[1]);
+					System.out.println(dungID);
 				}
 			}
 			//switch rooms
@@ -236,10 +247,10 @@ public class MainGame extends Thread {
 			while (true)
 			{
 				transmitter.sendACT("Please type the desired character name:");
-			
+				
 				s		 =	inbound.take();
 				name	 =	s.substring(5,s.length());
-				if (s.substring(0,5).equals(":ACT"))
+				if (s.substring(0,5).equals(":ACT:"))
 				{
 					transmitter.sendACT("Will your character be named: " + name);
 					transmitter.sendACT("Please type: <Y> for yes and <N> for no.");

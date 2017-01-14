@@ -2,7 +2,9 @@ package dungeons;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.ArrayBlockingQueue;
 
+import gameServer.Sender;
 import items.Item;
 import npc.Entity;
 
@@ -11,29 +13,41 @@ public class Shop
 {
 	
 	
-	public static void	newShop(ArrayList<Item> items, ArrayList<String> text)
+	public static void	newShop(ArrayList<Item> items, ArrayList<String> text, Sender transmitter, Entity playerCharacter) throws InterruptedException
 	{
-		//TODO CHANGE THIS VALUE - once we have a player value like in shittytestclass
-		Entity playerCharacter = World.playerChar;
-		//TODO CHANGE THIS VALUE TODO
-		System.out.println(text.get(0));
+		ArrayBlockingQueue<String> inbound = null;
+		while(inbound  == null)
+		{
+			try{
+				inbound		=	transmitter.inboundQueue;
+			}
+			catch (NullPointerException e)
+			{
+			}
+		
+		}
+		transmitter.sendACT(text.get(0));
 		Scanner input = new Scanner(System.in);
 		String in;
 		int wepID;
+		String data;
+		
 		while (true)
 		{
-			System.out.println(updateItemList(items));
+			updateItemList(items,transmitter);
 			// remove [] and <> to do some stuff later quicker and more easily
-			in	=	input.nextLine().toLowerCase();
+			
+			data = inbound.take();
+			in	 =	data.substring(5,data.length()).toLowerCase();
 			if (in.startsWith("<") || in.startsWith("["))
 				in.substring(1, in.length());
 			
 			if (in.endsWith(">") || in.endsWith("]"))
 				in.substring(0, in.length()-1);
 			//if the player wants to leave the shop
-			if (in.equals("exit"))
+			if (in.equals("exit") && data.substring(0,5).equals(":ACT:"))
 			{
-				System.out.println(text.get(6));
+				transmitter.sendACT(text.get(6));
 				break;
 			}
 			//check if legal item
@@ -45,14 +59,17 @@ public class Shop
 				//very long string - writing it to a string for that reason
 				in	=	text.get(1) + items.get(wepID).getName() + " - " + items.get(wepID).getBuyPrice() 
 						+ text.get(2)+"\nConfirm your purchase by writing <Y> or cancel by writing <N>.";
-				System.out.println(in);
-				in	=	input.nextLine().toLowerCase();
+				transmitter.sendACT(in);
+				
+				
+				data = inbound.take();
+				in	 =	data.substring(5,data.length()).toLowerCase();
 				//removing unneeded string modifiers in order to sanitize a bit
 				if (in.startsWith("<"))
 					in.substring(1, in.length());
 				if (in.endsWith(">"))
 					in.substring(0, in.length()-1);
-				if (in.equals("y"))
+				if (in.equals("y") && data.substring(0,5).equals(":ACT"))
 				{
 					playerCharacter.getInventory().add(items.get(wepID));
 					items.remove(wepID);
@@ -63,14 +80,14 @@ public class Shop
 		input.close();
 	}
 	
-	public static String updateItemList(ArrayList<Item> items)
+	public static void updateItemList(ArrayList<Item> items, Sender transmitter)
 	{
-		String s ="Write [number] to select which item you'd like to buy\nNote that all costs have been set to 0.\n";		
+		transmitter.sendACT("Write [number] to select which item you'd like to buy\nNote that all costs have been set to 0.");		
 		for (int i = 0; i<items.size();i++)
 		{
-			s+=" -- [" + i + "] -- " + items.get(i).getName() + " - cost: " + items.get(i).getBuyPrice()
-					 +" gold.\n";
+			transmitter.sendACT(" -- [" + i + "] -- " + items.get(i).getName() + " - cost: " + items.get(i).getBuyPrice()
+					 +" gold.");
 		}
-		return s + " -- <exit>";
+		transmitter.sendACT(" -- <exit>");
 	}
 }

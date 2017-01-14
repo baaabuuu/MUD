@@ -14,14 +14,13 @@ import shitTierPackage.ShitTierClass;
 
 public class World {
 	static Random rand = new Random(); 
-	//TEMP DATA - REMEMBER TO EDIT
-	public static Entity playerChar;	
-	//TODO CHANGE THIS VALUE!
+
 	
 	public ArrayList<Dungeon> dungeonList = new ArrayList<Dungeon>();
 	
 	public World()
 	{
+		System.out.println("ye3s");
 		initateWorld();
 	}
 	
@@ -29,6 +28,7 @@ public class World {
 	public boolean initateWorld()
 	{
 		Dungeon dung = new Dungeon("Test Town","A bussy little town.");
+		dungeonList.add(dung);
 		createTestTown(dung);
 		return true;
 	}
@@ -173,16 +173,10 @@ public class World {
 		room.newOptionEvent("Run event 0", 0, optionEvent, optionIDevent);
 		room.newExit("Town Square",0,0,event,exitEvent,exitEventID,exitEvents);
 		room.newTextEvent("Inside the room you notice there's a little hobbled figure.",event,textEvent);
-		room.newTextEvent("Against all reason, you decide to move closer to it.",event,textEvent);
-		
-		
-		playerChar	= CharacterHandling.characters.get(0);
-		
-
-		
+		room.newTextEvent("Against all reason, you decide to move closer to it.",event,textEvent);		
 	}
 
-	
+	/*
 	public void runGame()
 	{
 		//starts in dungeon 0 room 0
@@ -194,7 +188,7 @@ public class World {
 		{
 			while(true)
 			{
-				dungeon	=	playerRoom.runEvent(dungID).split("@");
+				dungeon	=	playerRoom.runEvent(dungID,playerChar).split("@");
 				playerRoom.hasEntered	=	true;
 				if (dungeon[0].equals("exit"))
 				{
@@ -216,5 +210,6 @@ public class World {
 			roomID	=	(playerRoom.hasEntered && (roomID == 1 || roomID == 0)) ? 1: 0;
 		}
 	}
+	*/
 	
 }

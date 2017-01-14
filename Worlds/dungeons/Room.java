@@ -3,7 +3,9 @@ package dungeons;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.ArrayBlockingQueue;
 
+import gameServer.Sender;
 import items.Item;
 import npc.EnemyGeneration;
 import npc.Entity;
@@ -13,6 +15,9 @@ public class Room
 {
 	
 	public int currEvent =	0;
+	
+	
+
 	
 	public boolean hasEntered = false;
 	
@@ -144,22 +149,46 @@ public class Room
 		eventShopsText.add(new ArrayList<ArrayList>());
 	}
 
+	
+	String data;
+	ArrayBlockingQueue<String>	inbound;
+	ArrayBlockingQueue<String>	outbound;
+	
+	
+	
 	@SuppressWarnings({"unchecked","rawtypes" })
-	public String runEvent(int id, Character player)
+	public String runEvent(int id, 
+						Character player,
+						Sender transmitter) throws InterruptedException
 	{
+		//for data transfering
+		String data;
+		while(inbound == null)
+		{
+			System.out.println(transmitter.toString());
+			try{
+				inbound		=	transmitter.inboundQueue;
+			}
+			catch (NullPointerException e)
+			{
+			}
+		
+		}
+		ArrayBlockingQueue<String>	inbound		=	transmitter.inboundQueue;
+		
+		//event room data
 		ArrayList<Event>		events			=	eventStack.get(id);
 		ArrayList<String>		text			=	eventTextStack.get(id);
 		ArrayList<String>		options			= 	eventOptionStack.get(id);
 		ArrayList<Integer>		nextEvent		=	eventOptionIDStack.get(id);
-		
 		ArrayList<String>		exits			=	eventExitStack.get(id);
 		ArrayList<Integer>		exitIDs			=	eventExitID.get(id);
 		ArrayList<Integer>		exitEvents		=	eventExitEvent.get(id);
 		ArrayList<Entity[]>		enemies			=	eventEnemies.get(id);
-		
 		ArrayList<ArrayList>	shops			=	eventShops.get(id);
 		ArrayList<ArrayList> 	shopText		=	eventShopsText.get(id);
 		
+		//ints for checking - as we neeed to know which have been running
 		int 				textCounter		=	0;
 		int 				exitCounter		=	0;
 		int					battleCounter	=	0;
@@ -175,13 +204,13 @@ public class Room
 		{
 			switch (event){
 				case SHOP:
-					System.out.println("new shop");
-					Shop.newShop(shops.get(shopCounter),shopText.get(shopCounter));
+					Shop.newShop(shops.get(shopCounter),shopText.get(shopCounter), transmitter, player);
 					shopCounter++;
 					break;
 				case EXIT: //adds a new exit event - note they are permanent for this room
 					
 					//duplicate detection!
+					
 					if (!exitOption.contains(exits.get(exitCounter)))
 					{
 						exitOption.add(exits.get(exitCounter));
@@ -192,7 +221,14 @@ public class Room
 					break;
 				case FIGHT:
 					//battlecode!
-					result	= new Battle().fight(enemies.get(battleCounter),player);
+					result	= new Battle().fight(enemies.get(battleCounter),player,transmitter);
+					//TODO handling for when a character dies?
+					if (result == 0)
+					{
+						
+					}
+					//CONSIDER A NEW EVENT IN ROOM 0 DUNGEON 0
+					//TODO
 					battleCounter++;
 					break;
 				case TEXT: // prints the first line in eventDescription and then deletes it.
@@ -214,88 +250,96 @@ public class Room
 		}
 		//Things can occur here
 		//run game logic
-		Scanner input = new Scanner(System.in);
 		String newInput;
 		String answer;
 		boolean correctValue;
 		int		newEvent	=	-1;
 		while(true)
 		{
-			System.out.println("Select which option you'd like to take:");	
+			transmitter.sendACT("Select which option you'd like to take:");	
 			for (String option : options)
 			{
-				System.out.println(" --- <" + option +">" );
+				transmitter.sendACT(" --- <" + option +">" );
 			}
-			newInput	=	input.nextLine().toLowerCase();
+			
+			data		 =	inbound.take();
+			newInput	 =	data.substring(5,data.length()).toLowerCase();
+			
 			if (newInput.startsWith("<"))
 				newInput	=	newInput.substring(1, newInput.length());
 			if (newInput.endsWith(">"))
 				newInput	=	newInput.substring(0, newInput.length()-1);
-				
-			correctValue	=	false;
-			for (String option : options)
+			if (data.substring(0,5).equals(":ACT"));
 			{
-				if (option.toLowerCase().equals(newInput.toLowerCase()))
-				{	correctValue	=	true;
-					break;
-				}
-			}
-			
-			for (int i = 0; i<exitOption.size();i++)
-			{
-				if (options.get(i).toLowerCase().equals(newInput))
+				correctValue	=	false;
+				for (String option : options)
 				{
-					correctValue	=	true;
-					newEvent		=	nextEvent.get(i);
-				}
-			}
-			
-			
-			if (correctValue)
-			{
-				if (newInput.equals("exit"))
-				{
-					System.out.println("Where would you like to exit through:");	
-					for (String option : exitOption)
-					{
-						System.out.println(" --- <" + option +">" );
+					if (option.toLowerCase().equals(newInput.toLowerCase()))
+					{	correctValue	=	true;
+						break;
 					}
-					while (true)
+				}
+				
+				for (int i = 0; i<exitOption.size();i++)
+				{
+					if (options.get(i).toLowerCase().equals(newInput))
 					{
-						answer = input.nextLine().toLowerCase();
-						if (answer.startsWith("<"))
-							answer	=	answer.substring(1, answer.length());
-						if (newInput.endsWith(">"))
-							answer	=	answer.substring(0, answer.length()-1);
-						if (!answer.equals("none"))
+						correctValue	=	true;
+						newEvent		=	nextEvent.get(i);
+					}
+				}
+				
+				
+				if (correctValue)
+				{
+					if (newInput.equals("exit"))
+					{
+						transmitter.sendACT("Where would you like to exit through:");
+						for (String option : exitOption)
 						{
-							for (int i = 0; i<exitOption.size();i++)
+							transmitter.sendACT(" --- <" + option +">" );
+						}
+						while (true)
+						{
+							data		 =	inbound.take();
+							answer		 =	data.substring(5,data.length()).toLowerCase();
+							if (answer.startsWith("<"))
+								answer	=	answer.substring(1, answer.length());
+							if (newInput.endsWith(">"))
+								answer	=	answer.substring(0, answer.length()-1);
+							if (!answer.equals("none"))
 							{
-								
-								if (answer.equals(exitOption.get(i).toLowerCase()))
+								for (int i = 0; i<exitOption.size();i++)
 								{
-									return "exit@" + exitID.get(i) + "@" + exitEvent.get(i);
+									
+									if (answer.equals(exitOption.get(i).toLowerCase()))
+									{
+										return "exit@" + exitID.get(i) + "@" + exitEvent.get(i);
+									}
 								}
 							}
-						}
-						else //if answer == "none" - Yes this is not valid java syntax
-						{
-							//in case answer is equal to false exit - tell the 
-							//system to rerun select option screen
-							correctValue	=	false;
-							break;
+							else //if answer == "none" - Yes this is not valid java syntax
+							{
+								//in case answer is equal to false exit - tell the 
+								//system to rerun select option screen
+								correctValue	=	false;
+								break;
+							}	
 						}	
-					}	
+					}
+					if (correctValue)
+						break;
+					
+				} else
+				{
+					System.out.println("WRONG INPUT, TRY AGAIN");
 				}
-				if (correctValue)
-					break;
-				
-			} else
-			{
-				System.out.println("WRONG INPUT, TRY AGAIN");
 			}
+			//returns newEvent@ID where ID is the new event to run.
+			
 		}
-		//returns newEvent@ID where ID is the new event to run.
+		
+		//in case of wrong msg sent from client - it breaks.
 		return "newEvent@"+newEvent;
 	}	
 	public Room()

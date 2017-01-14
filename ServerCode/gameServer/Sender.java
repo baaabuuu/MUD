@@ -16,8 +16,8 @@ public class Sender extends Thread {
 	private String threadName;
 	public String inbound;
 	
-	ArrayBlockingQueue<String> inboundQueue = new ArrayBlockingQueue<String>(20);
-	ArrayBlockingQueue<String> outbound = new ArrayBlockingQueue<String>(20);
+	public ArrayBlockingQueue<String> inboundQueue = new ArrayBlockingQueue<String>(20);
+	public ArrayBlockingQueue<String> outbound = new ArrayBlockingQueue<String>(20);
 	
 	private int timeToDie; // Decrements each loop where the server has no data
 							// to send. Requires periodic messages sent to keep

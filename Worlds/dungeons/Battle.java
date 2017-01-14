@@ -5,8 +5,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
-import java.util.Scanner;
+import java.util.concurrent.ArrayBlockingQueue;
 
+import gameServer.Sender;
 import items.Armor;
 import items.Item;
 import items.Weapon;
@@ -25,23 +26,38 @@ public class Battle
 	 * Starts a new battle
 	 * @param entities an array consisting of enemies
 	 * @param player the player character
+	 * @param transmitter 
 	 * @return 0 = battle won, 1 = battle lost
+	 * @throws InterruptedException 
 	 */
-	public int fight(Entity[] entities, Character player) 
+	public int fight(Entity[] entities, Character player, Sender transmitter) throws InterruptedException 
 	{
 		playerCharacter	=	player;
 		enemies	=	new ArrayList<Entity>(Arrays.asList(entities));
 		
-		System.out.println(enemyAppears());
+		String data;
+		String s;
+		
+		ArrayBlockingQueue<String> inbound = null;
+		while(inbound == null)
+		{
+			try{
+				inbound		=	transmitter.inboundQueue;
+			}
+			catch (NullPointerException e)
+			{
+			}
+		
+		}
+		
+		transmitter.sendACT(enemyAppears());
 		boolean	battleDone	=	false;
 		Entity	currChar;
 		Entity  currTarget;
 		Character currHero;
 		Creep	currEnemy;
 		Weapon wep;
-		String output;
 		int counter;
-		String msg;
 		rollForIniative();
 		while(!battleDone)
 		{
@@ -49,47 +65,50 @@ public class Battle
 			currChar	=	iniative.get(0);
 			if (currChar.equals(playerCharacter))
 			{
-				Scanner input = new Scanner(System.in);
-				output="Select the target you want to hit: \nYou select them by writing [targetID]]\n";
+				transmitter.sendACT("Select the target you want to hit: \nYou select them by writing [targetID]]\n");
 				counter=1;
 				for (Entity target: entities)
 				{
-					output+=" - ["+counter+"] - " + target.getName() + " - HP: " + (100*target.getCurrHp()/target.GetHPmax())+".\n";
+					transmitter.sendACT(" - ["+counter+"] - " + target.getName() + " - HP: " + (100*target.getCurrHp()/target.GetHPmax())+".\n");
 					//actual value counter-1
 					counter+=1;
 				}
-				System.out.println(output);
 				while(true)
 				{
-					msg	=	input.nextLine().toLowerCase();
+					s	=	inbound.take();
+					data	=	s.substring(5,s.length()).toLowerCase();
+					if (data.startsWith("["))
+						data.substring(1, data.length());
+					if (data.startsWith("]"))
+						data.substring(0, data.length()-1);
 					//checks if the middle characters are integers - otherwise it just ignores it.
 					//it also checks if those characters are legal - by checking if it is greather than the size
-					if (msg.startsWith("[") && msg.endsWith("]") &&
-							msg.substring(1, msg.length()-1).matches("^(?!0+$)\\d+$") &&
-							enemies.size()>Integer.parseInt(msg.substring(1, msg.length()-1)) &&
-							Integer.parseInt(msg.substring(1, msg.length()-1))>0)
+					if (	s.substring(0,5).equals(":ACT") &&
+							data.substring(0, data.length()).matches("^(?!0+$)\\d+$") &&
+							enemies.size()>Integer.parseInt(data.substring(0, data.length())) &&
+							Integer.parseInt(data.substring(0, data.length()))>0)
 					{
 						currHero	=	(Character) currChar;
-						currTarget	=	enemies.get(Integer.parseInt(msg.substring(1, msg.length()-1))-1);
+						currTarget	=	enemies.get(Integer.parseInt(data.substring(0, data.length()))-1);
 						wep			=	currHero.getWeapon();
 						//if no weapon create a fist weapon
-						if (wep==null)
+						if (wep == null)
 							wep	=	new Weapon();
 						
 						if (calcHit(wep,currChar.getDex(),currTarget.getDex()))
 						{
 							//deal damage to the target
-							dealDamage(currChar,wep,currTarget);
+							dealDamage(currChar,wep,currTarget, transmitter);
 							//adds our enemy to the back of the iniative queue
 							iniative.remove(currChar);
 							iniative.add(currChar);
 							//effects that occur afterwards (stuns and slows)
-							afterHitEffects(currChar,wep,currTarget);
+							afterHitEffects(currChar,wep,currTarget, transmitter);
 							//hit occurred
 							//check if hp of target is less than or equal to 0
 							if (currTarget.getCurrHp()<=0)
 							{
-								System.out.println("You defeated the <" + currTarget + ">!");
+								transmitter.sendACT("You defeated the <" + currTarget + ">!");
 								enemies.remove(currTarget);
 								iniative.remove(currTarget);
 								if (enemies.size()==0)
@@ -99,14 +118,13 @@ public class Battle
 						}
 						else
 						{
-							System.out.println("The <" + currChar.getName() + "> missed <" + 	
+							transmitter.sendACT("The <" + currChar.getName() + "> missed <" + 	
 									playerCharacter.getName() + "> with its <" +
 									wep.getName() + ">.");
 						}
 						break;
 					}
 				}
-				input.close();
 			}
 			else // enemy is character
 			{
@@ -116,12 +134,12 @@ public class Battle
 				if(calcHit(wep,currChar.getDex(),playerCharacter.getDex()))
 				{
 					//deal damage to the target
-					dealDamage(currChar,wep,playerCharacter);
+					dealDamage(currChar, wep, playerCharacter, transmitter);
 					//adds our enemy to the back of the iniative queue
 					iniative.remove(currChar);
 					iniative.add(currChar);
 					//effects that occur afterwards (stuns and slows)
-					afterHitEffects(currChar,wep,playerCharacter);
+					afterHitEffects(currChar, wep, playerCharacter, transmitter);
 					//hit occurred
 					if (playerCharacter.getCurrHp()<=0)
 					{
@@ -130,7 +148,7 @@ public class Battle
 				}
 				else
 				{
-					System.out.println("The <" + currChar.getName() + "> missed <" + 	
+					transmitter.sendACT("The <" + currChar.getName() + "> missed <" + 	
 										playerCharacter.getName() + "> with its <" +
 										wep.getName() + ">.");
 				}
@@ -142,7 +160,7 @@ public class Battle
 
 	
 	
-	private void afterHitEffects(Entity entity, Weapon wep, Entity target) {
+	private void afterHitEffects(Entity entity, Weapon wep, Entity target, Sender transmitter) {
 		//MORE WEAPON MODIFIERS
 		String	modifier	= wep.getModifier().toLowerCase();
 		//STUNNING 15% chance to stun the enemy - adding it to the back of the queue
@@ -150,7 +168,7 @@ public class Battle
 		{
 			iniative.remove(target);
 			iniative.add(target);
-			System.out.println("<"+entity.getName()+"> stunned <" + target.getName()+">!" );
+			transmitter.sendACT("<"+entity.getName()+"> stunned <" + target.getName()+">!" );
 		}
 		//Chilly 20% chance to move the enemy 1 spot backwards
 		if (modifier.equals("chilly") && rand.nextInt(100)+1<=20)	
@@ -161,7 +179,7 @@ public class Battle
 				{
 					//pushes it 1 step backwards by swapping positions
 					Collections.swap(iniative, i, i+1);
-					System.out.println("<"+entity.getName()+"> froze <" + target.getName()+">!" );
+					transmitter.sendACT("<"+entity.getName()+"> froze <" + target.getName()+">!" );
 					break;
 				}
 			}
@@ -172,7 +190,7 @@ public class Battle
 	}
 
 
-	private void dealDamage(Entity player, Weapon wep, Entity target) {
+	private void dealDamage(Entity player, Weapon wep, Entity target, Sender transmitter) {
 		int damage 	=	calcWeaponDamage(wep);
 		//crit chance = weapon crit chance + dexterity / 2
 		if (wep.getCrit() + player.getDex()/2 >= rand.nextInt(100)+1)
@@ -186,16 +204,16 @@ public class Battle
 		}
 		//in case damage is less than 1 we it to be 1.
 		if (damage<1)
-			damage=1;
+			damage	=	1;
 		
-		System.out.println("The <" + player.getName() + "> "+ wep.getAttackDesc() +" <" + 	
+		transmitter.sendACT("The <" + player.getName() + "> "+ wep.getAttackDesc() +" <" + 	
 				target.getName() + "> with its <" +	wep.getName() + "> and dealt " + damage + " damage!");
 		//MORE WEAPON MODIFIERS
 		String	modifier	= wep.getModifier().toLowerCase();
 		if (modifier.equals("vampiric"))
 		{
 			player.heal(damage/5);
-			System.out.println("The  <" +	wep.getName() + "> healed < " + player.getName()+ "> " + damage/5 + " health!");
+			transmitter.sendACT("The  <" +	wep.getName() + "> healed < " + player.getName()+ "> " + damage/5 + " health!");
 		}
 		//MORE WEAPON MODIFIERS
 		target.reduceHP(damage);
@@ -209,8 +227,6 @@ public class Battle
 		if (modifier.equals("accurate"))
 			hit+=5;
 		//weapon modifiers
-		
-		
 		return rand.nextInt(100)+1	<= hit;
 	}
 	
@@ -228,7 +244,6 @@ public class Battle
 		if (modifier.equals("chilly"))
 			dmg +=	1;
 		//weapon modifiers
-		
 		return dmg;
 	}	
 	
@@ -246,15 +261,13 @@ public class Battle
 		}
 		while(ini.size()>0)
 		{
-			
 			for (int i = 0;i<ini.size();i++)
 			{
 				if (ini.get(i)>currIni)
 				{
 					currIni	=	ini.get(i);
 					id	=	i;
-				}
-				
+				}		
 			}
 			iniative.add(chars.get(id));
 			ini.remove(id);
