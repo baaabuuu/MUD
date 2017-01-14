@@ -4,23 +4,30 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.plaf.metal.MetalScrollBarUI;
+import javax.swing.text.DefaultCaret;
 import javax.swing.text.DefaultStyledDocument;
 
 import components.DocumentSizeFilter;
@@ -28,17 +35,18 @@ import components.DocumentSizeFilter;
 public class Cl_Game extends JPanel implements ActionListener, KeyListener{
 	
 	private JButton actionSend, chatSend;
+	private DefaultCaret eventCaret, chatCaret;
 	public JLabel lblEvent, lblChat, lblRemainingWordsChat, lblRemainingWordsAction;
 	public JLabel  lblHP, lblMight, lblDex, lblWisdom, lblConstitution, lblCrit;
 	public JLabel lblAccuracy, lblEvasion, lblArmor, lblResist, lblName;
-	public JTextArea eventArea, actionArea, chatRecArea, chatTypArea;
+	public JTextArea eventArea, actionArea, chatArea, chatTypArea;
 	public JList itemList;
 	private DefaultStyledDocument docAction, docChat;
 	Cl_Main parent;
 	
 	public Cl_Game(Cl_Main parent) {
 		this.parent = parent;
-		setBorder(new EmptyBorder(5, 5, 5, 5));
+		//setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLayout(null);
 		setOpaque(false);
 		
@@ -57,13 +65,16 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener{
 			public void removeUpdate(DocumentEvent e) {updateCount(2);}
         });
 		
-		eventArea = new JTextArea("Welcome Adventurer!");
+		eventArea = new MyTextArea("Welcome Adventurer!");
 		eventArea.setFont(new Font("Bookman Old Style", Font.PLAIN, 14));
 		eventArea.setForeground(Color.white);
 		eventArea.setOpaque(false);
 		eventArea.setToolTipText("Read me!");
 		eventArea.setLineWrap(true);
 		eventArea.setEditable(false);
+		eventCaret = (DefaultCaret)eventArea.getCaret();
+		eventCaret.setUpdatePolicy(DefaultCaret.OUT_BOTTOM);
+		
 		
 		JScrollPane eventAreaScroll = new JScrollPane(eventArea);
 		eventAreaScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -71,9 +82,11 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener{
 		eventAreaScroll.setOpaque(false);
 		eventAreaScroll.getViewport().setOpaque(false);
 		eventAreaScroll.setBounds(10, 50, 600, 440);
+		JScrollBar sbEvent = eventAreaScroll.getVerticalScrollBar();
+        sbEvent.setUI(new MyScrollbarUI());
 		add(eventAreaScroll);
 		
-		actionArea = new JTextArea();
+		actionArea = new MyTextArea("");
 		actionArea.setForeground(Color.white);
 		actionArea.setOpaque(false);
 		actionArea.setLineWrap(true);
@@ -84,19 +97,30 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener{
 		actionArea.setDocument(docAction);
 		add(actionArea);
 		
-		chatRecArea = new JTextArea("Welcome to the chat!");
-		chatRecArea.setFont(new Font("Bookman Old Style", Font.PLAIN, 14));
-		chatRecArea.setToolTipText("Read me!");
-		chatRecArea.setLineWrap(true);
-		chatRecArea.setEditable(false);
+		chatArea = new MyTextArea("Welcome to the chat!");
+		chatArea.setFont(new Font("Bookman Old Style", Font.PLAIN, 14));
+		chatArea.setForeground(Color.white);
+		chatArea.setOpaque(false);
+		chatArea.setToolTipText("Read me!");
+		chatArea.setLineWrap(true);
+		chatArea.setEditable(false);
+		chatCaret = (DefaultCaret)chatArea.getCaret();
+		chatCaret.setUpdatePolicy(DefaultCaret.OUT_BOTTOM);
 		
-		JScrollPane chatRecieveAreaScroll = new JScrollPane(chatRecArea);
-		chatRecieveAreaScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		chatRecieveAreaScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		chatRecieveAreaScroll.setBounds(800, 51, 465, 440);
-		add(chatRecieveAreaScroll);
+		JScrollPane chatAreaScroll = new JScrollPane(chatArea);
+		chatAreaScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		chatAreaScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		chatAreaScroll.setOpaque(false);
+		chatAreaScroll.getViewport().setOpaque(false);
+		chatAreaScroll.setBounds(800, 51, 465, 440);
+		chatAreaScroll.setBackground(new Color(219, 142, 27));
+		JScrollBar sbChat = chatAreaScroll.getVerticalScrollBar();
+        sbChat.setUI(new MyScrollbarUI());
+		add(chatAreaScroll);
 		
-		chatTypArea = new JTextArea();
+		chatTypArea = new MyTextArea("");
+		chatTypArea.setForeground(Color.white);
+		chatTypArea.setOpaque(false);
 		chatTypArea.setLineWrap(true);
 		chatTypArea.setToolTipText("Type me!");
 		chatTypArea.addKeyListener(this);
@@ -148,13 +172,11 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener{
 		lblHP = new JLabel("HP: 1");
 		lblHP.setForeground(Color.white);
 		lblHP.setBounds(615, 76, 175, 14);
-		lblHP.setToolTipText("Seems serious...");
 		add(lblHP);
 		
 		lblMight = new JLabel("Might: 9001");
 		lblMight.setForeground(Color.white);
 		lblMight.setBounds(615, 96, 175, 14);
-		lblMight.setToolTipText("A god among men!");
 		add(lblMight);
 		
 		lblDex = new JLabel("Dex: Too much!");
@@ -229,13 +251,13 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener{
 		if(e.getSource() == actionArea && e.getKeyCode() == KeyEvent.VK_ENTER){
 			//Message must be more than 0 character.
 			if(actionAreaTemp.length() > 0){
-				parent.updEventArea("Player: " + actionAreaTemp);
+				parent.updEventArea(parent.userName + ": " + actionAreaTemp);
 				parent.transmit.putToQueue(":ACT:" + actionAreaTemp);
 			}
 			actionArea.setText("");
 		}else if(e.getSource() == chatTypArea && e.getKeyCode() == KeyEvent.VK_ENTER){
 			if(chatTypAreaTemp.length() > 0){
-				parent.updChatArea("Player: " + chatTypAreaTemp);
+				parent.updChatArea(parent.userName + ": " + chatTypAreaTemp);
 			}
 			chatTypArea.setText("");
 		}
@@ -254,8 +276,9 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener{
 //Modified JTextarea that adds a background.
 class MyTextArea extends JTextArea {
     private Image img;
-    public MyTextArea() {
-        img = new ImageIcon(Cl_Main.class.getResource("loginBackground.png")).getImage();
+    public MyTextArea(String text) {
+    	super(text);
+        img = new ImageIcon(Cl_Main.class.getResource("TransparentBlack.png")).getImage();
     }
     protected void paintComponent(Graphics g) {
         g.drawImage(img,0,0,null);
@@ -266,10 +289,53 @@ class MyTextArea extends JTextArea {
 class MyList extends JList {
   private Image img;
   public MyList() {
-      img = new ImageIcon(Cl_Main.class.getResource("loginBackground.png")).getImage();
+      img = new ImageIcon(Cl_Main.class.getResource("TransparentBlack.png")).getImage();
   }
   protected void paintComponent(Graphics g) {
       g.drawImage(img,0,0,null);
       super.paintComponent(g);
   }
+}
+class MyScrollbarUI extends MetalScrollBarUI {
+    private Image imageThumb, imageTrack;
+    private JButton b = new JButton() {
+        @Override
+        public Dimension getPreferredSize() {
+            return new Dimension(0, 0);
+        }
+    };
+    MyScrollbarUI() {
+        imageThumb = FauxImage.create(32, 32, new Color(219, 142, 27));
+        imageTrack = FauxImage.create(32, 32, Color.darkGray);
+    }
+    @Override
+    protected void paintThumb(Graphics g, JComponent c, Rectangle r) {
+        g.setColor(Color.blue);
+        ((Graphics2D) g).drawImage(imageThumb,
+            r.x, r.y, r.width, r.height, null);
+    }
+    @Override
+    protected void paintTrack(Graphics g, JComponent c, Rectangle r) {
+        ((Graphics2D) g).drawImage(imageTrack,
+            r.x, r.y, r.width, r.height, null);
+    }
+    @Override
+    protected JButton createDecreaseButton(int orientation) {
+        return b;
+    }
+    @Override
+    protected JButton createIncreaseButton(int orientation) {
+        return b;
+    }
+}
+class FauxImage {
+    static public Image create(int w, int h, Color c) {
+        BufferedImage bi = new BufferedImage(
+            w, h, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = bi.createGraphics();
+        g2d.setPaint(c);
+        g2d.fillRect(0, 0, w, h);
+        g2d.dispose();
+        return bi;
+    }
 }
