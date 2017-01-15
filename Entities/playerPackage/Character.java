@@ -2,6 +2,7 @@ package playerPackage;
 
 import java.util.ArrayList;
 
+import gameServer.Sender;
 import items.Armor;
 import items.Item;
 import items.Weapon;
@@ -40,14 +41,62 @@ public class Character extends Entity{
 		recalcHP();
 	}
 	
-	//TODO - maybe implement more values to send?
+	
+	
+	public void updateItems(Sender transmitter)
+	{
+		String s = "";
+		ArrayList<Item> items = getInventory();
+		for (Item item: items)
+		{
+			if (item instanceof Armor)
+			{
+				s+= ((Armor) item).toDataString();
+			}
+			else
+			{
+				s+= ((Weapon) item).toDataString();
+			}
+		}
+		
+		items = getEquipment();
+		s += "(#)";
+		for (Item item: items)
+		{
+			if (item instanceof Armor)
+			{
+				s+= ((Armor) item).toDataString();
+			}
+			else
+			{
+				s+= ((Weapon) item).toDataString();
+			}
+		}
+		System.out.println(s);
+		transmitter.sendINV(s);
+	}
+	
+	
+	
 	//sends - name, character class, might, dexterity, wisdom, const, current hp, maximum hp, weapon crit chance, weapon hit chance.
 	public String toDataStream()
 	{
+		if (wep	== null)
+			wep	= new Weapon();
 		int dmgLow 	= (wep == null)? 2 : wep.getDamage()[0];
 		int dmgHigh = (wep == null)? 5 : wep.getDamage()[1];
+		int reduc	=	0;
+		for (Item equip: getEquipment())
+		{
+			if (equip instanceof Armor)
+			{
+				reduc	+=	((Armor) equip).getReduction();
+			}
+		}
+		
+		
 		return name+"@"+charClass+"@"+stats.get(0)+"@"+stats.get(1)+"@"+stats.get(2)+"@"+stats.get(3)+"@"+hp+"@"+maxHP+"@"+(wep.getCrit() + stats.get(1)/2)+"@"+(wep.getAccuracy()+stats.get(1))
-				+"@"+ dmgLow+"@"+dmgHigh;
+				+"@"+reduc+"@"+ dmgLow+"-"+dmgHigh;
 	}
 	
 	//equips an item and de-equips an item in case the slot is already in use
@@ -56,8 +105,11 @@ public class Character extends Entity{
 		//checks if weapon
 		if (item instanceof Weapon)
 		{
-			if (wep != null)
+			if (wep != null && !wep.getName().equals("Fists"))
+			{
 				inventory.add(wep);
+				equipment.remove(wep);
+			}
 			wep	=	(Weapon) item;
 			equipment.add(item);			
 			return true;
@@ -215,13 +267,13 @@ public class Character extends Entity{
 		
 	}
 
+	//Levels aren't really defined, sorry.
 	public void levelUP() {
 		// TODO level up function
 		
 	}
 
 	public Weapon getWeapon() {
-		// TODO Auto-generated method stub
 		return wep;
 	}
 

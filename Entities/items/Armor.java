@@ -47,6 +47,12 @@ public class Armor extends Item
 	}
 	
 	
+	public String toDataString()
+	{
+		return "@"+name +"@"+"Item type: Armor ^Item Slot: " + slot + "^Armor Class: " + armorClass + "^Rarity: " + rarity + "^Description: " +  description + "^Durability: " 
+					+ currDurrability+"/"+durabilityMax+"^Reduction: " + reduction;
+	}
+	
 	
 	public void getInfo()
 	{

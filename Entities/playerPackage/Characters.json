@@ -1,3 +1,37 @@
 [
-
+  {
+    "name": "TempWarrior1",
+    "charClass": "Warrior",
+    "stats": [
+      "10",
+      "5",
+      "5",
+      "10"
+    ],
+    "exp": "0",
+    "level": "1",
+    "inventory": [],
+    "equipment": [],
+    "characterID": "0",
+    "playerID": "99999999"
+  },
+  {
+    "name": "TestCharacter",
+    "charClass": "Warrior",
+    "stats": [
+      "10",
+      "5",
+      "5",
+      "10"
+    ],
+    "exp": "0",
+    "level": "1",
+    "inventory": [],
+    "equipment": [
+      "weapon@Goblin Hammer@weapon@1@1@0@Somekind of goblinish hammer, it looks like a construction hammer though.@@10@10@-5@-5@4@6@whacks@hammer",
+      "armor@Human Hide@chest@1@1@0@A piece of human flesh used as armor.@@10@10@-5@0@2@@@0"
+    ],
+    "characterID": "1",
+    "playerID": "0"
+  }
 ]

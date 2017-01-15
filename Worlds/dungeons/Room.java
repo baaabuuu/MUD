@@ -16,6 +16,8 @@ public class Room
 	public int currEvent =	0;
 	
 	
+	
+	
 
 	
 	public boolean hasEntered = false;
@@ -34,7 +36,8 @@ public class Room
 	 * <p>0 = first time entering a room.
 	 * <p>1	= when entering the room afterwards.
 	 * <p>Other IDs have different functions and can be refered to in different ways.
-	 */	
+	*/
+		
 	@SuppressWarnings("rawtypes")
 	public ArrayList<ArrayList> eventStack			=	new ArrayList<ArrayList>();
 	
@@ -164,7 +167,6 @@ public class Room
 		String data;
 		while(inbound == null)
 		{
-			System.out.println(transmitter.toString());
 			try{
 				inbound		=	transmitter.inboundQueue;
 			}
@@ -198,7 +200,7 @@ public class Room
 			options.add("Exit");
 			nextEvent.add(-1);
 		}
-		
+
 		for (Event event : events)
 		{
 			switch (event){
@@ -236,6 +238,7 @@ public class Room
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
+					transmitter.sendACT(text.get(textCounter));
 					System.out.println(text.get(textCounter));
 					try {
 						Thread.sleep(750);

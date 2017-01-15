@@ -63,13 +63,14 @@ public class Weapon extends Item {
 	{
 		String returnString = "weapon@"+name+"@"+slot+"@"+rarity+"@"+level+"@"+goldCost+"@"+description+"@"+modifier+"@"+durabilityMax+"@"+currDurrability+"@"+accuracyMod+"@"+critMod+"@"+damage[0]+"@"+damage[1]+"@"+attackDescription+
 				"@"+weaponClass;
-		for (int stat: unusedStats)
-		{
-			returnString = returnString+"@"+String.valueOf(stat);
-		}
 		return returnString;
 	}
 	
+	public String toDataString()
+	{
+		return "@"+name +"@"+"Item type: Weapon^Weapon Class: " + weaponClass + "^Rarity: " + rarity + "^Description: " +  description + "^Durability: " 
+					+ currDurrability+"/"+durabilityMax+"^Damage: " + damage[0] + "-"+damage[1];
+	}
 	
 	public void getInfo(){
 		System.out.println("name: " + name + " damage: " + damage[0]+"-"+damage[1]);

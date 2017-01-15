@@ -29,11 +29,7 @@ public class CharacterHandling {
 	public static void main(String[] args) throws UnsupportedEncodingException, MalformedJsonException
 	{
 		loadCharacters();
-		createNewCharacter("Warrior","TempWarrior1",1);
-		createNewCharacter("Warrior","TempWarrior6",10);
-		createNewCharacter("Warrior","TempWarrior3",12);
-		createNewCharacter("Warrior","TempWarrior4",1);
-		createNewCharacter("Warrior","TempWarrior5",1);
+		createNewCharacter("Warrior","TempWarrior1",99999999);
 		saveCharacters();
 	}
 	
@@ -101,7 +97,7 @@ public class CharacterHandling {
 		String charClass 		= 	saved.charClass;
 		int playerID			=	Integer.parseInt(saved.playerID);
 		int level				=	Integer.parseInt(saved.level);
-		int exps					=	Integer.parseInt(saved.exp);
+		int exps				=	Integer.parseInt(saved.exp);
 		//reads values
 		
 		//set values
@@ -121,9 +117,12 @@ public class CharacterHandling {
 		for (String item: items)
 		{
 			String[] newItem = item.split("@");
+			System.out.println(newItem.length);
 			if (newItem[0].equals("armor"))
 			{
 				//load values
+				
+				//testing
 				String name 		=	newItem[1];
 				String slot			=	newItem[2];
 				int rarity			=	Integer.parseInt(newItem[3]);
@@ -137,19 +136,8 @@ public class CharacterHandling {
 				int reduc			=	Integer.parseInt(newItem[11]);
 				int spellReduc		=	Integer.parseInt(newItem[12]);
 				String armClass		=	newItem[13];
-				int[]	additionalStats;
-				if (item.length()>=15)
-				{
-					additionalStats	=	new int[item.length()-13];
-					for (int i = 14; i<item.length();i++)
-					{
-						additionalStats[i-14]=Integer.parseInt(newItem[i]);
-					}
-				}
-				else
-				{
-					additionalStats = new int[1];
-				}
+				int[]	additionalStats	=	null;
+				additionalStats = new int[1];
 				loadedItems.add(new Armor(name, slot, rarity, level, cost, desc, cDurability,
 						mDurability, mod, evaMod, reduc, armClass, additionalStats, spellReduc));
 			}
@@ -171,19 +159,9 @@ public class CharacterHandling {
 										Integer.parseInt(newItem[13])};
 				String attackDesc	=	newItem[14];
 				String wepClass		=	newItem[15];
-				int[]	additionalStats;
-				if (item.length()>=15)
-				{
-					additionalStats	=	new int[item.length()-13];
-					for (int i = 14; i<item.length();i++)
-					{
-						additionalStats[i-14]=Integer.parseInt(newItem[i]);
-					}
-				}
-				else
-				{
-					additionalStats = new int[1];
-				}
+				int[]	additionalStats = null;
+				if (item.length()>=17)
+				additionalStats = new int[1];
 				loadedItems.add(new Weapon(name, slot, rarity, level, cost, desc, mod, 
 						accMod, critMod, dmg, attackDesc,wepClass,mDurability, cDurability,
 						additionalStats));

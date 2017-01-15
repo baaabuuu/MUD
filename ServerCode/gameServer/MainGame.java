@@ -1,11 +1,17 @@
 package gameServer;
 
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import dungeons.Room;
 import dungeons.World;
+import items.Armor;
+import items.ArmorGeneration;
+import items.Item;
+import items.WeaponGeneration;
 import playerPackage.AccountHandling;
 import playerPackage.Character;
 import playerPackage.CharacterHandling;
@@ -18,13 +24,13 @@ public class MainGame extends Thread {
 	String data;
 	ArrayBlockingQueue<String>	inbound;
 	ArrayBlockingQueue<String>	outbound;
-	
+	static Random rand = new Random(); 
 	
 	
 	public void run()
 	{	
 		PlayerAccount user	=	null;
-		//login
+		//login -- we need to ensure that we have a transmitter inbound queue
 		while(inbound == null)
 		{
 			try{
@@ -35,7 +41,7 @@ public class MainGame extends Thread {
 			}
 		
 		}
-	
+		//login -- we need to ensure that we have a transmitter outbound queue
 		while(outbound == null)
 		{
 			try{
@@ -90,11 +96,16 @@ public class MainGame extends Thread {
 		
 		//load player character
 		
+		transmitter.sendLAB(player.toDataStream());
+		player.updateItems(transmitter);
+		
+		
 		//save character update
 		CharacterHandling.saveCharacters();
 		AccountHandling.updateAccountDatabase();
 		//save character update
-		transmitter.sendLAB(player.toDataStream());
+		
+		
 		player.getInfo();
 		
 		
@@ -113,6 +124,7 @@ public class MainGame extends Thread {
 		{
 			while(true)
 			{
+				
 				//Run event for the room
 				//reason for split is due to the fact that it returns a value/
 				// and also plays the content of the room
@@ -133,8 +145,6 @@ public class MainGame extends Thread {
 				else if (dungeon[0].equals("newEvent"))
 				{
 					dungID	=	Integer.parseInt(dungeon[1]);
-					System.out.println(dungeon[1]);
-					System.out.println(dungID);
 				}
 			}
 			//switch rooms
@@ -172,7 +182,7 @@ public class MainGame extends Thread {
 		while(true)
 		{
 			transmitter.sendACT("Please select which character you'd like to play as:");
-			transmitter.sendACT("You select your character by writing [1-5].");
+			transmitter.sendACT("You select your character by writing [1-6].");
 			for (int i	=	0;	i<6	;i++)
 			{
 				transmitter.sendACT("    ["+(1+i)	+	"]    ---    "+charName[i] + ".");
@@ -235,7 +245,7 @@ public class MainGame extends Thread {
 			}
 			else
 			{
-				transmitter.sendACT("Please type in a whole number between 1 and 5 only.");
+				transmitter.sendACT("Please type in a whole number between 1 and 6 only.");
 			}
 		}
 		
