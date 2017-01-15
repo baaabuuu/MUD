@@ -9,8 +9,6 @@ import items.ArmorGeneration;
 import items.Item;
 import items.WeaponGeneration;
 import npc.Entity;
-import playerPackage.CharacterHandling;
-import shitTierPackage.ShitTierClass;
 
 public class World {
 	static Random rand = new Random(); 

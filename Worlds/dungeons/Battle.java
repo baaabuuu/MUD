@@ -205,7 +205,6 @@ public class Battle
 		//in case damage is less than 1 we it to be 1.
 		if (damage<1)
 			damage	=	1;
-		
 		transmitter.sendACT("The <" + player.getName() + "> "+ wep.getAttackDesc() +" <" + 	
 				target.getName() + "> with its <" +	wep.getName() + "> and dealt " + damage + " damage!");
 		//MORE WEAPON MODIFIERS

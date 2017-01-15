@@ -2,7 +2,6 @@ package dungeons;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import gameServer.Sender;

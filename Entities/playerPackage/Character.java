@@ -2,11 +2,10 @@ package playerPackage;
 
 import java.util.ArrayList;
 
+import items.Armor;
 import items.Item;
 import items.Weapon;
 import npc.Entity;
-
-
 
 public class Character extends Entity{
 	 	int playerID;
@@ -22,7 +21,8 @@ public class Character extends Entity{
 	//TODO add spells, feats
 	//private ArrayList<Abilities> spells;
 	//private ArrayList<Feats> feats;
-	
+	int might	=	0; int dexterity	=	1;	int wisdom	=	2;	int constitution	=	3;
+		
 	public Character(String name, int hp, int level, int playerID,String charClass)
 	{
 		super(name, hp, level);
@@ -37,6 +37,57 @@ public class Character extends Entity{
 		stats.add(5);
 		stats.add(5);
 		exp=0;
+		recalcHP();
+	}
+	
+	//TODO - maybe implement more values to send?
+	//sends - name, character class, might, dexterity, wisdom, const, current hp, maximum hp, weapon crit chance, weapon hit chance.
+	public String toDataStream()
+	{
+		int dmgLow 	= (wep == null)? 2 : wep.getDamage()[0];
+		int dmgHigh = (wep == null)? 5 : wep.getDamage()[1];
+		return name+"@"+charClass+"@"+stats.get(0)+"@"+stats.get(1)+"@"+stats.get(2)+"@"+stats.get(3)+"@"+hp+"@"+maxHP+"@"+(wep.getCrit() + stats.get(1)/2)+"@"+(wep.getAccuracy()+stats.get(1))
+				+"@"+ dmgLow+"@"+dmgHigh;
+	}
+	
+	//equips an item and de-equips an item in case the slot is already in use
+	public boolean equipItem(Item item)
+	{
+		//checks if weapon
+		if (item instanceof Weapon)
+		{
+			if (wep != null)
+				inventory.add(wep);
+			wep	=	(Weapon) item;
+			equipment.add(item);			
+			return true;
+		}
+		//checks if armor
+		else if (item instanceof Armor)
+		{
+			//check if we have anything already equipped of this kind of item slot
+			for (Item equipped : equipment)
+			{
+				if (equipped.getSlot().equals(item.getSlot()))
+				{
+					equipment.remove(equipped);
+					break;
+				}
+			}
+			equipment.add(item);
+			return true;
+		}
+		return false;
+	}
+	
+	public void recalcHP()
+	{
+		int hpadd = stats.get(3)*3 + 10;
+		if (maxHP<hpadd)
+		{
+			hp += (hpadd-maxHP);
+			maxHP	=	hp;
+		}
 	}
 		
 	public int getDex()
@@ -74,12 +125,7 @@ public class Character extends Entity{
 	{
 		return charClass;
 	}
-	
-	public void equipItem(Item item)
-	{
-		equipment.add(item);
-	}
-	
+		
 	public void toInventory(Item item)
 	{
 		inventory.add(item);

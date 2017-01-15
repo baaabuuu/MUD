@@ -6,7 +6,6 @@ package gameServer;
  */
 //FORCE PUSH
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.io.*;
 
@@ -17,13 +16,11 @@ public class Sender extends Thread {
 	private String threadName;
 	public String inbound;
 	
-	ArrayBlockingQueue<String> inboundQueue = new ArrayBlockingQueue<String>(20);
-	ArrayBlockingQueue<String> outbound = new ArrayBlockingQueue<String>(20);
-	ArrayBlockingQueue<String> outboundChat = new ArrayBlockingQueue<String>(20);
+	public ArrayBlockingQueue<String> inboundQueue = new ArrayBlockingQueue<String>(20);
+	public ArrayBlockingQueue<String> outbound = new ArrayBlockingQueue<String>(20);
+	//chat
+	public ArrayBlockingQueue<String> inboundChat = new ArrayBlockingQueue<String>(20);
 	
-	private int timeToDie; // Decrements each loop where the server has no data
-							// to send. Requires periodic messages sent to keep
-							// socket alive.
 	Socket sAccept;
 	
 	
@@ -37,7 +34,6 @@ public class Sender extends Thread {
 	public void run() {
 		String input;
 		System.out.println("Thread " + Thread.currentThread().getName() + " created");	//Test if thread is starting at all.
-		timeToDie = 300;		//Amount of times the thread will run through the true loop before closing socket. current software cannot connect
 		try {
 			
 			// New thread, job is to constantly check for new attempt to connect
@@ -50,17 +46,21 @@ public class Sender extends Thread {
 				buffRead = new BufferedReader(new InputStreamReader(sAccept.getInputStream()));
 				// code to send data to client if there is new data to be sent.
 				if (buffRead.ready()) {
-					timeToDie = 300;
 					try {
 						input	=	buffRead.readLine();
-						inboundQueue.put(input);
+						if(input.substring(0,5).equals(":CHA:"))
+						{
+							inboundChat.put(input);
+						}
+						else {
+							inboundQueue.put(input);
+						}
 					} catch (InterruptedException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				}
 				
-				//System.out.print(outbound.isEmpty());
 				
 				if (!outbound.isEmpty())
 				{
@@ -68,12 +68,8 @@ public class Sender extends Thread {
 					OutputStreamWriter outW = new OutputStreamWriter(out);
 					BufferedWriter outBW = new BufferedWriter(outW);
 					try {
-					if(outboundChat.size() != 0)
-					{
-						outBW.write(outboundChat.take());
-					}
 					
-						outBW.write(outbound.take());
+					outBW.write(outbound.take());
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -127,26 +123,39 @@ public class Sender extends Thread {
 		return get;
 	}
 	
-	public String[] takeCHA()
+	public boolean hasCHAT()
 	{
-		ArrayList<String> ind = new ArrayList<String>();
-		for (String string: inboundQueue)
-		{
-			if (string.substring(0,5).equals(":CHA:"))
-			{
-				ind.add(string.substring(5,string.length()));
-				
-				inboundQueue.remove(string);
-			}
-		}
-		return ind.toArray(new String[ind.size()]);
+		return (inboundChat.size()>0);
 	}
 	
-	public void sendCHA(String toQueue)
+	
+	public String takeCHA()
 	{
-		String sendCHA = ":CHA:" + toQueue + "\r\n";
+		try {
+			return inboundChat.take();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "failed to fetch";
+		}
+	}
+	
+	public void sendCHA(String msg)
+	{
+		String sendCHA = ":CHA:" + msg + "\r\n";
 		try {
 			outbound.put(sendCHA);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void sendITE(String msg)
+	{
+		String sendITE = ":ITE:" + msg + "\r\n";
+		try {
+			outbound.put(sendITE);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

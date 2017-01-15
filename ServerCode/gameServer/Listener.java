@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import GameMain.ServerStart;
+
 public class Listener extends Thread {
 	private Thread listener;
 	private String listenerName;
@@ -37,6 +39,8 @@ public class Listener extends Thread {
 				MainGame	newgame	=	new MainGame();
 				newgame.start();
 				newgame.createSender(threadName+threadNumber,sAccept,threadNumber);
+				ServerStart.chat.transmitters.add(newgame.transmitter);
+				
 				threadNumber ++;
 			}
 		} catch(IOException e){

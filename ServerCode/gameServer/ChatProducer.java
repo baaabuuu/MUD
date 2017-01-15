@@ -1,41 +1,48 @@
 package gameServer;
 
-import java.util.concurrent.ArrayBlockingQueue;
+import java.util.ArrayList;
 
 public class ChatProducer extends Thread {
 	
 	private Thread chat;
-	private String chatName;
+	private String chatName = "chatServer";
 
 	/**
 	 * Globally accessible chat thing, where every message is sent to every client.
 	 */
-	ArrayBlockingQueue<String> chatPending;
+	public ArrayList<String>	chatPending = new ArrayList<String>();
+	public ArrayList<Sender>	transmitters	=	new ArrayList<Sender>();
 	
-	ChatProducer()
+	private void transmitToOthers(Sender transmitter1)
 	{
-		chatPending = new ArrayBlockingQueue<String>(100);
+		String msg	=	transmitter1.takeCHA();
+		for(Sender transmitter : transmitters) //add every chat element
+		{	
+			if (!transmitter.equals(transmitter1))
+				transmitter.sendCHA(msg);
+		}
 	}
 	
-	void run(Sender[] transmitters)
+	
+	public void run()
 	{
-		for(Sender transmitter : transmitters)
+		while(true)
 		{
-			String[] elements = transmitter.takeCHA();
-			for (String e : elements)
+			for(Sender transmitter : transmitters) //add every chat element
 			{
-				chatPending.add(e);
-				transmitter.sendCHA(e);
+				if (transmitter.hasCHAT())
+				{
+					transmitToOthers(transmitter);
+				}
 			}
-			
-			
+			//we sleep the thread shortly - just so it does not take tooo much processing power
+			//now it updates every 0.1 second.
 			try {
-				transmitter.sendCHA(chatPending.take());
-			} catch (InterruptedException e1) {
+				Thread.sleep(1);
+			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				e.printStackTrace();
 			}
-			
 		}
 	}
 	

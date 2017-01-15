@@ -66,7 +66,6 @@ public class ClientTransmit extends Thread {
 			if (true)
 			{
 				try {
-					System.out.println("IT GETS TO HERE");
 					inboundQueue.put(inbound);
 					
 				} catch (InterruptedException e1) {

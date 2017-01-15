@@ -57,10 +57,9 @@ public class Shop
 			{
 				//legal item
 				//very long string - writing it to a string for that reason
-				in	=	text.get(1) + items.get(wepID).getName() + " - " + items.get(wepID).getBuyPrice() 
-						+ text.get(2)+"\nConfirm your purchase by writing <Y> or cancel by writing <N>.";
-				transmitter.sendACT(in);
 				
+				transmitter.sendACT(text.get(1) + items.get(wepID).getName() + " - " + items.get(wepID).getBuyPrice() + text.get(2));
+				transmitter.sendACT("Confirm your purchase by writing <Y> or cancel by writing <N>.");
 				
 				data = inbound.take();
 				in	 =	data.substring(5,data.length()).toLowerCase();
@@ -69,10 +68,12 @@ public class Shop
 					in.substring(1, in.length());
 				if (in.endsWith(">"))
 					in.substring(0, in.length()-1);
-				if (in.equals("y") && data.substring(0,5).equals(":ACT"))
+				if (in.equals("y") && data.substring(0,5).equals(":ACT:"))
 				{
+					System.out.println(items.size());
 					playerCharacter.getInventory().add(items.get(wepID));
 					items.remove(wepID);
+					System.out.println(items.size());
 				}
 				//this is a legal item
 			}
