@@ -7,13 +7,14 @@ import java.util.concurrent.ArrayBlockingQueue;
 import gameServer.Sender;
 import items.Item;
 import npc.Entity;
+import playerPackage.Character;
 
 
 public class Shop 
 {
 	
 	
-	public static void	newShop(ArrayList<Item> items, ArrayList<String> text, Sender transmitter, Entity playerCharacter) throws InterruptedException
+	public static void	newShop(ArrayList<Item> items, ArrayList<String> text, Sender transmitter, Character playerCharacter) throws InterruptedException
 	{
 		ArrayBlockingQueue<String> inbound = null;
 		while(inbound  == null)
@@ -70,10 +71,9 @@ public class Shop
 					in.substring(0, in.length()-1);
 				if (in.equals("y") && data.substring(0,5).equals(":ACT:"))
 				{
-					System.out.println(items.size());
 					playerCharacter.getInventory().add(items.get(wepID));
 					items.remove(wepID);
-					System.out.println(items.size());
+					playerCharacter.updateItems(transmitter);
 				}
 				//this is a legal item
 			}

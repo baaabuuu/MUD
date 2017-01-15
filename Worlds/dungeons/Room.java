@@ -195,9 +195,9 @@ public class Room
 		int					battleCounter	=	0;
 		int					result			=	0;
 		int					shopCounter		=	0;
-		if (!options.contains("Exit"))
+		if (!options.contains("Go to:"))
 		{
-			options.add("Exit");
+			options.add("Go to:");
 			nextEvent.add(-1);
 		}
 
@@ -284,21 +284,26 @@ public class Room
 				
 				for (int i = 0; i<exitOption.size();i++)
 				{
+					
 					if (options.get(i).toLowerCase().equals(newInput))
 					{
 						correctValue	=	true;
 						newEvent		=	nextEvent.get(i);
+						System.out.println(newEvent);
+						
+						break;
 					}
-				}
-				
-				
+				}				
 				if (correctValue)
 				{
+					
 					if (newInput.equals("exit"))
 					{
+						
 						transmitter.sendACT("Where would you like to exit through:");
 						for (String option : exitOption)
 						{
+							System.out.println(option);
 							transmitter.sendACT(" --- <" + option +">" );
 						}
 						while (true)

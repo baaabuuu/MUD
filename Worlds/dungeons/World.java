@@ -305,7 +305,7 @@ public class World {
 		} else if ((rand.nextInt(100)+1 > 20)) {
 			room.newTextEvent("Steelchin: Mat 1 kommer... Løb!",event,textEvent);
 			room.newOptionEvent("What..?", 4, optionEvent, optionIDevent);
-		} else if ((rand.nextInt(100)+1 > 0)) {
+		} else if ((rand.nextInt(100)+1 > 5)) {
 			room.newTextEvent("Velkommen tilbage.",event,textEvent);
 			room.newExit("Square",1,0,event,exitEvent,exitEventID,exitEvents);
 			room.newExit("Prison",5,0,event,exitEvent,exitEventID,exitEvents);

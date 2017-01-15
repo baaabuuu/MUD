@@ -41,8 +41,6 @@ public class Character extends Entity{
 		recalcHP();
 	}
 	
-	
-	
 	public void updateItems(Sender transmitter)
 	{
 		String s = "";
@@ -72,7 +70,6 @@ public class Character extends Entity{
 				s+= ((Weapon) item).toDataString();
 			}
 		}
-		System.out.println(s);
 		transmitter.sendINV(s);
 	}
 	

@@ -113,12 +113,11 @@ public class MainGame extends Thread {
 		// new world crashes?
 		
 		World gameWorld = new World();
-		System.out.println(gameWorld);
-		System.out.println(" game world " + gameWorld.dungeonList.size());
 		// new world crashes?
 		int dungID	=	0;
+		int eventID	=	0;
 		int	roomID	=	0;
-		Room playerRoom = gameWorld.dungeonList.get(dungID).rooms.get(0);
+		Room playerRoom = gameWorld.dungeonList.get(dungID).rooms.get(roomID);
 		String[]	dungeon = null;
 		while(true)
 		{
@@ -129,9 +128,8 @@ public class MainGame extends Thread {
 				//reason for split is due to the fact that it returns a value/
 				// and also plays the content of the room
 				try {
-					dungeon	=	playerRoom.runEvent(dungID, player,transmitter).split("@");
+					dungeon	=	playerRoom.runEvent(eventID, player,transmitter).split("@");
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (ArrayIndexOutOfBoundsException e)
 				{
@@ -140,18 +138,20 @@ public class MainGame extends Thread {
 				playerRoom.hasEntered	=	true;
 				if (dungeon[0].equals("exit"))
 				{
+					roomID	=	Integer.parseInt(dungeon[1]);
 					break;
 				}
 				else if (dungeon[0].equals("newEvent"))
 				{
-					dungID	=	Integer.parseInt(dungeon[1]);
+					eventID	=	Integer.parseInt(dungeon[1]);
 				}
 			}
 			//switch rooms
-			playerRoom	=	gameWorld.dungeonList.get(dungID).rooms.get(Integer.parseInt(dungeon[1]));
-			roomID	=	Integer.parseInt(dungeon[2]);
+
+			playerRoom	=	gameWorld.dungeonList.get(dungID).rooms.get(roomID);
+			eventID	=	Integer.parseInt(dungeon[2]);
 			// if dungID is equal to 1 or 0, check if room has been entered in the past.
-			roomID	=	(playerRoom.hasEntered && (roomID == 1 || roomID == 0)) ? 1: 0;
+			eventID	=	(playerRoom.hasEntered && (eventID == 1 || eventID == 0)) ? 1: 0;
 		}
 	}
 	
