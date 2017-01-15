@@ -94,7 +94,7 @@ public class MainGame extends Thread {
 		CharacterHandling.saveCharacters();
 		AccountHandling.updateAccountDatabase();
 		//save character update
-		
+		transmitter.sendLAB(player.toDataStream());
 		player.getInfo();
 		
 		
