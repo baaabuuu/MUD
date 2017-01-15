@@ -13,17 +13,17 @@ import java.awt.Font;
 import java.awt.Color;
 
 public class Cl_Login extends JPanel implements ActionListener{
-	private JTextField userField;
+	JTextField userField;
 	private JPasswordField passField;
 	private JLabel lblUser, lblPass, lblError;
 	private JButton btnLogin, btnExit;
 	private String hashed;
 	private Cl_Transmit transmit;
-	private Cl_Main parent;
+	private Cl_Main main;
 	
-	public Cl_Login(Cl_Main parent, Cl_Transmit transmit) {
+	public Cl_Login(Cl_Main main, Cl_Transmit transmit) {
 		this.transmit = transmit;
-		this.parent = parent;
+		this.main = main;
 		
 		setLayout(null);
 		setOpaque(false);
@@ -76,8 +76,12 @@ public class Cl_Login extends JPanel implements ActionListener{
 		
 		userField = new JTextField(20);
 		userField.setBounds(610, 300, 130, 20);
+		userField.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	passField.requestFocus();
+            }
+        });
 		add(userField);
-		
 		
 		lblError = new JLabel(" ");
 		lblError.setForeground(Color.RED);
@@ -113,8 +117,8 @@ public class Cl_Login extends JPanel implements ActionListener{
 		    		if(hashed != null){
 		    			if(BCrypt.checkpw(plainText, hashed)){
 		            		
-		            		Cl_Main.runGame();
-		            		parent.updUsername(userField.getText());
+		    				main.runGame();
+		    				main.updUsername(userField.getText());
 		            		break;
 		            	}
 		    		}

@@ -13,6 +13,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -22,31 +23,37 @@ import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.metal.MetalScrollBarUI;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.DefaultStyledDocument;
 
 import components.DocumentSizeFilter;
+import java.awt.Component;
 
-public class Cl_Game extends JPanel implements ActionListener, KeyListener{
+public class Cl_Game extends JPanel implements ActionListener, KeyListener, ListSelectionListener {
 	
 	private JButton actionSend, chatSend;
+	private JScrollBar sbEvent, sbChat, sbItem, sbList;
 	private DefaultCaret eventCaret, chatCaret;
+	private JScrollPane eventAreaScroll, chatAreaScroll, itemScroll, listScroll;
 	public JLabel lblEvent, lblChat, lblRemainingWordsChat, lblRemainingWordsAction;
-	public JLabel  lblHP, lblMight, lblDex, lblWisdom, lblConstitution, lblCrit;
-	public JLabel lblAccuracy, lblEvasion, lblArmor, lblResist, lblName;
-	public JTextArea eventArea, actionArea, chatArea, chatTypArea;
-	public JList itemList;
+	public JLabel  lblHP, lblMight, lblDex, lblWisdom, lblConstitution, lblCrit, lblList;
+	public JLabel lblAccuracy, lblEvasion, lblArmor, lblDmg, lblName, lblChar, lblClass;
+	public JTextArea eventArea, actionArea, chatArea, chatTypArea, itemArea;
+	public JList<String> itemList;
+	public DefaultListModel<String> listModel;
 	private DefaultStyledDocument docAction, docChat;
-	Cl_Main parent;
+	Cl_Main main;
 	
-	public Cl_Game(Cl_Main parent) {
-		this.parent = parent;
-		//setBorder(new EmptyBorder(5, 5, 5, 5));
+	public Cl_Game(Cl_Main main) {
+		this.main = main;
 		setLayout(null);
 		setOpaque(false);
 		
@@ -71,21 +78,92 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener{
 		eventArea.setOpaque(false);
 		eventArea.setToolTipText("Read me!");
 		eventArea.setLineWrap(true);
+		eventArea.setWrapStyleWord(true);
 		eventArea.setEditable(false);
 		eventCaret = (DefaultCaret)eventArea.getCaret();
 		eventCaret.setUpdatePolicy(DefaultCaret.OUT_BOTTOM);
 		
-		
-		JScrollPane eventAreaScroll = new JScrollPane(eventArea);
+		eventAreaScroll = new JScrollPane(eventArea);
 		eventAreaScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		eventAreaScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		eventAreaScroll.setOpaque(false);
 		eventAreaScroll.getViewport().setOpaque(false);
 		eventAreaScroll.setBounds(10, 50, 600, 440);
-		JScrollBar sbEvent = eventAreaScroll.getVerticalScrollBar();
+		sbEvent = eventAreaScroll.getVerticalScrollBar();
         sbEvent.setUI(new MyScrollbarUI());
 		add(eventAreaScroll);
 		
+		chatArea = new MyTextArea("Welcome to the chat!");
+		chatArea.setFont(new Font("Bookman Old Style", Font.PLAIN, 14));
+		chatArea.setForeground(Color.white);
+		chatArea.setOpaque(false);
+		chatArea.setToolTipText("Read me!");
+		chatArea.setLineWrap(true);
+		chatArea.setWrapStyleWord(true);
+		chatArea.setEditable(false);
+		chatCaret = (DefaultCaret)chatArea.getCaret();
+		chatCaret.setUpdatePolicy(DefaultCaret.OUT_BOTTOM);
+		
+		chatAreaScroll = new JScrollPane(chatArea);
+		chatAreaScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		chatAreaScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		chatAreaScroll.setOpaque(false);
+		chatAreaScroll.getViewport().setOpaque(false);
+		chatAreaScroll.setBounds(800, 51, 465, 440);
+		chatAreaScroll.setBackground(new Color(219, 142, 27));
+		sbChat = chatAreaScroll.getVerticalScrollBar();
+        sbChat.setUI(new MyScrollbarUI());
+		add(chatAreaScroll);
+		
+		chatArea = new MyTextArea("Item descriptions");
+		chatArea.setFont(new Font("Bookman Old Style", Font.PLAIN, 14));
+		chatArea.setForeground(Color.white);
+		chatArea.setOpaque(false);
+		chatArea.setLineWrap(true);
+		chatArea.setWrapStyleWord(true);
+		chatArea.setEditable(false);
+		
+		itemArea = new MyTextArea("Item description area.");
+		itemArea.setFont(new Font("Bookman Old Style", Font.PLAIN, 11));
+		itemArea.setForeground(Color.white);
+		itemArea.setOpaque(false);
+		itemArea.setLineWrap(true);
+		itemArea.setWrapStyleWord(true);
+		itemArea.setEditable(false);
+		
+		itemScroll = new JScrollPane(itemArea);
+		itemScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		itemScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		itemScroll.setOpaque(false);
+		itemScroll.getViewport().setOpaque(false);
+		itemScroll.setBounds(620, 221, 170, 150);
+		itemScroll.setBackground(new Color(219, 142, 27));
+		sbItem = itemScroll.getVerticalScrollBar();
+		sbItem.setUI(new MyScrollbarUI());
+		add(itemScroll);
+		
+		listModel = new DefaultListModel<String>();
+		
+		itemList = new JList(listModel);
+		itemList.setForeground(Color.white);
+		itemList.setBackground(Color.darkGray);
+		itemList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		itemList.setVisibleRowCount(-1);
+		itemList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+		itemList.addListSelectionListener(this);
+		itemList.addKeyListener(this);
+		
+		listScroll = new JScrollPane(itemList);
+		listScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		listScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		listScroll.setOpaque(false);
+		listScroll.getViewport().setOpaque(false);
+		listScroll.setBounds(620, 395, 170, 180);
+		listScroll.setBackground(new Color(219, 142, 27));
+		sbList = listScroll.getVerticalScrollBar();
+		sbList.setUI(new MyScrollbarUI());
+		add(listScroll);
+
 		actionArea = new MyTextArea("");
 		actionArea.setForeground(Color.white);
 		actionArea.setOpaque(false);
@@ -97,31 +175,11 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener{
 		actionArea.setDocument(docAction);
 		add(actionArea);
 		
-		chatArea = new MyTextArea("Welcome to the chat!");
-		chatArea.setFont(new Font("Bookman Old Style", Font.PLAIN, 14));
-		chatArea.setForeground(Color.white);
-		chatArea.setOpaque(false);
-		chatArea.setToolTipText("Read me!");
-		chatArea.setLineWrap(true);
-		chatArea.setEditable(false);
-		chatCaret = (DefaultCaret)chatArea.getCaret();
-		chatCaret.setUpdatePolicy(DefaultCaret.OUT_BOTTOM);
-		
-		JScrollPane chatAreaScroll = new JScrollPane(chatArea);
-		chatAreaScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		chatAreaScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		chatAreaScroll.setOpaque(false);
-		chatAreaScroll.getViewport().setOpaque(false);
-		chatAreaScroll.setBounds(800, 51, 465, 440);
-		chatAreaScroll.setBackground(new Color(219, 142, 27));
-		JScrollBar sbChat = chatAreaScroll.getVerticalScrollBar();
-        sbChat.setUI(new MyScrollbarUI());
-		add(chatAreaScroll);
-		
 		chatTypArea = new MyTextArea("");
 		chatTypArea.setForeground(Color.white);
 		chatTypArea.setOpaque(false);
 		chatTypArea.setLineWrap(true);
+		chatTypArea.setWrapStyleWord(true);
 		chatTypArea.setToolTipText("Type me!");
 		chatTypArea.addKeyListener(this);
 		chatTypArea.setBounds(800, 500, 365, 75);
@@ -147,12 +205,7 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener{
 		chatSend.setBounds(1164, 500, 100, 75);
 		add(chatSend);
 		
-		// List and label counters.
-		itemList = new MyList();
-		itemList.setBounds(620, 281, 170, 209);
-		itemList.setBackground(new Color(1,1,1, (float) 0.01));
-		add(itemList);
-		
+		// label counters.
 		lblRemainingWordsAction = new JLabel("Action");
 		lblRemainingWordsAction.setForeground(Color.white);
 		lblRemainingWordsAction.setBounds(10, 585, 200, 14);
@@ -164,60 +217,75 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener{
 		add(lblRemainingWordsChat);
 		
 		// Middle Area Labels.
-		lblName = new JLabel("User: GhandiErGUD!");
+		lblName = new JLabel("User: ?");
 		lblName.setForeground(Color.white);
 		lblName.setBounds(615, 56, 175, 14);
 		add(lblName);
 		
-		lblHP = new JLabel("HP: 1");
+		lblChar = new JLabel("Character: ?");
+		lblChar.setForeground(Color.white);
+		lblChar.setBounds(615, 76, 175, 14);
+		add(lblChar);
+		
+		lblClass = new JLabel("Class: ?");
+		lblClass.setForeground(Color.white);
+		lblClass.setBounds(615, 96, 175, 14);
+		add(lblClass);
+		
+		lblHP = new JLabel("HP: ?");
 		lblHP.setForeground(Color.white);
-		lblHP.setBounds(615, 76, 175, 14);
+		lblHP.setBounds(615, 116, 85, 14);
 		add(lblHP);
 		
-		lblMight = new JLabel("Might: 9001");
+		lblDmg = new JLabel("Dmg: ?");
+		lblDmg.setForeground(Color.white);
+		lblDmg.setBounds(705, 116, 85, 14);
+		add(lblDmg);
+		
+		lblMight = new JLabel("Might: ?");
 		lblMight.setForeground(Color.white);
-		lblMight.setBounds(615, 96, 175, 14);
+		lblMight.setBounds(615, 136, 85, 14);
 		add(lblMight);
 		
-		lblDex = new JLabel("Dex: Too much!");
+		lblDex = new JLabel("Dex: ?");
 		lblDex.setForeground(Color.white);
-		lblDex.setBounds(615, 116, 175, 14);
+		lblDex.setBounds(705, 136, 85, 14);
 		add(lblDex);
 		
-		lblWisdom = new JLabel("Wisdom: mom?");
+		lblWisdom = new JLabel("Wisdom: ?");
 		lblWisdom.setForeground(Color.white);
-		lblWisdom.setBounds(615, 136, 175, 14);
+		lblWisdom.setBounds(615, 156, 85, 14);
 		add(lblWisdom);
 		
-		lblConstitution = new JLabel("Constitution: 666");
+		lblConstitution = new JLabel("Con: ?");
 		lblConstitution.setForeground(Color.white);
-		lblConstitution.setBounds(615, 156, 175, 14);
+		lblConstitution.setBounds(705, 156, 85, 14);
 		add(lblConstitution);
 		
-		lblCrit = new JLabel("Crit: 100%");
+		lblCrit = new JLabel("Crit: ?");
 		lblCrit.setForeground(Color.white);
-		lblCrit.setBounds(615, 176, 175, 14);
+		lblCrit.setBounds(615, 176, 85, 14);
 		add(lblCrit);
 		
-		lblAccuracy = new JLabel("Accuracy: 5%");
+		lblAccuracy = new JLabel("Acc: ?");
 		lblAccuracy.setForeground(Color.white);
-		lblAccuracy.setBounds(615, 196, 175, 14);
+		lblAccuracy.setBounds(705, 176, 85, 14);
 		add(lblAccuracy);
 		
-		lblEvasion = new JLabel("Evasion: 95%");
+		lblEvasion = new JLabel("Evasion: ?");
 		lblEvasion.setForeground(Color.white);
-		lblEvasion.setBounds(615, 216, 175, 14);
+		lblEvasion.setBounds(615, 196, 85, 14);
 		add(lblEvasion);
 		
-		lblArmor = new JLabel("Armor: 0%");
+		lblArmor = new JLabel("Armor: ?");
 		lblArmor.setForeground(Color.white);
-		lblArmor.setBounds(615, 236, 175, 14);
+		lblArmor.setBounds(705, 196, 85, 14);
 		add(lblArmor);
 		
-		lblResist = new JLabel("Resist Element: 100%");
-		lblResist.setForeground(Color.white);
-		lblResist.setBounds(615, 256, 175, 14);
-		add(lblResist);
+		lblList = new JLabel("Press ENTER to equip item");
+		lblList.setForeground(Color.WHITE);
+		lblList.setBounds(620, 376, 170, 14);
+		add(lblList);
 		
 		// Update remainingWords labels.
 		updateCount(1);
@@ -248,28 +316,41 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener{
 	public void keyReleased(KeyEvent e) {
 		//On ENTER release from actionArea, update eventArea with temporary
 		//text and reset actionArea.
-		if(e.getSource() == actionArea && e.getKeyCode() == KeyEvent.VK_ENTER){
-			//Message must be more than 0 character.
-			if(actionAreaTemp.length() > 0){
-				parent.updEventArea(parent.userName + ": " + actionAreaTemp);
-				parent.transmit.putToQueue(":ACT:" + actionAreaTemp);
+		if(actionAreaTemp != null){
+			if(e.getSource() == actionArea && e.getKeyCode() == KeyEvent.VK_ENTER){
+				//Message must be more than 0 character.
+				if(actionAreaTemp.length() > 0){
+					main.updEventArea(main.userName + ": " + actionAreaTemp);
+					main.transmit.putToQueue(":ACT:" + actionAreaTemp);
+				}
+				actionArea.setText("");
+			}else if(e.getSource() == chatTypArea && e.getKeyCode() == KeyEvent.VK_ENTER){
+				if(chatTypAreaTemp.length() > 0){
+					main.updChatArea(main.userName + ": " + chatTypAreaTemp);
+					main.transmit.putToQueue(":CHA:" + main.userName + ": " + chatTypArea.getText());
+				}
+				chatTypArea.setText("");
 			}
-			actionArea.setText("");
-		}else if(e.getSource() == chatTypArea && e.getKeyCode() == KeyEvent.VK_ENTER){
-			if(chatTypAreaTemp.length() > 0){
-				parent.updChatArea(parent.userName + ": " + chatTypAreaTemp);
-			}
-			chatTypArea.setText("");
+		}
+		if(e.getSource() == itemList && e.getKeyCode() == KeyEvent.VK_ENTER){
+			//main.transmit.putToQueue(":INV:" + itemList.getSelectedIndex());
+			System.out.println(":INV:" + itemList.getSelectedIndex());
 		}
 	}
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == actionSend){
-			parent.updEventArea("Player: " + actionArea.getText());
-			parent.transmit.putToQueue(":ACT:" + actionArea.getText());
+			main.updEventArea(main.userName + ": " + actionArea.getText());
+			main.transmit.putToQueue(":ACT:" + actionArea.getText());
 			actionArea.setText("");
 		}else if(e.getSource() == chatTypArea || e.getSource() == chatSend){
-			parent.updChatArea("Player: " + chatTypArea.getText());
+			main.updChatArea(main.userName + ": " + chatTypArea.getText());
+			main.transmit.putToQueue(":CHA:" + main.userName + ": " + chatTypArea.getText());
 			chatTypArea.setText("");
+		}
+	}
+	public void valueChanged(ListSelectionEvent arg0) {
+		if(main.descArray != null){
+			itemArea.setText(main.descArray[itemList.getSelectedIndex()].replace("^", "\n"));
 		}
 	}
 }
@@ -284,17 +365,6 @@ class MyTextArea extends JTextArea {
         g.drawImage(img,0,0,null);
         super.paintComponent(g);
     }
-}
-//Modified JList that adds a background.
-class MyList extends JList {
-  private Image img;
-  public MyList() {
-      img = new ImageIcon(Cl_Main.class.getResource("TransparentBlack.png")).getImage();
-  }
-  protected void paintComponent(Graphics g) {
-      g.drawImage(img,0,0,null);
-      super.paintComponent(g);
-  }
 }
 class MyScrollbarUI extends MetalScrollBarUI {
     private Image imageThumb, imageTrack;
