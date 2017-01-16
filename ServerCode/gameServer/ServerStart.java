@@ -1,9 +1,7 @@
-package GameMain;
+package gameServer;
 
 import java.io.IOException;
 
-import gameServer.ChatProducer;
-import gameServer.Listener;
 import items.ArmorList;
 import items.WeaponList;
 import npc.EnemyList;

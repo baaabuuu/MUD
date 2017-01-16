@@ -172,11 +172,9 @@ public class WeaponGeneration {
 			}
 			int randNum = rand.nextInt(101);
 			int chance	= Integer.parseInt(armorType.modChance);
-			System.out.println("rand Num: " + randNum + " chance: " + chance);
 			if (randNum<=chance)
 			{
 				String modifier = modifierList.get(rand.nextInt(modifierList.size()));
-				System.out.println(modifier);
 				return modifier + " ";
 			}
 					

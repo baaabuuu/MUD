@@ -58,7 +58,7 @@ public class Character extends Entity{
 		}
 		
 		items = getEquipment();
-		s += "(#)";
+		s += "#";
 		for (Item item: items)
 		{
 			if (item instanceof Armor)
@@ -146,7 +146,7 @@ public class Character extends Entity{
 	
 	public void getInfo()
 	{
-		System.out.println("Name: " + name + " Class: " + charClass + " level " + level);
+		//System.out.println("Name: " + name + " Class: " + charClass + " level " + level);
 	}
 	
 	public void setExp(int val)

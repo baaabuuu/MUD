@@ -1,4 +1,4 @@
-package dungeons;
+package battle;
 
 
 import java.util.ArrayList;
@@ -58,6 +58,7 @@ public class Battle
 		Creep	currEnemy;
 		Weapon wep;
 		int counter;
+		int numberVal;
 		rollForIniative();
 		while(!battleDone)
 		{
@@ -65,11 +66,16 @@ public class Battle
 			currChar	=	iniative.get(0);
 			if (currChar.equals(playerCharacter))
 			{
-				transmitter.sendACT("Select the target you want to hit: \nYou select them by writing [targetID]]\n");
+				transmitter.sendACT("Select the target you want to hit: You select them by writing [targetID]]");
 				counter=1;
-				for (Entity target: entities)
+				for (Entity target: enemies)
 				{
-					transmitter.sendACT(" - ["+counter+"] - " + target.getName() + " - HP: " + (100*target.getCurrHp()/target.GetHPmax())+".\n");
+					if (target.getCurrHp() == 0)
+					{
+						transmitter.sendACT("YOU WON");
+						return 0;
+					}
+					transmitter.sendACT(" - ["+counter+"] - " + target.getName() + " - HP: " + (100*target.getCurrHp()/target.GetHPmax())+".");
 					//actual value counter-1
 					counter+=1;
 				}
@@ -81,12 +87,13 @@ public class Battle
 						data.substring(1, data.length());
 					if (data.startsWith("]"))
 						data.substring(0, data.length()-1);
+					numberVal	=	Integer.parseInt(data);
 					//checks if the middle characters are integers - otherwise it just ignores it.
 					//it also checks if those characters are legal - by checking if it is greather than the size
-					if (	s.substring(0,5).equals(":ACT") &&
+					if (	s.substring(0,5).equals(":ACT:") &&
 							data.substring(0, data.length()).matches("^(?!0+$)\\d+$") &&
-							enemies.size()>Integer.parseInt(data.substring(0, data.length())) &&
-							Integer.parseInt(data.substring(0, data.length()))>0)
+							enemies.size()>=numberVal &&
+							numberVal>0)
 					{
 						currHero	=	(Character) currChar;
 						currTarget	=	enemies.get(Integer.parseInt(data.substring(0, data.length()))-1);
@@ -154,6 +161,7 @@ public class Battle
 				}
 			}
 		}
+		transmitter.sendLAB(((Character) playerCharacter).toDataStream());
 		//return the result
 		return 0;
 	}
@@ -195,12 +203,19 @@ public class Battle
 		//crit chance = weapon crit chance + dexterity / 2
 		if (wep.getCrit() + player.getDex()/2 >= rand.nextInt(100)+1)
 			damage*=2;
-		for (Item equip: target.getEquipment())
+		try
 		{
-			if (equip instanceof Armor)
+			for (Item equip: target.getEquipment())
 			{
-				damage	-=	((Armor) equip).getReduction();
+				if (equip instanceof Armor)
+				{
+					damage	-=	((Armor) equip).getReduction();
+				}
 			}
+		}
+		catch (NullPointerException e)
+		{
+			damage	-= 2;
 		}
 		//in case damage is less than 1 we it to be 1.
 		if (damage<1)

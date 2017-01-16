@@ -73,7 +73,7 @@ public class Weapon extends Item {
 	}
 	
 	public void getInfo(){
-		System.out.println("name: " + name + " damage: " + damage[0]+"-"+damage[1]);
+		//System.out.println("name: " + name + " damage: " + damage[0]+"-"+damage[1]);
 	}
 	
 	public int getAccuracy()

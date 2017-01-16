@@ -27,11 +27,74 @@
     "exp": "0",
     "level": "1",
     "inventory": [],
-    "equipment": [
-      "weapon@Goblin Hammer@weapon@1@1@0@Somekind of goblinish hammer, it looks like a construction hammer though.@@10@10@-5@-5@4@6@whacks@hammer",
-      "armor@Human Hide@chest@1@1@0@A piece of human flesh used as armor.@@10@10@-5@0@2@@@0"
-    ],
+    "equipment": [],
     "characterID": "1",
+    "playerID": "0"
+  },
+  {
+    "name": "MightyTester",
+    "charClass": "Warrior",
+    "stats": [
+      "10",
+      "5",
+      "5",
+      "10"
+    ],
+    "exp": "0",
+    "level": "1",
+    "inventory": [
+      "armor@Leather Chest@chest@1@1@0@A regular piece of leather armor.@@10@10@10@3@1@@@0",
+      "weapon@Goblin Hammer@weapon@1@1@0@Somekind of goblinish hammer, it looks like a construction hammer though.@@10@10@-5@-5@5@6@whacks@hammer",
+      "armor@Human Hide@chest@1@1@0@A piece of human flesh used as armor.@@10@10@-5@0@2@@@0",
+      "armor@Tough Human Hide@chest@1@1@0@A piece of human flesh used as armor.@Tough @10@10@-5@1@2@@@0",
+      "weapon@Unbreakable Goblin Engineered Rock@weapon@1@1@0@It seems like a regular pebble?@Unbreakable @10@10@20@15@1@5@throws a Goblin Engineered Rock@special",
+      "armor@Leather Chest@chest@1@1@0@A regular piece of leather armor.@@10@10@12@2@2@@@0",
+      "weapon@Goblin Hammer@weapon@1@1@0@Somekind of goblinish hammer, it looks like a construction hammer though.@@10@10@-5@-5@4@8@whacks@hammer",
+      "weapon@Unbreakable Goblin Engineered Rock@weapon@1@1@0@It seems like a regular pebble?@Unbreakable @10@10@20@15@1@4@throws a Goblin Engineered Rock@special",
+      "armor@Human Hide@chest@1@1@0@A piece of human flesh used as armor.@@10@10@-5@0@1@@@0",
+      "armor@Leather Chest@chest@1@1@0@A regular piece of leather armor.@@10@10@10@2@2@@@0",
+      "weapon@Unbreakable Goblin Engineered Rock@weapon@1@1@0@It seems like a regular pebble?@Unbreakable @10@10@20@15@1@4@throws a Goblin Engineered Rock@special",
+      "weapon@Goblin Hammer@weapon@1@1@0@Somekind of goblinish hammer, it looks like a construction hammer though.@@10@10@-5@-5@5@6@whacks@hammer",
+      "weapon@Unbreakable Goblin Engineered Rock@weapon@1@1@0@It seems like a regular pebble?@Unbreakable @10@10@20@15@1@5@throws a Goblin Engineered Rock@special",
+      "weapon@Goblin Hammer@weapon@1@1@0@Somekind of goblinish hammer, it looks like a construction hammer though.@@10@10@-5@-5@5@6@whacks@hammer"
+    ],
+    "equipment": [
+      "weapon@Unbreakable Goblin Engineered Rock@weapon@1@1@0@It seems like a regular pebble?@Unbreakable @10@10@20@15@1@5@throws a Goblin Engineered Rock@special",
+      "armor@Leather Chest@chest@1@1@0@A regular piece of leather armor.@@10@10@10@3@1@@@0"
+    ],
+    "characterID": "2",
+    "playerID": "2"
+  },
+  {
+    "name": "Bob",
+    "charClass": "Warrior",
+    "stats": [
+      "10",
+      "5",
+      "5",
+      "10"
+    ],
+    "exp": "0",
+    "level": "1",
+    "inventory": [],
+    "equipment": [],
+    "characterID": "3",
+    "playerID": "1"
+  },
+  {
+    "name": "Ikkehaabloes",
+    "charClass": "Warrior",
+    "stats": [
+      "10",
+      "5",
+      "5",
+      "10"
+    ],
+    "exp": "0",
+    "level": "1",
+    "inventory": [],
+    "equipment": [],
+    "characterID": "4",
     "playerID": "0"
   }
 ]

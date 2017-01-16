@@ -117,7 +117,6 @@ public class CharacterHandling {
 		for (String item: items)
 		{
 			String[] newItem = item.split("@");
-			System.out.println(newItem.length);
 			if (newItem[0].equals("armor"))
 			{
 				//load values

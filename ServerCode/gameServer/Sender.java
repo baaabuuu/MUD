@@ -20,6 +20,7 @@ public class Sender extends Thread {
 	public ArrayBlockingQueue<String> outbound = new ArrayBlockingQueue<String>(20);
 	//chat
 	public ArrayBlockingQueue<String> inboundChat = new ArrayBlockingQueue<String>(20);
+	public ArrayBlockingQueue<String> inboundItemData = new ArrayBlockingQueue<String>(20);
 	
 	Socket sAccept;
 	
@@ -51,6 +52,10 @@ public class Sender extends Thread {
 						if(input.substring(0,5).equals(":CHA:"))
 						{
 							inboundChat.put(input);
+						}
+						else if(input.substring(0,5).equals(":INV:"))
+						{
+							inboundItemData.put(input);
 						}
 						else {
 							inboundQueue.put(input);

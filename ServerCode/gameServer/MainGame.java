@@ -21,6 +21,7 @@ public class MainGame extends Thread {
 	
 	Thread game;
 	Sender transmitter;
+	ItemUpdater updater;
 	String data;
 	ArrayBlockingQueue<String>	inbound;
 	ArrayBlockingQueue<String>	outbound;
@@ -63,13 +64,13 @@ public class MainGame extends Thread {
 				try {
 
 					//Data should be :DAT: - login data followed by a username
+					
 					data = inbound.take();
 					if (data.substring(0,5).equals(":DAT:"))
 					{
 						//login username
 						data = data.substring(5,data.length());
 						user = AccountHandling.loginUser(data);
-						System.out.println(user.getPassword());
 				        if (user != null)
 				        {
 				        	transmitter.sendDAT(user.getPassword());
@@ -100,14 +101,20 @@ public class MainGame extends Thread {
 		player.updateItems(transmitter);
 		
 		
+		
+		
+		
 		//save character update
 		CharacterHandling.saveCharacters();
 		AccountHandling.updateAccountDatabase();
 		//save character update
 		
-		
-		player.getInfo();
-		
+		//Thread used to update inventory
+		updater = new ItemUpdater("ItemUpdater");
+		updater.start();	//Allocates threads to clients.
+		updater.transmitter	=	transmitter;
+		updater.character	=	player;
+		//Thread used to update inventory
 		
 		//starts in dungeon 0 room 0
 		// new world crashes?
@@ -161,10 +168,6 @@ public class MainGame extends Thread {
 		Character[] chars 	=	new Character[6];
 		int id = 0;
 		String s = "";
-		for (Character chara: CharacterHandling.characters)
-		{
-			System.out.println(chara.getName());
-		}
 		for (int i	=	0;	i<6	;i++)
 		{
 			try{
@@ -326,7 +329,6 @@ public class MainGame extends Thread {
 		transmitter = new Sender(threadName, sAccept);
 		System.out.println("A client has connected to the server. Creating thread" + threadName);
 		transmitter.start();	//Allocates threads to clients.
-		
 	}
 
 }

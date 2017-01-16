@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import GameMain.ServerStart;
-
 public class Listener extends Thread {
 	private Thread listener;
 	private String listenerName;

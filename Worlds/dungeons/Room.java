@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ArrayBlockingQueue;
 
+import battle.Battle;
 import gameServer.Sender;
 import items.Item;
 import npc.EnemyGeneration;
@@ -110,7 +111,7 @@ public class Room
 			try {
 				enemies[i]	=	EnemyGeneration.createCreep(enemyID[i]);
 			} catch (IOException e) {
-				System.out.println("Could not create enemy NPC");
+				System.out.println("Could not create enemy NPC - SKIPPING FIGHT");
 			}
 		}
 		eventEnemies.add(enemies);
@@ -287,13 +288,10 @@ public class Room
 				
 				for (int i = 0; i<options.size();i++)
 				{
-					System.out.println(options.get(i) +" answer: " + newInput);
 					if (options.get(i).toLowerCase().equals(newInput))
 					{
 						correctValue	=	true;
-						newEvent		=	nextEvent.get(i);
-						System.out.println(newEvent);
-						
+						newEvent		=	nextEvent.get(i);						
 						break;
 					}
 				}				
@@ -306,7 +304,6 @@ public class Room
 						transmitter.sendACT("Where would you like to exit through:");
 						for (String option : exitOption)
 						{
-							System.out.println(option);
 							transmitter.sendACT(" --- <" + option +">" );
 						}
 						while (true)
@@ -340,10 +337,7 @@ public class Room
 					if (correctValue)
 						break;
 					
-				} else
-				{
-					System.out.println("WRONG INPUT, TRY AGAIN");
-				}
+				} 
 			}
 			//returns newEvent@ID where ID is the new event to run.
 			

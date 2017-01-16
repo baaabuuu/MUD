@@ -44,7 +44,13 @@ public class ArmorGeneration {
 		{
 			generateHash();
 		}
-		int index = armorHash.get(id);
+		int index = 0;
+		try{
+			index = armorHash.get(id);
+		} catch (NullPointerException e)
+		{
+			index = 1;
+		}
 		//weaps is short form of armors
 		ArrayList<ArmorType> armor = armors.getArmorList();
 		ArmorType armorType		= armor.get(index);
@@ -53,7 +59,6 @@ public class ArmorGeneration {
 		int durability	= Integer.parseInt(armorType.durablityMax);
 		int evasionMod	= randVal(armorType.evasionMod);
 		int reduction	= randVal(armorType.reduction);
-		System.out.println(armorType.spellReduction[0] + " spellReduc: " + armorType.spellReduction[1]);
 		int spellReduc	= randVal(armorType.spellReduction);
 		int rarity 		= Integer.parseInt(armorType.rarity);
 		int goldCost	= Integer.parseInt(armorType.goldCost);
@@ -94,7 +99,6 @@ public class ArmorGeneration {
 		int rarity 		= Integer.parseInt(armorType.rarity);
 		int goldCost	= Integer.parseInt(armorType.goldCost);
 		
-		System.out.println(armorType.spellReduction[0] + " spellReduc: " + armorType.spellReduction[1]);
 
 		int spellReduc	= randVal(armorType.spellReduction);
 		
@@ -169,11 +173,9 @@ public class ArmorGeneration {
 			}
 			int randNum = rand.nextInt(101);
 			int chance	= Integer.parseInt(armorType.modChance);
-			System.out.println("rand Num: " + randNum + " chance: " + chance);
 			if (randNum<=chance)
 			{
 				String modifier = modifierList.get(rand.nextInt(modifierList.size()));
-				System.out.println(modifier);
 				return modifier + " ";
 			}
 					

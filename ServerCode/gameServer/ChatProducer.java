@@ -16,10 +16,15 @@ public class ChatProducer extends Thread {
 	private void transmitToOthers(Sender transmitter1)
 	{
 		String msg	=	transmitter1.takeCHA();
-		for(Sender transmitter : transmitters) //add every chat element
-		{	
-			if (!transmitter.equals(transmitter1))
-				transmitter.sendCHA(msg);
+		System.out.println(msg);
+		if (msg.substring(0,5).equals(":CHA:"))
+		{
+			msg	=	msg.substring(5,msg.length());
+			for(Sender transmitter : transmitters) //add every chat element
+			{	
+				if (!transmitter.equals(transmitter1))
+					transmitter.sendCHA(msg);
+			}
 		}
 	}
 	

@@ -1,0 +1,10 @@
+Room id's
+Moonbright gate: 0 DONE
+Moonbright Square : 1
+Moonbright Town hall : 2
+Moonbright Market : 3
+Moonbright Inn : 4
+Moonbright Prison : 5
+Prison cell: 6
+Hidden entrance: 7
+Goblin hall: 8

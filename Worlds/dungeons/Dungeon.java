@@ -1,8 +1,6 @@
-package dungeon;
+package dungeons;
 
 import java.util.ArrayList;
-
-import dungeons.Room;
 
 public class Dungeon {
 	

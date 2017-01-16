@@ -12,7 +12,7 @@
     "playerID": "0",
     "characterID": [
       "1",
-      null,
+      "4",
       null,
       null,
       null,
@@ -31,7 +31,7 @@
     "banned": "false",
     "playerID": "1",
     "characterID": [
-      null,
+      "3",
       null,
       null,
       null,
@@ -40,7 +40,7 @@
     ]
   },
   {
-    "accountName": "c",
+    "accountName": "Testuser",
     "password": "$2a$10$cooQaskDJpD7a8pIaId9ju5rl5gxUL/agpAT0l/jviTywM4SCNMgy",
     "email": "hohn",
     "creationDate": "2017-01-14T11:44:56.991Z",
@@ -51,7 +51,7 @@
     "banned": "false",
     "playerID": "2",
     "characterID": [
-      null,
+      "2",
       null,
       null,
       null,
