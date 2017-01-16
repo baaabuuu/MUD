@@ -35,6 +35,7 @@ import javax.swing.text.DefaultCaret;
 import javax.swing.text.DefaultStyledDocument;
 
 import components.DocumentSizeFilter;
+
 import java.awt.Component;
 
 public class Cl_Game extends JPanel implements ActionListener, KeyListener, ListSelectionListener {
@@ -57,6 +58,9 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener, List
 		setLayout(null);
 		setOpaque(false);
 		
+		// A document filter/listener that ensures that too many
+		// characters cannot enter the text field through either
+		// typing or copy-pasting.
 		docAction = new DefaultStyledDocument();
 		docAction.setDocumentFilter(new DocumentSizeFilter(255));
 		docAction.addDocumentListener(new DocumentListener(){
@@ -333,7 +337,7 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener, List
 			}
 		}
 		if(e.getSource() == itemList && e.getKeyCode() == KeyEvent.VK_ENTER){
-			//main.transmit.putToQueue(":INV:" + itemList.getSelectedIndex());
+			main.transmit.putToQueue(":INV:" + itemList.getSelectedIndex());
 			System.out.println(":INV:" + itemList.getSelectedIndex());
 		}
 	}

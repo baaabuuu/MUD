@@ -37,7 +37,7 @@ public class Cl_Ser extends JPanel implements ActionListener{
             public void actionPerformed(ActionEvent e) {
             	// If the server field contains numbers or dots and if socket field contains numbers
             	// and both are not too long. Then the IP-address and socket is passed on and login screen shows.
-            	if(serverField.getText().matches("[0-9.]+") && serverField.getText().length() < 13
+            	if(serverField.getText().matches("[0-9.]+") && serverField.getText().length() < 17
             			&& socketField.getText().matches("[0-9]+") && socketField.getText().length() < 5){
             		
             		main.ipAddress = serverField.getText();
@@ -46,7 +46,7 @@ public class Cl_Ser extends JPanel implements ActionListener{
             		main.runLogin();
             		
             	// Error for wrong characters.
-            	}else if(serverField.getText().length() < 13 && socketField.getText().length() < 5){
+            	}else if(serverField.getText().length() < 17 && socketField.getText().length() < 5){
             		lblError.setText("Numbers and dots only!");
             	// Error for too many characters.
             	}else{
@@ -104,7 +104,7 @@ public class Cl_Ser extends JPanel implements ActionListener{
 		// On enter press, do the same as connect button.
 		socketField.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	if(serverField.getText().matches("[0-9.]+") && serverField.getText().length() < 13
+            	if(serverField.getText().matches("[0-9.]+") && serverField.getText().length() < 17
             			&& socketField.getText().matches("[0-9]+") && socketField.getText().length() < 5){
             		
             		main.ipAddress = serverField.getText();
@@ -113,7 +113,7 @@ public class Cl_Ser extends JPanel implements ActionListener{
             		main.runLogin();
             		
             	// Error for wrong characters.
-            	}else if(serverField.getText().length() < 13 && socketField.getText().length() < 5){
+            	}else if(serverField.getText().length() < 17 && socketField.getText().length() < 5){
             		lblError.setText("Numbers and dots only!");
             	// Error for too many characters.
             	}else{

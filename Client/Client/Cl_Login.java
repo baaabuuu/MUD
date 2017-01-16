@@ -9,6 +9,9 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
+import components.BCrypt;
+
 import java.awt.Font;
 import java.awt.Color;
 
