@@ -119,14 +119,6 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener, List
         sbChat.setUI(new MyScrollbarUI());
 		add(chatAreaScroll);
 		
-		chatArea = new MyTextArea("Item descriptions");
-		chatArea.setFont(new Font("Bookman Old Style", Font.PLAIN, 14));
-		chatArea.setForeground(Color.white);
-		chatArea.setOpaque(false);
-		chatArea.setLineWrap(true);
-		chatArea.setWrapStyleWord(true);
-		chatArea.setEditable(false);
-		
 		itemArea = new MyTextArea("Item description area.");
 		itemArea.setFont(new Font("Bookman Old Style", Font.PLAIN, 11));
 		itemArea.setForeground(Color.white);
@@ -148,10 +140,10 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener, List
 		
 		listModel = new DefaultListModel<String>();
 		
-		itemList = new JList(listModel);
+		itemList = new JList<String>(listModel);
 		itemList.setForeground(Color.white);
 		itemList.setBackground(Color.darkGray);
-		itemList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		itemList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		itemList.setVisibleRowCount(-1);
 		itemList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		itemList.addListSelectionListener(this);
@@ -320,21 +312,19 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener, List
 	public void keyReleased(KeyEvent e) {
 		//On ENTER release from actionArea, update eventArea with temporary
 		//text and reset actionArea.
-		if(actionAreaTemp != null){
-			if(e.getSource() == actionArea && e.getKeyCode() == KeyEvent.VK_ENTER){
-				//Message must be more than 0 character.
-				if(actionAreaTemp.length() > 0){
-					main.updEventArea(main.userName + ": " + actionAreaTemp);
-					main.transmit.putToQueue(":ACT:" + actionAreaTemp);
-				}
-				actionArea.setText("");
-			}else if(e.getSource() == chatTypArea && e.getKeyCode() == KeyEvent.VK_ENTER){
-				if(chatTypAreaTemp.length() > 0){
-					main.updChatArea(main.userName + ": " + chatTypAreaTemp);
-					main.transmit.putToQueue(":CHA:" + main.userName + ": " + chatTypArea.getText());
-				}
-				chatTypArea.setText("");
+		if(e.getSource() == actionArea && e.getKeyCode() == KeyEvent.VK_ENTER){
+			//Message must be more than 0 character.
+			if(actionAreaTemp != null && actionAreaTemp.length() > 0){
+				main.updEventArea(main.userName + ": " + actionAreaTemp);
+				main.transmit.putToQueue(":ACT:" + actionAreaTemp);
 			}
+			actionArea.setText("");
+		}else if(e.getSource() == chatTypArea && e.getKeyCode() == KeyEvent.VK_ENTER){
+			if(chatTypAreaTemp.length() > 0){
+				main.updChatArea(main.userName + ": " + chatTypAreaTemp);
+				main.transmit.putToQueue(":CHA:" + main.userName + ": " + chatTypArea.getText());
+			}
+			chatTypArea.setText("");
 		}
 		if(e.getSource() == itemList && e.getKeyCode() == KeyEvent.VK_ENTER){
 			main.transmit.putToQueue(":INV:" + itemList.getSelectedIndex());
@@ -346,14 +336,14 @@ public class Cl_Game extends JPanel implements ActionListener, KeyListener, List
 			main.updEventArea(main.userName + ": " + actionArea.getText());
 			main.transmit.putToQueue(":ACT:" + actionArea.getText());
 			actionArea.setText("");
-		}else if(e.getSource() == chatTypArea || e.getSource() == chatSend){
+		}else if(e.getSource() == chatSend){
 			main.updChatArea(main.userName + ": " + chatTypArea.getText());
 			main.transmit.putToQueue(":CHA:" + main.userName + ": " + chatTypArea.getText());
 			chatTypArea.setText("");
 		}
 	}
 	public void valueChanged(ListSelectionEvent arg0) {
-		if(main.descArray != null){
+		if(main.descArray != null && itemList.getSelectedIndex() != -1){
 			itemArea.setText(main.descArray[itemList.getSelectedIndex()].replace("^", "\n"));
 		}
 	}

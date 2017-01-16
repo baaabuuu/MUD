@@ -89,7 +89,7 @@ public class Cl_Ser extends JPanel implements ActionListener{
 		// Text fields.
 		serverField = new JTextField(20);
 		serverField.setBounds(610, 300, 130, 20);
-		serverField.setText("192.168.1.50");
+		serverField.setText("10.16.167.218");
 		// On enter press, sets focus to socket field.
 		serverField.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

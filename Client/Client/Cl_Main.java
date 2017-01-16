@@ -116,7 +116,7 @@ public class Cl_Main extends JFrame{
 		
 		game.eventArea.setText(eventAreaInfo);
 	}
-	private String chatRecAreaInfo;
+	private String chatAreaInfo;
 	/**
 	 * Update chat area, by adding input text to the current text.
 	 */
@@ -129,9 +129,9 @@ public class Cl_Main extends JFrame{
 				e.printStackTrace();
 			}
 		}
-		chatRecAreaInfo = game.chatArea.getText();
-		chatRecAreaInfo += "\n" + text;
-		game.chatArea.setText(chatRecAreaInfo);
+		chatAreaInfo = game.chatArea.getText();
+		chatAreaInfo += "\n" + text;
+		game.chatArea.setText(chatAreaInfo);
 	}
 	private String[] lblSplit;
 	/**
@@ -172,36 +172,59 @@ public class Cl_Main extends JFrame{
 	 * stored in a separate String array.
 	 */
 	public void updList(String inbound){
-		// First split.
-		inboundSplit = inbound.split("(#)");
-		// Second split.
-		invSplit = inboundSplit[0].split("@");
-		equipSplit = inboundSplit[1].split("@");
-		// Set array to null, so that it doesn't run a valueChanged
-		// event in Cl_Game when .clear(); is used.
+		// Set all array to null to avoid error.
 		descArray = null;
+		inboundSplit = null;
+		invSplit = null;
+		equipSplit = null;
 		// Clear list.
 		game.listModel.clear();
-		// Create array to contain item descriptions.
-		descArray = new String[(invSplit.length+equipSplit.length-2)/2];
+		// Inbound split.
+		inboundSplit = inbound.split("#");
+		// Try to split Inventory.
+		if(inboundSplit.length > 0){
+			invSplit = inboundSplit[0].split("@");
+		}
+		// Try to split equipment
+		if(inboundSplit.length == 2){
+			equipSplit = inboundSplit[1].split("@");
+			// Create array to contain item descriptions.
+			descArray = new String[(invSplit.length+equipSplit.length-2)/2];
+		}else if(inboundSplit.length > 0){
+			// Create array to contain item descriptions without equipment.
+			descArray = new String[(invSplit.length-1)/2];
+		}
 		//Add each array to list and each description into an array.
 		int x = 0;
-		for(int i = 0; i < invSplit.length;i++){
-			if(i%2 == 1){
-				System.out.println(invSplit[i]);
-				game.listModel.addElement(invSplit[i]);
-				descArray[x] = invSplit[i+1];
-				x++;
+		if(invSplit != null){
+			for(int i = 0; i < invSplit.length;i++){
+				if(i%2 == 1 && invSplit[i] != null){
+					descArray[x] = invSplit[i+1];
+					System.out.print("Adding: " + invSplit[i]);
+					try{
+						game.listModel.addElement(invSplit[i]);
+					}catch(NullPointerException e0){
+						e0.printStackTrace();
+					}
+					
+					x++;
+				}
 			}
 		}
-		for(int i = 0; i < equipSplit.length;i++){
-			if(i%2 == 1){
-				game.listModel.addElement("[E]" + equipSplit[i]);
-				descArray[x] = equipSplit[i+1];
-				x++;
+		if(equipSplit != null){
+			for(int i = 0; i < equipSplit.length;i++){
+				if(i%2 == 1 && equipSplit[i] != null){
+					game.listModel.addElement("[E]" + equipSplit[i]);
+					descArray[x] = equipSplit[i+1];
+					x++;
+				}
 			}
 		}
-		game.itemList.setSelectedIndex(0);
+		try{
+			game.itemList.setSelectedIndex(0);
+		}catch(NullPointerException e1){
+			e1.printStackTrace();
+		}
 	}
 }
 /** 
